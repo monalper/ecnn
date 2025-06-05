@@ -13,47 +13,39 @@ const uploadRoutes = require('./routes/upload.routes');
 const app = express();
 
 // CORS ayarları
-const allowedOrigins = [
-  'https://ecnn.vercel.app',
-  'http://localhost:5173'
-];
-
 app.use(cors({
-  origin: function(origin, callback) {
-    // origin undefined olabilir (örn. Postman gibi araçlardan gelen istekler)
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('CORS policy violation'));
-    }
-  },
-  credentials: true,
+  origin: '*', // Tüm originlere izin ver
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Basit bir ana route
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({ message: 'ECNN API is running!' });
+});
+
+// API endpoint
 app.get('/api', (req, res) => {
-  res.json({ message: 'OpenWall API Çalışıyor!' });
+  res.json({ message: 'ECNN API is running!' });
 });
 
 // API Rotaları
 app.use('/api/auth', authRoutes);
-app.use('/api/articles', articleRoutes); // Herkese açık makale endpoint'leri
-app.use('/api/admin/articles', adminArticleRoutes); // Admin makale yönetimi endpoint'leri
-app.use('/api/users', userRoutes); // Kullanıcı profilleri için
-app.use('/api/admin/users', adminUserRoutes); // Admin kullanıcı yönetimi endpoint'leri
-app.use('/api/upload', uploadRoutes); // Dosya yükleme endpoint'leri (presigned URL için)
+app.use('/api/articles', articleRoutes);
+app.use('/api/admin/articles', adminArticleRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/admin/users', adminUserRoutes);
+app.use('/api/upload', uploadRoutes);
 
-// Hata Yönetimi Middleware'i (en sonda olmalı)
+// Hata Yönetimi Middleware'i
 app.use((err, req, res, next) => {
   console.error("Global Hata Yakalayıcı:", err.stack);
   res.status(err.status || 500).json({
     message: err.message || 'Sunucuda bir hata oluştu.',
-    // Geliştirme modunda detaylı hata gösterilebilir
     error: process.env.NODE_ENV === 'development' ? { message: err.message, stack: err.stack } : {}
   });
 });
@@ -65,7 +57,7 @@ module.exports = app;
 if (require.main === module) {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
-    console.log(`OpenWall backend sunucusu ${PORT} portunda çalışıyor.`);
+    console.log(`ECNN backend sunucusu ${PORT} portunda çalışıyor.`);
     console.log(`Frontend URL: ${process.env.FRONTEND_URL || 'https://ecnn.vercel.app'}`);
     console.log(`AWS Region: ${process.env.AWS_REGION}`);
     console.log(`Users Table: ${process.env.DYNAMODB_USERS_TABLE}`);
