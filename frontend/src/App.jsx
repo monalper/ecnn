@@ -13,6 +13,7 @@ const ArticleDetailPage = lazy(() => import('./pages/ArticleDetailPage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const CategoriesPage = lazy(() => import('./pages/CategoriesPage')); // Yeni
 const AboutPage = lazy(() => import('./pages/AboutPage')); // Yeni
+const HighlightsPage = lazy(() => import('./pages/HighlightsPage')); // Yeni
 
 // Admin Sayfaları
 const AdminDashboardPage = lazy(() => import('./pages/admin/AdminDashboardPage'));
@@ -51,6 +52,7 @@ function AppContent() {
             <Route path="/" element={<HomePage />} />
             <Route path="/articles/:slug" element={<ArticleDetailPage />} />
             <Route path="/categories" element={<CategoriesPage />} />
+            <Route path="/highlights" element={<HighlightsPage />} />
             <Route path="/about" element={<AboutPage />} />
             
             <Route path="/login" element={

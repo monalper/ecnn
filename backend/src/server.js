@@ -13,11 +13,23 @@ const uploadRoutes = require('./routes/upload.routes');
 const app = express();
 
 // CORS ayarları
+const allowedOrigins = [
+  'https://ecnn.vercel.app',  // Production frontend
+  'http://localhost:5173'     // Development frontend
+];
+
 app.use(cors({
-  origin: ['https://ecnn.vercel.app', 'http://localhost:3000'],
+  origin: function(origin, callback) {
+    // origin undefined olabilir (örn. Postman gibi araçlardan gelen istekler)
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS policy violation'));
+    }
+  },
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
-  credentials: true
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json());

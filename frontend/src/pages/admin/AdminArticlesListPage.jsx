@@ -10,6 +10,7 @@ const AdminArticlesListPage = () => {
   const [error, setError] = useState('');
   // const { token } = useAuth(); // Eğer API isteği için token gerekiyorsa (api.js zaten hallediyor)
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const fetchAdminArticles = useCallback(async () => {
     setLoading(true);
@@ -52,6 +53,22 @@ const AdminArticlesListPage = () => {
     }
   };
 
+  const toggleHighlight = async (articleSlug, currentHighlightStatus) => {
+    try {
+      const response = await api.put(`/admin/articles/${articleSlug}/highlight`, { isHighlighted: !currentHighlightStatus });
+
+      // Update local state
+      setArticles(articles.map(article => 
+        article.slug === articleSlug 
+          ? { ...article, isHighlighted: !currentHighlightStatus }
+          : article
+      ));
+    } catch (err) {
+      console.error('Error toggling highlight:', err);
+      setError('Öne çıkarma durumu güncellenirken bir hata oluştu.');
+    }
+  };
+
   if (loading) {
     return (
       <div className="text-center py-10">
@@ -69,12 +86,12 @@ const AdminArticlesListPage = () => {
   )}
 
   return (
-    <div className="bg-white p-6 md:p-8 rounded-xl shadow-xl">
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+    <div className="bg-white p-4 md:p-6 rounded-xl shadow-lg">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <h1 className="text-2xl md:text-3xl font-bold text-slate-800">Makale Yönetimi</h1>
         <Link
           to="/admin/articles/create"
-          className="w-full sm:w-auto flex items-center justify-center px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-150 ease-in-out text-sm"
+          className="w-full sm:w-auto flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-150 ease-in-out text-sm"
         >
           <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd"></path></svg>
           Yeni Makale Ekle
@@ -85,58 +102,109 @@ const AdminArticlesListPage = () => {
         <p className="text-center text-slate-500 py-8">Henüz oluşturulmuş bir makale yok. İlk makalenizi ekleyebilirsiniz!</p>
       ) : (
         <div className="overflow-x-auto rounded-lg border border-slate-200">
-          <table className="min-w-full divide-y divide-slate-200">
-            <thead className="bg-slate-50">
-              <tr>
-                <th scope="col" className="px-5 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Başlık</th>
-                <th scope="col" className="px-5 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Durum</th>
-                <th scope="col" className="px-5 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Oluşturulma Tarihi</th>
-                <th scope="col" className="px-5 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Son Güncelleme</th>
-                <th scope="col" className="px-5 py-3.5 text-center text-xs font-semibold text-slate-500 uppercase tracking-wider">İşlemler</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-slate-200">
+          <div className="min-w-full divide-y divide-slate-200">
+            {/* Table Header - Hidden on mobile */}
+            <div className="hidden md:block bg-slate-50">
+              <div className="grid grid-cols-12 gap-4 px-5 py-3.5">
+                <div className="col-span-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Başlık</div>
+                <div className="col-span-2 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Durum</div>
+                <div className="col-span-2 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Oluşturulma Tarihi</div>
+                <div className="col-span-2 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Son Güncelleme</div>
+                <div className="col-span-2 text-center text-xs font-semibold text-slate-500 uppercase tracking-wider">İşlemler</div>
+              </div>
+            </div>
+
+            {/* Table Body */}
+            <div className="bg-white divide-y divide-slate-200">
               {articles.map((article) => (
-                <tr key={article.slug} className="hover:bg-slate-50 transition-colors">
-                  <td className="px-5 py-4 whitespace-nowrap">
-                    <Link 
-                        to={`/articles/${article.slug}`} 
-                        target="_blank" rel="noopener noreferrer" 
-                        className="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline" 
-                        title="Makaleyi Görüntüle (Yeni Sekmede)"
-                    >
-                      {article.title}
-                    </Link>
-                  </td>
-                  <td className="px-5 py-4 whitespace-nowrap">
-                    <span className={`px-2.5 py-0.5 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      article.status === 'published' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-                    }`}>
-                      {article.status === 'published' ? 'Yayınlandı' : 'Taslak'}
-                    </span>
-                  </td>
-                  <td className="px-5 py-4 whitespace-nowrap text-sm text-slate-500">
-                    {new Date(article.createdAt).toLocaleDateString('tr-TR', {day: '2-digit', month: 'short', year: 'numeric'})}
-                  </td>
-                  <td className="px-5 py-4 whitespace-nowrap text-sm text-slate-500">
-                    {new Date(article.updatedAt).toLocaleDateString('tr-TR', {day: '2-digit', month: 'short', year: 'numeric'})}
-                  </td>
-                  <td className="px-5 py-4 whitespace-nowrap text-center text-sm font-medium space-x-3">
-                    <Link to={`/admin/articles/${article.slug}/edit`} className="text-indigo-600 hover:text-indigo-800 transition-colors" title="Düzenle">
-                      Düzenle
-                    </Link>
-                    <button 
-                        onClick={() => handleDeleteArticle(article.slug, article.title)} 
-                        className="text-red-600 hover:text-red-800 transition-colors"
-                        title="Sil"
-                    >
+                <div key={article.slug} className="hover:bg-slate-50 transition-colors">
+                  {/* Mobile View */}
+                  <div className="md:hidden p-4 space-y-3">
+                    <div className="flex justify-between items-start">
+                      <h3 className="font-medium text-slate-800">{article.title}</h3>
+                      <span className={`px-2.5 py-0.5 text-xs font-semibold rounded-full ${
+                        article.status === 'published' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                      }`}>
+                        {article.status === 'published' ? 'Yayında' : 'Taslak'}
+                      </span>
+                    </div>
+                    <div className="text-sm text-slate-600 space-y-1">
+                      <p>Oluşturulma: {new Date(article.createdAt).toLocaleDateString('tr-TR')}</p>
+                      <p>Son Güncelleme: {new Date(article.updatedAt).toLocaleDateString('tr-TR')}</p>
+                    </div>
+                    <div className="flex justify-end space-x-3 pt-2">
+                      <button
+                        onClick={() => toggleHighlight(article.slug, article.isHighlighted)}
+                        className={`px-3 py-1 rounded text-sm font-medium ${
+                          article.isHighlighted
+                            ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
+                            : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                        }`}
+                      >
+                        {article.isHighlighted ? 'Öne Çıkarıldı' : 'Öne Çıkar'}
+                      </button>
+                      <Link
+                        to={`/admin/articles/${article.slug}/edit`}
+                        className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                      >
+                        Düzenle
+                      </Link>
+                      <button
+                        onClick={() => handleDeleteArticle(article.slug, article.title)}
+                        className="text-red-600 hover:text-red-800 text-sm font-medium"
+                      >
                         Sil
-                    </button>
-                  </td>
-                </tr>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Desktop View */}
+                  <div className="hidden md:grid grid-cols-12 gap-4 px-5 py-4">
+                    <div className="col-span-4">
+                      <h3 className="font-medium text-slate-800">{article.title}</h3>
+                    </div>
+                    <div className="col-span-2">
+                      <span className={`px-2.5 py-0.5 text-xs font-semibold rounded-full ${
+                        article.status === 'published' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                      }`}>
+                        {article.status === 'published' ? 'Yayında' : 'Taslak'}
+                      </span>
+                    </div>
+                    <div className="col-span-2 text-sm text-slate-600">
+                      {new Date(article.createdAt).toLocaleDateString('tr-TR')}
+                    </div>
+                    <div className="col-span-2 text-sm text-slate-600">
+                      {new Date(article.updatedAt).toLocaleDateString('tr-TR')}
+                    </div>
+                    <div className="col-span-2 text-center space-x-3">
+                      <button
+                        onClick={() => toggleHighlight(article.slug, article.isHighlighted)}
+                        className={`px-3 py-1 rounded text-sm font-medium ${
+                          article.isHighlighted
+                            ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
+                            : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                        }`}
+                      >
+                        {article.isHighlighted ? 'Öne Çıkarıldı' : 'Öne Çıkar'}
+                      </button>
+                      <Link
+                        to={`/admin/articles/${article.slug}/edit`}
+                        className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                      >
+                        Düzenle
+                      </Link>
+                      <button
+                        onClick={() => handleDeleteArticle(article.slug, article.title)}
+                        className="text-red-600 hover:text-red-800 text-sm font-medium"
+                      >
+                        Sil
+                      </button>
+                    </div>
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+          </div>
         </div>
       )}
     </div>

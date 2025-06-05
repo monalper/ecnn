@@ -23,4 +23,7 @@ router.put('/:slug/edit', articleController.updateArticle);
 // DELETE /api/admin/articles/:slug/delete -> Makale sil
 router.delete('/:slug/delete', articleController.deleteArticle);
 
+// PUT /api/admin/articles/:slug/highlight -> Makale öne çıkarma durumunu değiştir
+router.put('/:slug/highlight', articleController.toggleArticleHighlight);
+
 module.exports = router;

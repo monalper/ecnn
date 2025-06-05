@@ -267,4 +267,70 @@ exports.getArticleBySlugForAdmin = async (req, res, next) => {
       console.error("Get Article By Slug (Admin) Error:", error);
       next(error);
     }
-  };
+};
+
+// Makale öne çıkarma durumunu değiştir
+exports.toggleArticleHighlight = async (req, res, next) => {
+  const { slug } = req.params;
+  const { isHighlighted } = req.body;
+
+  try {
+    // Önce makalenin var olup olmadığını kontrol et
+    const getParams = { TableName: ARTICLES_TABLE, Key: { slug } };
+    const { Item: existingArticle } = await docClient.send(new GetCommand(getParams));
+
+    if (!existingArticle) {
+      return res.status(404).json({ message: 'Makale bulunamadı.' });
+    }
+
+    // Makalenin öne çıkarma durumunu güncelle
+    const updateParams = {
+      TableName: ARTICLES_TABLE,
+      Key: { slug },
+      UpdateExpression: 'SET isHighlighted = :isHighlighted, updatedAt = :now',
+      ExpressionAttributeValues: {
+        ':isHighlighted': isHighlighted,
+        ':now': new Date().toISOString()
+      },
+      ReturnValues: 'ALL_NEW'
+    };
+
+    const { Attributes: updatedArticle } = await docClient.send(new UpdateCommand(updateParams));
+    res.status(200).json(updatedArticle);
+  } catch (error) {
+    console.error("Toggle Article Highlight Error:", error);
+    next(error);
+  }
+};
+
+// Öne çıkan makaleleri getir
+exports.getHighlightedArticles = async (req, res, next) => {
+  try {
+    const params = {
+      TableName: ARTICLES_TABLE,
+      FilterExpression: 'isHighlighted = :isHighlighted AND #st = :status',
+      ExpressionAttributeNames: {
+        '#st': 'status'
+      },
+      ExpressionAttributeValues: {
+        ':isHighlighted': true,
+        ':status': 'published'
+      }
+    };
+
+    const { Items } = await docClient.send(new ScanCommand(params));
+    
+    // Makaleleri tarihe göre sırala (en yeni en üstte)
+    const sortedItems = Items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    // Her makale için yazar bilgilerini ekle
+    const articlesWithAuthors = await Promise.all(
+      sortedItems.map(article => enrichArticleWithAuthor(article))
+    );
+
+    res.status(200).json(articlesWithAuthors);
+  } catch (error) {
+    console.error("Get Highlighted Articles Error:", error);
+    next(error);
+  }
+};
