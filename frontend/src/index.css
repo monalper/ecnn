@@ -1,0 +1,80 @@
+/* ECNN - Kopya/frontend/src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Text selection color */
+::selection {
+  background-color: #fef08a; /* Tailwind's yellow-200 */
+  color: #000000;
+}
+
+body {
+  font-family: 'Inter', sans-serif; /* Varsayılan font Inter olarak ayarlandı */
+  background-color: #f8f9fa; /* Görseldeki genel arka plan rengi */
+  color: #2d3748; /* Varsayılan metin rengi */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tailwind Typography için temel stiller (ArticleDetailPage.jsx'de kullanılacak) */
+.prose {
+  /* Örnek temel stiller, @tailwindcss/typography bunları daha iyi yönetir */
+  color: theme('colors.slate.700');
+}
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  color: theme('colors.slate.900');
+  font-family: theme('fontFamily.sans'); /* Başlıklar için ana sans-serif font */
+}
+.prose p {
+  line-height: 1.75; /* Okunabilirlik için satır yüksekliği */
+  font-family: theme('fontFamily.serif'); /* Makale içeriği için serif font */
+}
+.prose a {
+  color: theme('colors.blue.600');
+  text-decoration: none;
+}
+.prose a:hover {
+  text-decoration: underline;
+}
+.prose strong {
+ color: theme('colors.slate.800');
+ font-weight: 600;
+}
+.prose blockquote {
+  border-left-color: theme('colors.orange.500');
+  color: theme('colors.slate.600');
+  font-style: italic;
+}
+
+/* Article Detail Page için özel stiller */
+.article-content h1, .article-content h2, .article-content h3 {
+  font-family: 'Inter', sans-serif; /* Başlıklar için Inter */
+  font-weight: 700; /* Kalın başlıklar */
+}
+
+.article-content p, .article-content li, .article-content blockquote {
+  font-family: 'Lora', serif; /* Makale metni için Lora */
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.8;
+}
+
+.article-references ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem; /* Girinti */
+}
+.article-references li {
+  font-family: 'Lora', serif;
+  font-size: 1rem; /* Referanslar için biraz daha küçük */
+  margin-bottom: 0.5rem;
+}
+
+/* Header için yükseklik değişkeni */
+:root {
+  --header-height: 4rem; /* 64px */
+}
+@media (min-width: 768px) { /* md breakpoint */
+  :root {
+    --header-height: 5rem; /* 80px */
+  }
+}
