@@ -99,7 +99,7 @@ const HomePage = () => {
               Open
               <span className="italic font-serif font-normal">Wall</span>
             </span>
-            <div className="w-full max-w-xs sm:max-w-xl mt-8 mx-auto px-2 sm:px-0">
+            <div className="w-[280px] sm:w-[320px] md:w-[360px] mt-8 mx-auto px-2 sm:px-0">
               <div className="relative">
                 <input
                   type="text"
