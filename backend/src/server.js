@@ -12,13 +12,28 @@ const uploadRoutes = require('./routes/upload.routes');
 
 const app = express();
 
-// Middleware'ler
+// CORS ayarları
+const allowedOrigins = [
+  'https://ecnn.vercel.app',
+  'http://localhost:5173'
+];
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'https://ecnn.vercel.app', // Vercel deployment URL'i
-  optionsSuccessStatus: 200
+  origin: function(origin, callback) {
+    // origin undefined olabilir (örn. Postman gibi araçlardan gelen istekler)
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS policy violation'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
-app.use(express.json()); // Gelen JSON payload'larını parse etmek için
-app.use(express.urlencoded({ extended: true })); // URL-encoded payload'ları parse etmek için
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Basit bir ana route
 app.get('/api', (req, res) => {
