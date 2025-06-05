@@ -14,9 +14,9 @@ const app = express();
 
 // CORS ayarları
 app.use(cors({
-  origin: '*', // Tüm originlere izin ver
+  origin: ['https://ecnn.vercel.app', 'http://localhost:3000'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
   credentials: true
 }));
 

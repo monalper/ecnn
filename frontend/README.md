@@ -1,12 +1,51 @@
-# React + Vite
+# ECNN Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ECNN (E-Commerce News Network) frontend uygulaması.
 
-Currently, two official plugins are available:
+## Teknolojiler
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React
+- Vite
+- Tailwind CSS
+- React Router
+- Axios
 
-## Expanding the ESLint configuration
+## Kurulum
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Repository'yi klonlayın:
+```bash
+git clone https://github.com/yourusername/ecnn-frontend.git
+cd ecnn-frontend
+```
+
+2. Bağımlılıkları yükleyin:
+```bash
+npm install
+```
+
+3. Environment değişkenlerini ayarlayın:
+```bash
+cp .env.example .env
+```
+`.env` dosyasını düzenleyin ve gerekli değişkenleri ayarlayın.
+
+4. Geliştirme sunucusunu başlatın:
+```bash
+npm run dev
+```
+
+## Özellikler
+
+- Responsive tasarım
+- Admin paneli
+- Makale yönetimi
+- Kullanıcı yönetimi
+- JWT tabanlı kimlik doğrulama
+
+## Deployment
+
+Bu proje Vercel üzerinde deploy edilmiştir. Her push işleminden sonra otomatik olarak deploy edilir.
+
+## Lisans
+
+MIT
