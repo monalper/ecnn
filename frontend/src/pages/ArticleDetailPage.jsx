@@ -40,6 +40,8 @@ function injectImageSources(html, imageSources = {}) {
 }
 
 const ArticleDetailPage = () => {
+  // Kısa link state'i
+  const [shortUrl, setShortUrl] = useState('');
   // Scroll yüzde state'i
   const [scrollPercent, setScrollPercent] = useState(0);
 
@@ -90,6 +92,21 @@ const ArticleDetailPage = () => {
     };
     fetchData();
   }, [slug]);
+
+  // Kısa linki al
+  useEffect(() => {
+    if (!article) return;
+    const getShortLink = async () => {
+      try {
+        const fullUrl = `${window.location.origin}/articles/${article.slug}`;
+        const res = await api.post('/shortlink', { url: fullUrl });
+        setShortUrl(res.data.shortUrl);
+      } catch (e) {
+        setShortUrl('');
+      }
+    };
+    getShortLink();
+  }, [article]);
 
   // Twitter/X embedleri için script yükle ve widget'ları başlat
   useEffect(() => {
@@ -264,7 +281,7 @@ const ArticleDetailPage = () => {
             <div className="flex gap-4 justify-center mt-2 flex-wrap">
               {/* X (Twitter) */}
               <a
-                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title + '\n\n' + window.location.href)}` }
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title + '\n\n' + (shortUrl || window.location.href))}` }
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="X'te paylaş"
@@ -274,7 +291,7 @@ const ArticleDetailPage = () => {
               </a>
               {/* Facebook */}
               <a
-                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shortUrl || window.location.href)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook'ta paylaş"
@@ -284,7 +301,7 @@ const ArticleDetailPage = () => {
               </a>
               {/* LinkedIn */}
               <a
-                href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent(article.title)}`}
+                href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(shortUrl || window.location.href)}&title=${encodeURIComponent(article.title)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn'de paylaş"
@@ -294,7 +311,7 @@ const ArticleDetailPage = () => {
               </a>
               {/* WhatsApp */}
               <a
-                href={`https://wa.me/?text=${encodeURIComponent(article.title + ' ' + window.location.href)}`}
+                href={`https://wa.me/?text=${encodeURIComponent(article.title + ' ' + (shortUrl || window.location.href))}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp'ta paylaş"
@@ -304,7 +321,7 @@ const ArticleDetailPage = () => {
               </a>
               {/* Telegram */}
               <a
-                href={`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(article.title)}`}
+                href={`https://t.me/share/url?url=${encodeURIComponent(shortUrl || window.location.href)}&text=${encodeURIComponent(article.title)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Telegram'da paylaş"
@@ -314,7 +331,7 @@ const ArticleDetailPage = () => {
               </a>
               {/* Reddit */}
               <a
-                href={`https://www.reddit.com/submit?url=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent(article.title)}`}
+                href={`https://www.reddit.com/submit?url=${encodeURIComponent(shortUrl || window.location.href)}&title=${encodeURIComponent(article.title)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Reddit'te paylaş"
@@ -324,7 +341,7 @@ const ArticleDetailPage = () => {
               </a>
               {/* Copy Link (for Instagram or general) */}
               <button
-                onClick={() => {navigator.clipboard.writeText(window.location.href); alert('Bağlantı kopyalandı!');}}
+                onClick={() => {navigator.clipboard.writeText(shortUrl || window.location.href); alert('Bağlantı kopyalandı!');}}
                 aria-label="Bağlantıyı kopyala"
                 className="hover:bg-pink-100 dark:hover:bg-pink-900 rounded-full p-2 transition-colors"
               >

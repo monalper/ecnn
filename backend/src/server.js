@@ -9,6 +9,8 @@ const adminArticleRoutes = require('./routes/admin.article.routes');
 const userRoutes = require('./routes/user.routes');
 const adminUserRoutes = require('./routes/admin.user.routes');
 const uploadRoutes = require('./routes/upload.routes');
+const shortlinkRoutes = require('./shortlink.routes');
+
 
 const app = express();
 
@@ -53,6 +55,12 @@ app.use('/api/admin/articles', adminArticleRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/admin/users', adminUserRoutes);
 app.use('/api/upload', uploadRoutes);
+
+// Kısa link API endpointi
+app.use('/api/shortlink', shortlinkRoutes);
+
+// Kısa link yönlendirme endpointi (paylaşılacak olan)
+app.get('/s/:shortId', require('./shortlink.controller').redirectShortlink);
 
 // Hata Yönetimi Middleware'i
 app.use((err, req, res, next) => {
