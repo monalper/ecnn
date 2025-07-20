@@ -238,14 +238,14 @@ const ArticleDetailPage = () => {
         {/* Başlık */}
         <h1
           className="font-bold text-slate-900 dark:text-slate-100 mt-4 mb-6 leading-tight break-words"
-          style={{ fontFamily: 'Inter, sans-serif', fontSize: '40px', fontWeight: 700, lineHeight: 1.15 }}
+          style={{ fontFamily: 'Inter, sans-serif', fontSize: '29px', fontWeight: 700, lineHeight: 1.15 }}
         >
           {article.title}
         </h1>
         {/* İçerik */}
         <div
           className="prose prose-slate max-w-none mb-10 break-words"
-          style={{ fontFamily: 'Inter, sans-serif', fontSize: '23px', fontWeight: 400, lineHeight: 1.7, textAlign: 'justify', textJustify: 'inter-word' }}
+          style={{ fontFamily: 'Inter, sans-serif', fontSize: '17px', fontWeight: 400, lineHeight: 1.7, textAlign: 'justify', textJustify: 'inter-word' }}
         >
           <div dangerouslySetInnerHTML={{ __html: contentWithSources }} />
         </div>
