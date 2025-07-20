@@ -3,7 +3,7 @@ import React from 'react';
 
 const AboutPage = () => {
   return (
-    <div className="min-h-screen bg-site-background">
+    <div className="min-h-screen">
       {/* Hero Section with Grid Background */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative h-[340px] md:h-[400px] flex items-center justify-center bg-[#101624] rounded-3xl overflow-hidden">

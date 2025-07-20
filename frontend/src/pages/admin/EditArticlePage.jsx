@@ -103,7 +103,7 @@ const EditArticlePage = () => {
   }
 
   return (
-    <div className="bg-white p-6 md:p-8 rounded-xl shadow-xl">
+    <div className="p-6 md:p-8 rounded-xl shadow-xl">
       <h1 className="text-2xl md:text-3xl font-bold text-slate-800 mb-2">Makaleyi Düzenle</h1>
       <p className="text-sm text-slate-500 mb-6 truncate">"{article.title}"</p>
       

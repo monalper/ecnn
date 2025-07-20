@@ -20,7 +20,7 @@ import TextStyle from '@tiptap/extension-text-style';
 import Underline from '@tiptap/extension-underline';
 import Strike from '@tiptap/extension-strike';
 import { lowlight } from 'lowlight';
-import { FaBold, FaItalic, FaHeading, FaListUl, FaListOl, FaImage, FaUndo, FaRedo, FaLink, FaUnlink, FaAlignLeft, FaAlignCenter, FaAlignRight, FaCode, FaHighlighter, FaTasks, FaQuoteLeft, FaTable, FaFont, FaPalette, FaUnderline, FaStrikethrough, FaMinus, FaChevronDown } from 'react-icons/fa';
+import { FaBold, FaItalic, FaHeading, FaListUl, FaListOl, FaImage, FaUndo, FaRedo, FaLink, FaUnlink, FaAlignLeft, FaAlignCenter, FaAlignRight, FaCode, FaHighlighter, FaTasks, FaQuoteLeft, FaTable, FaFont, FaPalette, FaUnderline, FaStrikethrough, FaMinus, FaChevronDown, FaYoutube } from 'react-icons/fa';
 
 // Basit bir WYSIWYG editör veya Markdown editörü yerine şimdilik textarea kullanıyoruz.
 // Önerilen kütüphaneler: react-quill, Tiptap, Editor.js, react-markdown-editor-lite
@@ -43,6 +43,109 @@ if (typeof window !== 'undefined' && !document.getElementById('custom-table-styl
   `;
   document.head.appendChild(style);
 }
+
+// Custom Tiptap Iframe extension (YouTube embed)
+import { Node, mergeAttributes } from '@tiptap/core';
+
+// Twitter Embed Extension
+const TwitterEmbed = Node.create({
+  name: 'twitterEmbed',
+  group: 'block',
+  atom: true,
+  addAttributes() {
+    return {
+      url: { default: null },
+    };
+  },
+  parseHTML() {
+    return [
+      { tag: 'blockquote.twitter-tweet' },
+    ];
+  },
+  renderHTML({ HTMLAttributes }) {
+    // Check for dark mode
+    const isDark = typeof document !== 'undefined' && document.body.classList.contains('dark');
+    // x.com linklerini twitter.com'a çevir
+    let embedUrl = HTMLAttributes.url;
+    if (embedUrl && embedUrl.includes('x.com/')) {
+      embedUrl = embedUrl.replace('x.com/', 'twitter.com/');
+    }
+    return [
+      'div',
+      {
+        class: 'twitter-embed-wrapper',
+        style: 'margin:16px 0; width:100%; max-width:100%; border-radius:12px; background:transparent;'
+      },
+      [
+        'blockquote',
+        {
+          class: 'twitter-tweet',
+          'data-lang': 'en',
+          ...(isDark ? { 'data-theme': 'dark' } : {})
+        },
+        [
+          'a',
+          { href: embedUrl },
+          embedUrl
+        ]
+      ]
+    ];
+  },
+  addNodeView() {
+    return ({ HTMLAttributes }) => {
+      if (typeof window !== 'undefined' && window.twttr && window.twttr.widgets) {
+        setTimeout(() => {
+          window.twttr.widgets.load();
+        }, 0);
+      }
+      const container = document.createElement('div');
+      // Check for dark mode
+      const isDark = typeof document !== 'undefined' && document.body.classList.contains('dark');
+      // x.com linklerini twitter.com'a çevir
+      let embedUrl = HTMLAttributes.url;
+      if (embedUrl && embedUrl.includes('x.com/')) {
+        embedUrl = embedUrl.replace('x.com/', 'twitter.com/');
+      }
+      container.innerHTML = `<div class="twitter-embed-wrapper" style="margin:16px 0; width:100%; max-width:100%; border-radius:12px; background:transparent;">
+        <blockquote class="twitter-tweet" data-lang="en"${isDark ? ' data-theme=\"dark\"' : ''}><a href="${embedUrl}">${embedUrl}</a></blockquote>
+      </div>`;
+      return { dom: container };
+    };
+  }
+});
+
+const Iframe = Node.create({
+  name: 'iframe',
+  group: 'block',
+  atom: true,
+  addAttributes() {
+    return {
+      src: { default: null },
+      width: { default: '560' },
+      height: { default: '315' },
+      allowfullscreen: { default: true },
+    };
+  },
+  parseHTML() {
+    return [
+      {
+        tag: 'iframe[src*="youtube.com/embed/"]',
+      },
+    ];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return [
+      'div',
+      { class: 'yt-embed-wrapper', style: 'margin:16px 0; width:100%;' },
+      ['iframe', mergeAttributes(HTMLAttributes, {
+        frameborder: '0',
+        allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share',
+        style: 'width:100%;max-width:100%;border-radius:12px;display:block;',
+        title: 'YouTube video player',
+      })],
+    ];
+  },
+});
 
 const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setFormError }) => {
   const [title, setTitle] = useState('');
@@ -105,6 +208,8 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
       TextStyle,
       Underline,
       Strike,
+      Iframe,
+      TwitterEmbed,
     ],
     content: '',
     editorProps: {
@@ -526,6 +631,66 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               title="Resim Ekle"
             >
               <FaImage />
+            </button>
+            {/* Video Ekle Butonu */}
+            <button
+              type="button"
+              onClick={() => {
+                const url = window.prompt('YouTube video linkini girin:');
+                if (!url) return;
+                // Sadece YouTube linkleri için çalışsın
+                const ytMatch = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/);
+                if (!ytMatch) {
+                  alert('Sadece geçerli bir YouTube video linki ekleyebilirsiniz!');
+                  return;
+                }
+                const videoId = ytMatch[1];
+                if (editor) {
+                  editor.commands.focus();
+                  editor.commands.insertContent({
+                    type: 'iframe',
+                    attrs: {
+                      src: `https://www.youtube.com/embed/${videoId}`,
+                      width: '560',
+                      height: '315',
+                      allowfullscreen: 'true',
+                    },
+                  });
+                }
+              }}
+              className="p-2 rounded hover:bg-slate-200 text-slate-700"
+              title="YouTube Videosu Ekle"
+            >
+              <FaYoutube />
+            </button>
+            {/* Twitter Embed Butonu */}
+            <button
+              type="button"
+              onClick={() => {
+                const url = window.prompt('Tweet linkini girin:');
+                if (!url) return;
+                // Sadece geçerli Twitter veya X status URL'si için çalışsın
+                const twMatch = url.match(/^https?:\/\/(www\.)?(twitter\.com|x\.com)\/[A-Za-z0-9_]+\/status\/\d+/);
+                if (!twMatch) {
+                  alert('Sadece geçerli bir Tweet linki ekleyebilirsiniz!');
+                  return;
+                }
+                if (editor) {
+                  editor.commands.focus();
+                  editor.commands.insertContent({
+                    type: 'twitterEmbed',
+                    attrs: { url },
+                  });
+                }
+              }}
+              className="p-2 rounded hover:bg-slate-200 text-slate-700"
+              title="Tweet Ekle"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em">
+                <g>
+                  <path d="M22.46 5.924c-.793.352-1.646.59-2.54.697a4.48 4.48 0 001.965-2.482 8.97 8.97 0 01-2.828 1.082 4.48 4.48 0 00-7.634 4.086A12.73 12.73 0 013.15 4.868a4.48 4.48 0 001.39 5.973 4.47 4.47 0 01-2.03-.56v.056a4.48 4.48 0 003.6 4.392 4.5 4.5 0 01-2.025.077 4.48 4.48 0 004.183 3.11A8.99 8.99 0 012 19.54a12.7 12.7 0 006.92 2.03c8.302 0 12.846-6.877 12.846-12.846 0-.195-.004-.39-.013-.583A9.23 9.23 0 0024 4.59a8.98 8.98 0 01-2.54.697z" />
+                </g>
+              </svg>
             </button>
             <button
               type="button"

@@ -1,6 +1,7 @@
 // ECNN - Kopya/frontend/tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -8,7 +9,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        'brand-orange': '#f97316', // Turuncu Nokta
+        'brand-orange': '#F1AF3E', // Turuncu Nokta
         'site-background': '#f8f9fa', // Genel sayfa arka planı
         'text-main': '#334155', // Ana metin rengi (Koyu Gri/Siyah)
         'text-muted': '#64748b', // Daha soluk metin rengi
