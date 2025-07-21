@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import api from '../services/api';
 import ArticleCard from '../components/article/ArticleCard';
+import AdSenseBox from '../components/AdSenseBox';
 
 function calculateReadingTime(html) {
   // HTML'den metni çıkar, kelime sayısını bul, 200 wpm ile hesapla
@@ -199,9 +200,16 @@ const ArticleDetailPage = () => {
           </span>
         </div>
       </div>
-      <div className="max-w-2xl w-full mx-auto pt-8">
+      <div className="relative flex flex-row justify-center w-full pt-8">
+        {/* Sol reklam (sadece masaüstü) */}
+        <div className="hidden lg:block sticky top-24 self-start mr-6 z-20" style={{ width: 160, height: 600 }}>
+          <AdSenseBox slot="1234567890" />
+        </div>
+        {/* Makale ana gövdesi */}
+        <div className="max-w-2xl w-full mx-auto">
+
         <Helmet>
-          <title>{article.title} | ECNN</title>
+          <title>{article.title} | OpenWall</title>
           <meta name="description" content={article.description || article.title} />
           {/* Open Graph Meta Tags */}
           <meta property="og:title" content={article.title} />
@@ -362,7 +370,22 @@ const ArticleDetailPage = () => {
             </div>
           </section>
         )}
+        </div>
+        {/* Sağ reklam (sadece masaüstü) */}
+        <div className="hidden lg:block sticky top-24 self-start ml-6 z-20" style={{ width: 160, height: 600 }}>
+          <AdSenseBox slot="1234567891" />
+        </div>
       </div>
+      {articles.length > 0 && (
+        <section className="max-w-5xl mx-auto mt-16">
+          <h3 className="text-lg font-bold mb-6 text-[#181818] dark:text-slate-100">Other Articles</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            {articles.slice(0, 3).map(a => (
+              <ArticleCard key={a.slug} article={a} />
+            ))}
+          </div>
+        </section>
+      )}
     </>
   );
 };
