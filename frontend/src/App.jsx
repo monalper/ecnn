@@ -3,6 +3,7 @@ import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Outlet, Link } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Header from './components/layout/Header';
+import ThemeToggleButton from './components/ThemeToggleButton';
 import { ThemeProvider } from './contexts/ThemeContext';
 import AdminLayout from './components/layout/AdminLayout';
 import Footer from './components/layout/Footer';
@@ -47,6 +48,7 @@ function AppContent() {
   return (
     <div className="flex flex-col min-h-screen font-sans text-slate-800 dark:text-slate-200 transition-colors">
       <Header />
+      <ThemeToggleButton />
       <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24 md:pt-28 transition-colors"> {/* Header yüksekliğine göre padding-top ayarlandı */}
         <Suspense fallback={<div className="text-center py-20 text-lg font-semibold">Sayfa Yükleniyor...</div>}>
           <Routes>

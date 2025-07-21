@@ -93,9 +93,8 @@ const HomePage = () => {
       {/* Centered text and search */}
             {/* Centered text and search */}
             <div className="relative z-10 text-center w-full flex flex-col items-center justify-center">
-              <span className="text-white text-5xl md:text-6xl font-bold">
-                Open
-                <span className="italic font-serif font-normal">Wall</span>
+              <span className="text-white text-5xl md:text-6xl font-bold font-sans tracking-tight" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700, letterSpacing: '-0.04em' }}>
+                openwall
               </span>
               <div className="w-[280px] sm:w-[320px] md:w-[360px] mt-8 mx-auto px-2 sm:px-0">
                 <div className="relative">

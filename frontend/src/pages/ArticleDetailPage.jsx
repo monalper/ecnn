@@ -5,9 +5,11 @@ import { SiX } from 'react-icons/si';
 import * as htmlToImage from 'html-to-image';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import Header from '../components/layout/Header';
+
+// Google AdSense script will be injected via Helmet below
 import api from '../services/api';
 import ArticleCard from '../components/article/ArticleCard';
-import AdSenseBox from '../components/AdSenseBox';
 
 function calculateReadingTime(html) {
   // HTML'den metni çıkar, kelime sayısını bul, 200 wpm ile hesapla
@@ -152,64 +154,18 @@ const ArticleDetailPage = () => {
 
   return (
     <>
-      {/* Okuma Yüzdesi Göstergesi - Header'ın tam ortasında */}
-      {/* Okuma Yüzdesi Göstergesi - Header ile hizalı, sadece masaüstünde */}
-      {/* Okuma Yüzdesi Göstergesi - openwall logosu ile tam hizalı */}
-      {/* Okuma Yüzdesi Göstergesi - Sayfa tam ortasında (dikey ve yatay) */}
-      {/* Okuma Yüzdesi Göstergesi - Header'ın tam ortasında, container ile hizalı */}
-      <div
-        className="hidden sm:flex"
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '64px', // header yüksekliği
-          pointerEvents: 'none',
-          zIndex: 1100,
-        }}
-      >
-        <div
-          className="container mx-auto px-4 sm:px-6 lg:px-8"
-          style={{
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'relative',
-            pointerEvents: 'none',
-          }}
-        >
-          <span
-            style={{
-              color: isDarkMode ? '#facc15' : '#181818',
-              fontWeight: 700,
-              fontSize: 16,
-              background: 'transparent',
-              transition: 'color 0.2s',
-              pointerEvents: 'none',
-              userSelect: 'none',
-              textShadow: isDarkMode ? '0 1px 4px #18181899' : 'none',
-              whiteSpace: 'nowrap',
-              left: '50%',
-              transform: 'translateX(-50%) translateY(9px)',
-              position: 'absolute',
-            }}
-          >
-            %{Math.round(scrollPercent)} tamamlandı.
-          </span>
-        </div>
-      </div>
+      <Header scrollPercent={scrollPercent} />
+
       <div className="relative flex flex-row justify-center w-full pt-8">
         {/* Sol reklam (sadece masaüstü) */}
         <div className="hidden lg:block sticky top-24 self-start mr-6 z-20" style={{ width: 160, height: 600 }}>
-          <AdSenseBox slot="1234567890" />
         </div>
         {/* Makale ana gövdesi */}
         <div className="max-w-2xl w-full mx-auto">
 
         <Helmet>
-          <title>{article.title} | OpenWall</title>
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5253715298133137" crossOrigin="anonymous"></script>
+            <title>{article.title} | OpenWall</title>
           <meta name="description" content={article.description || article.title} />
           {/* Open Graph Meta Tags */}
           <meta property="og:title" content={article.title} />
@@ -373,19 +329,9 @@ const ArticleDetailPage = () => {
         </div>
         {/* Sağ reklam (sadece masaüstü) */}
         <div className="hidden lg:block sticky top-24 self-start ml-6 z-20" style={{ width: 160, height: 600 }}>
-          <AdSenseBox slot="1234567891" />
         </div>
       </div>
-      {articles.length > 0 && (
-        <section className="max-w-5xl mx-auto mt-16">
-          <h3 className="text-lg font-bold mb-6 text-[#181818] dark:text-slate-100">Other Articles</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {articles.slice(0, 3).map(a => (
-              <ArticleCard key={a.slug} article={a} />
-            ))}
-          </div>
-        </section>
-      )}
+
     </>
   );
 };
