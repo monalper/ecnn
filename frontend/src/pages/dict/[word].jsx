@@ -38,8 +38,13 @@ const DictWordPage = () => {
       )}
       <div className="text-lg">
         {Array.isArray(entry.definition)
-          ? entry.definition.map((def, i) => <div key={i} className="mb-2">• {def}</div>)
-          : <div>• {entry.definition}</div>}
+          ? entry.definition.map((def, i) => (
+              <div key={i} className="mb-2 flex items-start gap-2">
+                <span className="font-bold min-w-[2em]">{i + 1}.</span>
+                <span style={{flex:1}} dangerouslySetInnerHTML={{ __html: def }} />
+              </div>
+            ))
+          : <div className="mb-2 flex items-start gap-2"><span className="font-bold min-w-[2em]">1.</span><span style={{flex:1}} dangerouslySetInnerHTML={{ __html: entry.definition }} /></div>}
       </div>
       <div className="mt-4 text-slate-400 text-xs">Eklenme: {entry.createdAt ? new Date(entry.createdAt).toLocaleString() : '-'}</div>
     </div>

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../services/api';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const AdminDictionaryPage = () => {
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [word, setWord] = useState('');
-  const [definitions, setDefinitions] = useState(['']);
+  const [definitions, setDefinitions] = useState(['']); // HTML string array
   const [type, setType] = useState('isim');
   const [success, setSuccess] = useState('');
 
@@ -135,16 +137,26 @@ const AdminDictionaryPage = () => {
         <div className="flex flex-col gap-2">
           {definitions.map((def, idx) => (
             <div key={idx} className="flex gap-2">
-              <input
-                className="border p-2 rounded flex-1"
-                placeholder={`Açıklama #${idx + 1}`}
-                value={def}
-                onChange={e => {
-                  const newDefs = [...definitions];
-                  newDefs[idx] = e.target.value;
-                  setDefinitions(newDefs);
-                }}
-              />
+              <div className="flex-1">
+                <ReactQuill
+                  theme="snow"
+                  value={def}
+                  onChange={content => {
+                    const newDefs = [...definitions];
+                    newDefs[idx] = content;
+                    setDefinitions(newDefs);
+                  }}
+                  placeholder={`Açıklama #${idx + 1}`}
+                  modules={{
+                    toolbar: [
+                      [{ 'header': [1, 2, false] }],
+                      ['bold', 'italic', 'underline', 'link'],
+                      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                      ['clean']
+                    ]
+                  }}
+                />
+              </div>
               {definitions.length > 1 && (
                 <button
                   type="button"
@@ -189,7 +201,13 @@ const AdminDictionaryPage = () => {
                   <tr key={entry.word}>
                     <td className="border px-2 py-1 font-semibold">{entry.word}</td>
                     <td className="border px-2 py-1">{entry.type || '-'}</td>
-                    <td className="border px-2 py-1">{Array.isArray(entry.definition) ? entry.definition.join(', ') : entry.definition}</td>
+                    <td className="border px-2 py-1">
+                      {Array.isArray(entry.definition)
+                        ? entry.definition.map((def, i) => (
+                            <div key={i} dangerouslySetInnerHTML={{ __html: def }} />
+                          ))
+                        : <div dangerouslySetInnerHTML={{ __html: entry.definition }} />}
+                    </td>
                     <td className="border px-2 py-1 text-center">
                       <button onClick={() => handleDelete(entry.word)} className="text-red-600 hover:underline">Sil</button>
                     </td>
@@ -226,16 +244,26 @@ const AdminDictionaryPage = () => {
               <div className="flex flex-col gap-2">
                 {editDefinitions.map((def, idx) => (
                   <div key={idx} className="flex gap-2">
-                    <input
-                      className="border p-2 rounded flex-1"
-                      placeholder={`Açıklama #${idx + 1}`}
-                      value={def}
-                      onChange={e => {
-                        const newDefs = [...editDefinitions];
-                        newDefs[idx] = e.target.value;
-                        setEditDefinitions(newDefs);
-                      }}
-                    />
+                    <div className="flex-1">
+                      <ReactQuill
+                        theme="snow"
+                        value={def}
+                        onChange={content => {
+                          const newDefs = [...editDefinitions];
+                          newDefs[idx] = content;
+                          setEditDefinitions(newDefs);
+                        }}
+                        placeholder={`Açıklama #${idx + 1}`}
+                        modules={{
+                          toolbar: [
+                            [{ 'header': [1, 2, false] }],
+                            ['bold', 'italic', 'underline', 'link'],
+                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                            ['clean']
+                          ]
+                        }}
+                      />
+                    </div>
                     {editDefinitions.length > 1 && (
                       <button
                         type="button"
