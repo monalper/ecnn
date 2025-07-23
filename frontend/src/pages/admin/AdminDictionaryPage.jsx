@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -194,6 +195,7 @@ const AdminDictionaryPage = () => {
                   <th className="border px-2 py-1">Açıklama</th>
                   <th className="border px-2 py-1">Sil</th>
                   <th className="border px-2 py-1">Düzenle</th>
+<th className="border px-2 py-1">Link</th>
                 </tr>
               </thead>
               <tbody>
@@ -213,6 +215,9 @@ const AdminDictionaryPage = () => {
                     </td>
                     <td className="border px-2 py-1 text-center">
                       <button onClick={() => openEditModal(entry)} className="text-blue-600 hover:underline">Düzenle</button>
+                    </td>
+                    <td className="border px-2 py-1 text-center">
+                      <Link to={`/dict/${encodeURIComponent(entry.word)}`} className="text-amber-700 hover:underline" target="_blank" rel="noopener noreferrer">Detay</Link>
                     </td>
                   </tr>
                 ))}

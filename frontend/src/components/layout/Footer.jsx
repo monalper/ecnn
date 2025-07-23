@@ -55,6 +55,12 @@ const Footer = () => (
         >
           İletişim
         </a>
+        <a
+          href="/legal/disclaimer"
+          className="ml-4 hover:text-brand-orange transition-colors text-[15px] font-medium"
+        >
+          Yasal Uyarı / Disclaimer
+        </a>
       </div>
     </div>
   </footer>

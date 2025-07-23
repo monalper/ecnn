@@ -17,6 +17,7 @@ const LoginPage = lazy(() => import('./pages/LoginPage'));
 const CategoriesPage = lazy(() => import('./pages/CategoriesPage')); // Yeni
 const AboutPage = lazy(() => import('./pages/AboutPage')); // Yeni
 const HighlightsPage = lazy(() => import('./pages/HighlightsPage')); // Yeni
+const DisclaimerPage = lazy(() => import('./pages/DisclaimerPage')); // Yasal Uyarı
 
 // Admin Sayfaları
 const AdminDashboardPage = lazy(() => import('./pages/admin/AdminDashboardPage'));
@@ -61,6 +62,7 @@ function AppContent() {
             <Route path="/highlights" element={<HighlightsPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/dict/:word" element={<DictWordPage />} />
+            <Route path="/legal/disclaimer" element={<DisclaimerPage />} />
             
             <Route path="/login" element={
               <PublicRoute>
