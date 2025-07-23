@@ -33,7 +33,10 @@ exports.listAllUsers = async (req, res, next) => {
     const params = {
       TableName: USERS_TABLE,
       // Admin panelinde gösterilecek alanlar. `passwordHash` hariç tutulmalı.
-      ProjectionExpression: 'userId, username, email, name, isAdmin, isVerified, createdAt, updatedAt'
+      ProjectionExpression: 'userId, username, email, #name, isAdmin, isVerified, createdAt, updatedAt',
+      ExpressionAttributeNames: {
+        '#name': 'name',
+      },
     };
     const { Items } = await docClient.send(new ScanCommand(params));
     

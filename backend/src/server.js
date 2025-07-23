@@ -10,6 +10,7 @@ const userRoutes = require('./routes/user.routes');
 const adminUserRoutes = require('./routes/admin.user.routes');
 const uploadRoutes = require('./routes/upload.routes');
 const shortlinkRoutes = require('./shortlink.routes');
+const dictionaryRoutes = require('./routes/dictionary.routes');
 
 
 const app = express();
@@ -58,6 +59,9 @@ app.use('/api/upload', uploadRoutes);
 
 // Kısa link API endpointi
 app.use('/api/shortlink', shortlinkRoutes);
+
+// Sözlük API endpointi
+app.use('/api/dictionary', dictionaryRoutes);
 
 // Kısa link yönlendirme endpointi (paylaşılacak olan)
 app.get('/s/:shortId', require('./shortlink.controller').redirectShortlink);

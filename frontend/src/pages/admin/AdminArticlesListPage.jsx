@@ -86,18 +86,28 @@ const AdminArticlesListPage = () => {
   )}
 
   return (
-    <div className="bg-white p-4 md:p-6 rounded-xl shadow-lg">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-        <h1 className="text-2xl md:text-3xl font-bold text-slate-800">Makale Yönetimi</h1>
+    <div className="bg-white p-6 md:p-10 rounded-2xl shadow-2xl border border-slate-100">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+        <div>
+          <h1 className="text-3xl font-extrabold text-slate-800 mb-1">Makale Yönetimi</h1>
+          <p className="text-slate-500 text-base">Tüm makaleleri görüntüleyin, düzenleyin veya yeni makale ekleyin.</p>
+        </div>
         <Link
           to="/admin/articles/create"
-          className="w-full sm:w-auto flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-150 ease-in-out text-sm"
+          className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-bold rounded-xl shadow-lg hover:shadow-2xl transition-all text-base"
         >
-          <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd"></path></svg>
-          Yeni Makale Ekle
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+          Yeni Makale
         </Link>
       </div>
-      
+
+      {error && (
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl text-base flex items-center gap-2">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          {error}
+        </div>
+      )}
+
       {!loading && !error && articles.length === 0 ? (
         <p className="text-center text-slate-500 py-8">Henüz oluşturulmuş bir makale yok. İlk makalenizi ekleyebilirsiniz!</p>
       ) : (
@@ -117,86 +127,108 @@ const AdminArticlesListPage = () => {
             {/* Table Body */}
             <div className="bg-white divide-y divide-slate-200">
               {articles.map((article) => (
-                <div key={article.slug} className="hover:bg-slate-50 transition-colors">
+                <div key={article.slug} className="transition-all group hover:shadow-2xl hover:-translate-y-1 bg-white rounded-2xl my-4 border border-slate-100 hover:border-blue-200 duration-200">
                   {/* Mobile View */}
-                  <div className="md:hidden p-4 space-y-3">
-                    <div className="flex justify-between items-start">
-                      <h3 className="font-medium text-slate-800">{article.title}</h3>
-                      <span className={`px-2.5 py-0.5 text-xs font-semibold rounded-full ${
-                        article.status === 'published' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                  <div className="md:hidden p-5 space-y-3">
+                    <div className="flex justify-between items-center">
+                      <h3 className="font-bold text-slate-800 text-lg">{article.title}</h3>
+                      <span className={`inline-flex items-center gap-1 px-3 py-1 text-xs font-bold rounded-full shadow-sm ${
+                        article.status === 'published' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
                       }`}>
+                        {article.status === 'published' ? (
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                        ) : (
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path strokeLinecap="round" strokeLinejoin="round" d="M8 12h4v4" /></svg>
+                        )}
                         {article.status === 'published' ? 'Yayında' : 'Taslak'}
                       </span>
                     </div>
-                    <div className="text-sm text-slate-600 space-y-1">
-                      <p>Oluşturulma: {new Date(article.createdAt).toLocaleDateString('tr-TR')}</p>
-                      <p>Son Güncelleme: {new Date(article.updatedAt).toLocaleDateString('tr-TR')}</p>
+                    <div className="flex flex-wrap gap-4 text-sm text-slate-500">
+                      <span>Oluşturulma: {new Date(article.createdAt).toLocaleDateString('tr-TR')}</span>
+                      <span>Son Güncelleme: {new Date(article.updatedAt).toLocaleDateString('tr-TR')}</span>
                     </div>
-                    <div className="flex justify-end space-x-3 pt-2">
+                    <div className="flex justify-end gap-2 pt-2">
                       <button
                         onClick={() => toggleHighlight(article.slug, article.isHighlighted)}
-                        className={`px-3 py-1 rounded text-sm font-medium ${
+                        className={`flex items-center gap-1 px-3 py-1 rounded-xl text-xs font-semibold transition-all shadow-sm border ${
                           article.isHighlighted
-                            ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
-                            : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                            ? 'bg-yellow-100 text-yellow-900 border-yellow-200 hover:bg-yellow-200'
+                            : 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200'
                         }`}
+                        title="Öne Çıkar"
                       >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 17.75L18.5 21l-1.7-7.36L22 9.24l-7.41-.64L12 2 9.41 8.6 2 9.24l5.2 4.4L5.5 21z" /></svg>
                         {article.isHighlighted ? 'Öne Çıkarıldı' : 'Öne Çıkar'}
                       </button>
                       <Link
                         to={`/admin/articles/${article.slug}/edit`}
-                        className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                        className="flex items-center gap-1 px-3 py-1 rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-100 text-xs font-semibold shadow-sm border border-blue-100 hover:border-blue-200 transition-all"
+                        title="Düzenle"
                       >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536M9 11l6-6m2 2l-6 6m2 2l6-6m-2 2l-6 6" /></svg>
                         Düzenle
                       </Link>
                       <button
                         onClick={() => handleDeleteArticle(article.slug, article.title)}
-                        className="text-red-600 hover:text-red-800 text-sm font-medium"
+                        className="flex items-center gap-1 px-3 py-1 rounded-xl bg-red-50 text-red-700 hover:bg-red-100 text-xs font-semibold shadow-sm border border-red-100 hover:border-red-200 transition-all"
+                        title="Sil"
                       >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                         Sil
                       </button>
                     </div>
                   </div>
 
                   {/* Desktop View */}
-                  <div className="hidden md:grid grid-cols-12 gap-4 px-5 py-4">
+                  <div className="hidden md:grid grid-cols-12 gap-4 px-7 py-5 items-center">
                     <div className="col-span-4">
-                      <h3 className="font-medium text-slate-800">{article.title}</h3>
+                      <h3 className="font-bold text-slate-800 text-lg">{article.title}</h3>
                     </div>
                     <div className="col-span-2">
-                      <span className={`px-2.5 py-0.5 text-xs font-semibold rounded-full ${
-                        article.status === 'published' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                      <span className={`inline-flex items-center gap-1 px-3 py-1 text-xs font-bold rounded-full shadow-sm ${
+                        article.status === 'published' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
                       }`}>
+                        {article.status === 'published' ? (
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                        ) : (
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path strokeLinecap="round" strokeLinejoin="round" d="M8 12h4v4" /></svg>
+                        )}
                         {article.status === 'published' ? 'Yayında' : 'Taslak'}
                       </span>
                     </div>
-                    <div className="col-span-2 text-sm text-slate-600">
+                    <div className="col-span-2 text-sm text-slate-500">
                       {new Date(article.createdAt).toLocaleDateString('tr-TR')}
                     </div>
-                    <div className="col-span-2 text-sm text-slate-600">
+                    <div className="col-span-2 text-sm text-slate-500">
                       {new Date(article.updatedAt).toLocaleDateString('tr-TR')}
                     </div>
-                    <div className="col-span-2 text-center space-x-3">
+                    <div className="col-span-2 flex justify-center gap-2">
                       <button
                         onClick={() => toggleHighlight(article.slug, article.isHighlighted)}
-                        className={`px-3 py-1 rounded text-sm font-medium ${
+                        className={`flex items-center gap-1 px-3 py-1 rounded-xl text-xs font-semibold transition-all shadow-sm border ${
                           article.isHighlighted
-                            ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
-                            : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                            ? 'bg-yellow-100 text-yellow-900 border-yellow-200 hover:bg-yellow-200'
+                            : 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200'
                         }`}
+                        title="Öne Çıkar"
                       >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 17.75L18.5 21l-1.7-7.36L22 9.24l-7.41-.64L12 2 9.41 8.6 2 9.24l5.2 4.4L5.5 21z" /></svg>
                         {article.isHighlighted ? 'Öne Çıkarıldı' : 'Öne Çıkar'}
                       </button>
                       <Link
                         to={`/admin/articles/${article.slug}/edit`}
-                        className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                        className="flex items-center gap-1 px-3 py-1 rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-100 text-xs font-semibold shadow-sm border border-blue-100 hover:border-blue-200 transition-all"
+                        title="Düzenle"
                       >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536M9 11l6-6m2 2l-6 6m2 2l6-6m-2 2l-6 6" /></svg>
                         Düzenle
                       </Link>
                       <button
                         onClick={() => handleDeleteArticle(article.slug, article.title)}
-                        className="text-red-600 hover:text-red-800 text-sm font-medium"
+                        className="flex items-center gap-1 px-3 py-1 rounded-xl bg-red-50 text-red-700 hover:bg-red-100 text-xs font-semibold shadow-sm border border-red-100 hover:border-red-200 transition-all"
+                        title="Sil"
                       >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                         Sil
                       </button>
                     </div>
