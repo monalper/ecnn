@@ -20,14 +20,16 @@ const allowedOrigins = [
   'https://ecnn.vercel.app',      // Eski/diğer frontend
   'http://localhost:5173',       // Local geliştirme
   'https://openwall.vercel.app', // YENİ frontend domaininiz
-  'https://openwall.com.tr',      // EKLENEN: Yeni domain
-  'https://openwall.com.tr'      // EKLENEN: Yeni domain
+  'https://openwall.com.tr',     // EKLENEN: Yeni domain
+  'https://www.openwall.com.tr'  // www'lu domain de desteklensin
 ];
 
 app.use(cors({
-  origin: function(origin, callback) {
-    // origin undefined olabilir (örn. Postman gibi araçlardan gelen istekler)
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+  origin: function (origin, callback) {
+    // local çalışmada origin undefined olabilir
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
       callback(null, true);
     } else {
       callback(new Error('CORS policy violation'));
