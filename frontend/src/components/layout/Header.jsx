@@ -61,6 +61,13 @@ const Header = ({ scrollPercent }) => {
               BLOG
             </Link>
             <Link 
+              to="/articles" 
+              className="header-nav-link text-sm font-bold tracking-extrawidest uppercase text-text-muted hover:text-text-main transition-colors"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              MAKALELER
+            </Link>
+            <Link 
               to="/highlights" 
               className="header-nav-link text-sm font-bold tracking-extrawidest uppercase text-text-muted hover:text-text-main transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}

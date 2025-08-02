@@ -1,6 +1,7 @@
 // ECNN - Kopya/frontend/src/App.jsx
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Outlet, Link } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import ConditionalHeaderFooter from './components/layout/ConditionalHeaderFooter';
 import ThemeToggleButton from './components/ThemeToggleButton';
@@ -12,6 +13,7 @@ import './dark-header-nav.css'; // Tailwind ve genel stiller
 
 // Sayfaları lazy loading ile yükleyelim
 const HomePage = lazy(() => import('./pages/HomePage'));
+const ArticlesPage = lazy(() => import('./pages/ArticlesPage'));
 const ArticleDetailPage = lazy(() => import('./pages/ArticleDetailPage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const CategoriesPage = lazy(() => import('./pages/CategoriesPage')); // Yeni
@@ -57,6 +59,7 @@ function AppContent() {
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<HomePage />} />
+            <Route path="/articles" element={<ArticlesPage />} />
             <Route path="/articles/:slug" element={<ArticleDetailPage />} />
             <Route path="/categories" element={<CategoriesPage />} />
             <Route path="/highlights" element={<HighlightsPage />} />
@@ -104,9 +107,11 @@ function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <Router>
-          <AppContent />
-        </Router>
+        <HelmetProvider>
+          <Router>
+            <AppContent />
+          </Router>
+        </HelmetProvider>
       </AuthProvider>
     </ThemeProvider>
   );

@@ -1,6 +1,7 @@
 // frontend/src/pages/admin/AdminArticlesListPage.jsx
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaEye } from 'react-icons/fa';
 import api from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext'; // Token vs. için gerekebilir
 
@@ -66,6 +67,34 @@ const AdminArticlesListPage = () => {
     } catch (err) {
       console.error('Error toggling highlight:', err);
       setError('Öne çıkarma durumu güncellenirken bir hata oluştu.');
+    }
+  };
+
+  const handleViewCountEdit = async (articleSlug, currentViewCount) => {
+    const newViewCount = prompt('Yeni görüntülenme sayısını girin:', currentViewCount || 0);
+    
+    if (newViewCount === null) return; // Kullanıcı iptal etti
+    
+    const count = parseInt(newViewCount);
+    if (isNaN(count) || count < 0) {
+      alert('Geçerli bir sayı girin (0 veya daha büyük)');
+      return;
+    }
+    
+    try {
+      await api.put(`/articles/${articleSlug}/view-count`, { viewCount: count });
+      
+      // Update local state
+      setArticles(articles.map(article => 
+        article.slug === articleSlug 
+          ? { ...article, viewCount: count }
+          : article
+      ));
+      
+      alert('Görüntülenme sayısı güncellendi!');
+    } catch (err) {
+      console.error('Error updating view count:', err);
+      setError('Görüntülenme sayısı güncellenirken bir hata oluştu.');
     }
   };
 
@@ -143,9 +172,13 @@ const AdminArticlesListPage = () => {
                         {article.status === 'published' ? 'Yayında' : 'Taslak'}
                       </span>
                     </div>
-                    <div className="flex flex-wrap gap-4 text-sm text-slate-500">
+                    <div className="flex flex-col gap-1 text-sm text-slate-500">
                       <span>Oluşturulma: {new Date(article.createdAt).toLocaleDateString('tr-TR')}</span>
                       <span>Son Güncelleme: {new Date(article.updatedAt).toLocaleDateString('tr-TR')}</span>
+                      <span className="flex items-center gap-1">
+                        <FaEye className="text-slate-400" />
+                        {article.viewCount || 0} görüntülenme
+                      </span>
                     </div>
                     <div className="flex justify-end gap-2 pt-2">
                       <button
@@ -201,6 +234,21 @@ const AdminArticlesListPage = () => {
                     </div>
                     <div className="col-span-2 text-sm text-slate-500">
                       {new Date(article.updatedAt).toLocaleDateString('tr-TR')}
+                    </div>
+                    <div className="col-span-2 text-sm text-slate-500">
+                      <div className="flex items-center gap-2">
+                        <span className="flex items-center gap-1">
+                          <FaEye className="text-slate-400" />
+                          {article.viewCount || 0}
+                        </span>
+                        <button
+                          onClick={() => handleViewCountEdit(article.slug, article.viewCount)}
+                          className="text-blue-600 hover:text-blue-800 text-xs"
+                          title="Görüntülenme sayısını düzenle"
+                        >
+                          ✏️
+                        </button>
+                      </div>
                     </div>
                     <div className="col-span-2 flex justify-center gap-2">
                       <button

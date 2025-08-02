@@ -1,11 +1,14 @@
 // ECNN - Kopya/frontend/src/pages/ArticleDetailPage.jsx
 import React, { useEffect, useState } from 'react';
-import { FaFacebook, FaLinkedin, FaLink, FaWhatsapp, FaTelegram, FaReddit } from 'react-icons/fa';
+import { FaFacebook, FaLinkedin, FaLink, FaWhatsapp, FaTelegram, FaReddit, FaEye } from 'react-icons/fa';
 import { SiX } from 'react-icons/si';
 import * as htmlToImage from 'html-to-image';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import Header from '../components/layout/Header';
+import MetaTags from '../components/seo/MetaTags';
+import SchemaMarkup from '../components/seo/SchemaMarkup';
+import Breadcrumb from '../components/navigation/Breadcrumb';
 
 // Google AdSense script will be injected via Helmet below
 import api from '../services/api';
@@ -16,7 +19,7 @@ function calculateReadingTime(html) {
   const text = html.replace(/<[^>]+>/g, ' ');
   const words = text.trim().split(/\s+/).length;
   const minutes = Math.max(1, Math.round(words / 200));
-  return `${minutes} Min`;
+  return `${minutes} dakika`;
 }
 
 function injectImageSources(html, imageSources = {}) {
@@ -92,6 +95,13 @@ const ArticleDetailPage = () => {
       setArticle(articleRes.data);
       setArticles(articlesRes.data.filter(a => a.slug !== slug));
       setLoading(false);
+      
+      // Görüntülenme sayısını artır
+      try {
+        await api.post(`/articles/${slug}/view`);
+      } catch (error) {
+        console.error('Görüntülenme sayısı artırılamadı:', error);
+      }
     };
     fetchData();
   }, [slug]);
@@ -140,7 +150,7 @@ const ArticleDetailPage = () => {
   const imageSource = article.imageSource || '';
   // Yazar, tarih, okuma süresi
   const author = article.authorName || article.author?.name || '';
-  const date = article.createdAt ? new Date(article.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
+  const date = article.createdAt ? new Date(article.createdAt).toLocaleDateString('tr-TR', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
   const readingTime = calculateReadingTime(article.content || '');
 
   // İçerik görselleri için kaynaklar (örnek: article.contentImages = {src: source})
@@ -154,6 +164,38 @@ const ArticleDetailPage = () => {
 
   return (
     <>
+      <MetaTags
+        title={article.title}
+        description={article.description || article.content?.substring(0, 160)}
+        image={coverImage}
+        url={window.location.href}
+        type="article"
+        author={author}
+        publishedTime={article.createdAt}
+        modifiedTime={article.updatedAt}
+        tags={article.tags || []}
+        readingTime={readingTime}
+        wordCount={article.content?.replace(/<[^>]+>/g, '').split(/\s+/).length}
+        isHighlight={article.isHighlight}
+      />
+      
+      <SchemaMarkup
+        type="Article"
+        data={{
+          title: article.title,
+          description: article.description || article.content?.substring(0, 160),
+          image: coverImage,
+          url: window.location.href,
+          author: author,
+          publishedTime: article.createdAt,
+          modifiedTime: article.updatedAt,
+          section: "Technology",
+          keywords: article.tags?.join(', '),
+          wordCount: article.content?.replace(/<[^>]+>/g, '').split(/\s+/).length,
+          readingTime: readingTime
+        }}
+      />
+      
       <Header scrollPercent={scrollPercent} />
 
       <div className="relative flex flex-row justify-center w-full pt-8">
@@ -162,23 +204,18 @@ const ArticleDetailPage = () => {
         </div>
         {/* Makale ana gövdesi */}
         <div className="max-w-2xl w-full mx-auto">
+          
+          {/* Breadcrumb Navigation */}
+          <Breadcrumb 
+            items={[
+              { name: 'Ana Sayfa', url: '/' },
+              { name: 'Makaleler', url: '/articles' },
+              { name: article.title, url: `/articles/${article.slug}` }
+            ]}
+          />
 
         <Helmet>
             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5253715298133137" crossOrigin="anonymous"></script>
-            <title>{article.title} | OpenWall</title>
-          <meta name="description" content={article.description || article.title} />
-          {/* Open Graph Meta Tags */}
-          <meta property="og:title" content={article.title} />
-          <meta property="og:description" content={article.description || article.title} />
-          <meta property="og:image" content={coverImage} />
-          <meta property="og:url" content={window.location.href} />
-          <meta property="og:type" content="article" />
-          {/* Twitter Card Meta Tags */}
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content={pageTitle} />
-          <meta name="twitter:description" content={pageDescription} />
-          <meta name="twitter:image" content={pageImage} />
-          <meta name="twitter:url" content={pageUrl} />
         </Helmet>
         {/* Kapak görseli */}
         <div className="w-full aspect-[16/9] bg-black flex items-center justify-center">
@@ -195,9 +232,16 @@ const ArticleDetailPage = () => {
         )}
         {/* Yazar, tarih, okuma süresi */}
         <div className="flex flex-wrap gap-x-6 gap-y-2 text-[13px] text-slate-700 dark:text-slate-300 mt-3 mb-2">
-          {author && <span>Author: <span className="font-semibold">{author}</span></span>}
-          {date && <span>Date: {date}</span>}
-          <span>Reading Time: {readingTime}</span>
+          {author && <span>Yazar: <span className="font-semibold">{author}</span></span>}
+          {date && <span>Tarih: {date}</span>}
+          {article.categories && article.categories.length > 0 && (
+            <span>Kategoriler: {article.categories.join(', ')}</span>
+          )}
+          <span>Okuma Süresi: {readingTime}</span>
+          <span className="flex items-center gap-1">
+            <FaEye className="text-slate-500" />
+            {article.viewCount || 0} görüntülenme
+          </span>
         </div>
         {/* Başlık */}
         <h1
@@ -227,92 +271,173 @@ const ArticleDetailPage = () => {
           </section>
         )}
         {/* Paylaşım Önizleme Kartı - makalenin sonunda, genişliği içerik ile aynı */}
-        <section className="flex flex-col items-center justify-center my-10">
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 max-w-3xl w-full border border-slate-200 dark:border-slate-700 mx-auto">
-            <div id="share-preview-card" className="flex flex-col items-center">
-              <div className="w-full aspect-[16/9] bg-black rounded-lg overflow-hidden mb-4 flex items-center justify-center">
-                <img
-                  src={coverImage}
-                  alt="cover preview"
-                  className="w-full h-full object-cover object-center"
-                  style={{ display: 'block' }}
-                />
+        <section className="flex flex-col items-center justify-center my-16">
+          <div className="bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900 rounded-2xl shadow-xl p-8 max-w-4xl w-full border border-slate-200/50 dark:border-slate-700/50 mx-auto relative overflow-hidden">
+            {/* Background decoration */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-100/30 to-transparent dark:from-blue-900/20 rounded-full -translate-y-16 translate-x-16"></div>
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-purple-100/30 to-transparent dark:from-purple-900/20 rounded-full translate-y-12 -translate-x-12"></div>
+            
+            {/* Header */}
+            <div className="text-center mb-6 relative z-10">
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
+                </svg>
+                Bu Makaleyi Paylaşın
               </div>
-              <h2 className="text-xl font-bold mb-2 text-center text-[#181818] dark:text-slate-100">{article.title}</h2>
-              <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">Yazar: {author}</div>
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">Bu Makaleyi Beğendiniz mi?</h3>
+              <p className="text-slate-600 dark:text-slate-400 text-sm">Arkadaşlarınızla paylaşarak bize destek olun!</p>
             </div>
 
-            <div className="flex gap-4 justify-center mt-2 flex-wrap">
+            {/* Preview Card */}
+            <div id="share-preview-card" className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 mb-8 border border-slate-200 dark:border-slate-700 relative z-10">
+              <div className="flex flex-col md:flex-row gap-6">
+                {/* Image */}
+                <div className="w-full md:w-48 h-32 md:h-32 bg-black rounded-lg overflow-hidden flex-shrink-0">
+                  <img
+                    src={coverImage}
+                    alt="cover preview"
+                    className="w-full h-full object-cover object-center"
+                    style={{ display: 'block' }}
+                  />
+                </div>
+                {/* Content */}
+                <div className="flex-1 flex flex-col justify-center">
+                  <h2 className="text-lg font-bold mb-2 text-slate-900 dark:text-slate-100 line-clamp-2">{article.title}</h2>
+                  <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 mb-3">
+                    <span className="flex items-center gap-1">
+                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                      </svg>
+                      {author}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+                      </svg>
+                      {readingTime}
+                    </span>
+                  </div>
+                  <div className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2">
+                    {article.description || article.content?.substring(0, 120) + '...'}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Social Media Buttons */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-3 relative z-10">
               {/* X (Twitter) */}
               <a
                 href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title + '\n\n' + (shortUrl || window.location.href))}` }
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="X'te paylaş"
-                className="hover:bg-sky-100 dark:hover:bg-sky-900 rounded-full p-2 transition-colors"
+                className="group flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-sky-100 dark:hover:bg-sky-900/30 transition-all duration-200 hover:scale-105"
               >
-                <SiX size={28} color={isDarkMode ? '#fff' : '#181818'} />
+                <div className="w-10 h-10 bg-sky-500 rounded-full flex items-center justify-center group-hover:bg-sky-600 transition-colors">
+                  <SiX size={20} color="#fff" />
+                </div>
+                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">X</span>
               </a>
+              
               {/* Facebook */}
               <a
                 href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shortUrl || window.location.href)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook'ta paylaş"
-                className="hover:bg-blue-100 dark:hover:bg-blue-900 rounded-full p-2 transition-colors"
+                className="group flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-all duration-200 hover:scale-105"
               >
-                <FaFacebook size={28} color={isDarkMode ? '#fff' : '#181818'} />
+                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center group-hover:bg-blue-700 transition-colors">
+                  <FaFacebook size={20} color="#fff" />
+                </div>
+                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Facebook</span>
               </a>
+              
               {/* LinkedIn */}
               <a
                 href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(shortUrl || window.location.href)}&title=${encodeURIComponent(article.title)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn'de paylaş"
-                className="hover:bg-blue-100 dark:hover:bg-blue-900 rounded-full p-2 transition-colors"
+                className="group flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-all duration-200 hover:scale-105"
               >
-                <FaLinkedin size={28} color={isDarkMode ? '#fff' : '#181818'} />
+                <div className="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center group-hover:bg-blue-800 transition-colors">
+                  <FaLinkedin size={20} color="#fff" />
+                </div>
+                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">LinkedIn</span>
               </a>
+              
               {/* WhatsApp */}
               <a
                 href={`https://wa.me/?text=${encodeURIComponent(article.title + ' ' + (shortUrl || window.location.href))}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp'ta paylaş"
-                className="hover:bg-green-100 dark:hover:bg-green-900 rounded-full p-2 transition-colors"
+                className="group flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-green-100 dark:hover:bg-green-900/30 transition-all duration-200 hover:scale-105"
               >
-                <FaWhatsapp size={28} color={isDarkMode ? '#fff' : '#181818'} />
+                <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center group-hover:bg-green-600 transition-colors">
+                  <FaWhatsapp size={20} color="#fff" />
+                </div>
+                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">WhatsApp</span>
               </a>
+              
               {/* Telegram */}
               <a
                 href={`https://t.me/share/url?url=${encodeURIComponent(shortUrl || window.location.href)}&text=${encodeURIComponent(article.title)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Telegram'da paylaş"
-                className="hover:bg-blue-100 dark:hover:bg-blue-900 rounded-full p-2 transition-colors"
+                className="group flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-all duration-200 hover:scale-105"
               >
-                <FaTelegram size={28} color={isDarkMode ? '#fff' : '#181818'} />
+                <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center group-hover:bg-blue-600 transition-colors">
+                  <FaTelegram size={20} color="#fff" />
+                </div>
+                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Telegram</span>
               </a>
+              
               {/* Reddit */}
               <a
                 href={`https://www.reddit.com/submit?url=${encodeURIComponent(shortUrl || window.location.href)}&title=${encodeURIComponent(article.title)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Reddit'te paylaş"
-                className="hover:bg-orange-100 dark:hover:bg-orange-900 rounded-full p-2 transition-colors"
+                className="group flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-orange-100 dark:hover:bg-orange-900/30 transition-all duration-200 hover:scale-105"
               >
-                <FaReddit size={28} color={isDarkMode ? '#fff' : '#181818'} />
+                <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center group-hover:bg-orange-600 transition-colors">
+                  <FaReddit size={20} color="#fff" />
+                </div>
+                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Reddit</span>
               </a>
-              {/* Copy Link (for Instagram or general) */}
+              
+              {/* Copy Link */}
               <button
-                onClick={() => {navigator.clipboard.writeText(shortUrl || window.location.href); alert('Bağlantı kopyalandı!');}}
+                onClick={() => {
+                  navigator.clipboard.writeText(shortUrl || window.location.href);
+                  // Show a better notification
+                  const notification = document.createElement('div');
+                  notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+                  notification.textContent = 'Bağlantı kopyalandı!';
+                  document.body.appendChild(notification);
+                  setTimeout(() => notification.remove(), 3000);
+                }}
                 aria-label="Bağlantıyı kopyala"
-                className="hover:bg-pink-100 dark:hover:bg-pink-900 rounded-full p-2 transition-colors"
+                className="group flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-all duration-200 hover:scale-105"
               >
-                <FaLink size={28} color={isDarkMode ? '#fff' : '#181818'} />
+                <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center group-hover:bg-purple-600 transition-colors">
+                  <FaLink size={20} color="#fff" />
+                </div>
+                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Kopyala</span>
               </button>
             </div>
-            <div className="mt-2 text-xs text-gray-500 dark:text-gray-400 text-center">Instagram doğrudan paylaşımı desteklemiyor, bağlantıyı kopyalayıp paylaşabilirsiniz.</div>
+            
+            {/* Footer note */}
+            <div className="mt-6 text-center">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                💡 Instagram doğrudan paylaşımı desteklemiyor, bağlantıyı kopyalayıp paylaşabilirsiniz.
+              </p>
+            </div>
           </div>
         </section>
         {/* Other Articles */}

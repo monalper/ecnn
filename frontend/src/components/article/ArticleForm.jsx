@@ -153,6 +153,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
   const [coverImageFile, setCoverImageFile] = useState(null);
   const [currentCoverImageUrl, setCurrentCoverImageUrl] = useState('');
   const [status, setStatus] = useState('draft');
+  const [categories, setCategories] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [imagePreview, setImagePreview] = useState('');
@@ -225,6 +226,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
       setDescription(articleData.description || '');
       setCurrentCoverImageUrl(articleData.coverImage || '');
       setStatus(articleData.status || 'draft');
+      setCategories(articleData.categories || []);
       setImagePreview(articleData.coverImage || '');
       if (editor && articleData.content) {
         editor.commands.setContent(articleData.content);
@@ -235,6 +237,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
       setCoverImageFile(null);
       setCurrentCoverImageUrl('');
       setStatus('draft');
+      setCategories([]);
       setImagePreview('');
       if (editor) {
         editor.commands.clearContent();
@@ -349,7 +352,8 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
         description: description.trim(),
         content: editor.getHTML(),
         coverImage: finalCoverImageUrl,
-        status
+        status,
+        categories
       };
       await onSubmit(payload);
     } catch (err) {
@@ -394,6 +398,40 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
           className={inputClass}
           placeholder="Makalenizin kısa bir özeti (isteğe bağlı)"
         />
+      </div>
+      <div>
+        <label htmlFor="categories" className={labelClass}>Kategoriler</label>
+        <select
+          id="categories"
+          multiple
+          value={categories}
+          onChange={(e) => {
+            const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
+            setCategories(selectedOptions);
+          }}
+          className={`${inputClass} min-h-[120px]`}
+        >
+          <option value="sanat">Sanat</option>
+          <option value="felsefe">Felsefe</option>
+          <option value="teknoloji">Teknoloji</option>
+          <option value="bilim">Bilim</option>
+          <option value="tarih">Tarih</option>
+          <option value="edebiyat">Edebiyat</option>
+          <option value="siyaset">Siyaset</option>
+          <option value="ekonomi">Ekonomi</option>
+          <option value="spor">Spor</option>
+          <option value="sağlık">Sağlık</option>
+          <option value="eğitim">Eğitim</option>
+          <option value="çevre">Çevre</option>
+          <option value="sosyoloji">Sosyoloji</option>
+          <option value="psikoloji">Psikoloji</option>
+          <option value="din">Din</option>
+          <option value="müzik">Müzik</option>
+          <option value="sinema">Sinema</option>
+          <option value="seyahat">Seyahat</option>
+          <option value="yemek">Yemek</option>
+        </select>
+        <p className="text-xs text-slate-500 mt-1">Birden fazla kategori seçmek için Ctrl (Windows) veya Cmd (Mac) tuşunu basılı tutun.</p>
       </div>
       <div>
         <label className={labelClass}>İçerik</label>

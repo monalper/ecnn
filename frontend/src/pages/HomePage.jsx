@@ -1,53 +1,40 @@
 // ECNN - Kopya/frontend/src/pages/HomePage.jsx
 import React, { useState, useEffect } from 'react';
 import ArticleCard from '../components/article/ArticleCard';
+import MetaTags from '../components/seo/MetaTags';
+import SchemaMarkup from '../components/seo/SchemaMarkup';
 import api from '../services/api';
-import Fuse from 'fuse.js';
+import { Link } from 'react-router-dom';
 
 const HomePage = () => {
-  const [articles, setArticles] = useState([]);
+  const [latestArticles, setLatestArticles] = useState([]);
+  const [featuredArticles, setFeaturedArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filteredArticles, setFilteredArticles] = useState([]);
-  const [fuse, setFuse] = useState(null);
 
   useEffect(() => {
     const fetchArticles = async () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await api.get('/articles');
-        setArticles(response.data);
-        setFilteredArticles(response.data);
-        // Fuse.js ayarları
-        const fuseInstance = new Fuse(response.data, {
-          keys: ['title', 'description'],
-          threshold: 0.4, // daha düşük: daha hassas, daha yüksek: daha toleranslı
-          minMatchCharLength: 2,
-        });
-        setFuse(fuseInstance);
+        // Son eklenen 4 makaleyi getir
+        const latestResponse = await api.get('/articles?limit=4&sort=newest');
+        setLatestArticles(latestResponse.data);
+
+        // Öne çıkan makaleleri getir
+        const featuredResponse = await api.get('/articles/highlighted');
+        setFeaturedArticles(featuredResponse.data);
       } catch (err) {
-        console.error("Makaleler yüklenirken hata:", err.response?.data?.message || err.message);
+        console.error("Makaleler yüklenirken hata:", err);
         setError(err.response?.data?.message || 'Makaleler yüklenemedi.');
-        setArticles([]);
-        setFilteredArticles([]);
-        setFuse(null);
+        setLatestArticles([]);
+        setFeaturedArticles([]);
       } finally {
         setLoading(false);
       }
     };
     fetchArticles();
   }, []);
-
-  useEffect(() => {
-    if (!searchQuery.trim()) {
-      setFilteredArticles(articles);
-    } else if (fuse) {
-      const results = fuse.search(searchQuery);
-      setFilteredArticles(results.map(r => r.item));
-    }
-  }, [searchQuery, articles, fuse]);
 
   if (loading) {
     return (
@@ -69,97 +56,103 @@ const HomePage = () => {
   
   return (
     <div className="min-h-screen bg-site-background dark:bg-slate-900">
+      <MetaTags
+        title="OpenWall - Teknoloji, Felsefe, Sanat, Spor ve Daha Fazlası"
+        description="OpenWall, teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat ve yemek gibi çeşitli alanlarda kaliteli içerikler sunan kapsamlı bir platformdur."
+        keywords="teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat, yemek, makale, haber, içerik, blog"
+      />
+      <SchemaMarkup />
+      
       {/* Hero Section - OpenWall Grid Style */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-  {/* White border in dark mode around hero */}
-  <div className="relative rounded-3xl transition-colors dark:border dark:border-white/20 mb-8">
-    <div className="relative h-[340px] md:h-[400px] flex items-center justify-center bg-[#101624] rounded-3xl overflow-hidden">
-      {/* Grid background */}
-       <div className="absolute inset-0 z-0">
-        <svg width="100%" height="100%">
-          <defs>
-            <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
-              <path
-                d="M 60 0 L 0 0 0 60"
-                fill="none"
-                stroke="#2a3140"
-                strokeWidth="2"
-              />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#grid)" />
-        </svg>
-      </div>
-      {/* Centered text and search */}
-            {/* Centered text and search */}
+        <div className="relative rounded-3xl transition-colors dark:border dark:border-white/20 mb-8">
+          <div className="relative h-[340px] md:h-[400px] flex items-center justify-center bg-[#101624] rounded-3xl overflow-hidden">
+            {/* Grid background */}
+            <div className="absolute inset-0 z-0">
+              <svg width="100%" height="100%">
+                <defs>
+                  <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+                    <path
+                      d="M 60 0 L 0 0 0 60"
+                      fill="none"
+                      stroke="#2a3140"
+                      strokeWidth="2"
+                    />
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid)" />
+              </svg>
+            </div>
+            {/* Centered text */}
             <div className="relative z-10 text-center w-full flex flex-col items-center justify-center">
               <span className="text-white text-5xl md:text-6xl font-bold font-sans tracking-tight" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700, letterSpacing: '-0.04em' }}>
                 openwall
               </span>
-              <div className="w-[280px] sm:w-[320px] md:w-[360px] mt-8 mx-auto px-2 sm:px-0">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Yazılarda ara..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full px-4 sm:px-6 py-3 sm:py-4 text-base sm:text-lg bg-white dark:bg-slate-800 rounded-full shadow-md focus:ring-2 focus:ring-brand-orange/30 outline-none transition-all duration-200 placeholder:text-slate-400"
-                  />
-                  <div className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 flex items-center gap-2">
-                    {searchQuery && (
-                      <button
-                        onClick={() => setSearchQuery('')}
-                        className="text-slate-400 hover:text-slate-600 transition-colors p-1 sm:p-0"
-                      >
-                        <svg className="w-6 h-6 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
-                    )}
-                    <svg
-                      className="w-7 h-7 sm:w-6 sm:h-6 text-slate-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                      />
-                    </svg>
-                  </div>
-                </div>
-                <div style={{ minHeight: '22px' }}>
-                  {searchQuery && (
-                    <p className="text-xs text-slate-300 mt-2 text-center">
-                      {filteredArticles.length} sonuç
-                    </p>
-                  )}
-                </div>
+              <div className="mt-8">
+                <Link
+                  to="/articles"
+                  className="px-6 py-3 bg-brand-orange hover:bg-brand-orange/90 text-white font-semibold rounded-xl transition-colors"
+                >
+                  Makaleleri Keşfet
+                </Link>
               </div>
             </div>
           </div>
         </div>
       </div>
-      {/* Articles Section */}
+
+      {/* Son Eklenen Makaleler Section */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {filteredArticles.length === 0 && !loading && (
-          <div className="text-center py-10">
-            <h2 className="text-2xl font-semibold text-text-muted">
-              {searchQuery ? 'Arama sonucu bulunamadı' : 'Henüz Makale Yok'}
-            </h2>
-            <p className="text-slate-500 mt-2">
-              {searchQuery ? 'Farklı anahtar kelimelerle tekrar deneyin' : 'Yakında burada harika içerikler olacak!'}
+        <div className="mb-8">
+          <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">
+            Son Eklenen Makaleler
+          </h2>
+        </div>
+
+        {latestArticles.length === 0 ? (
+          <div className="text-center py-16">
+            <div className="text-6xl mb-4">📝</div>
+            <h3 className="text-2xl font-semibold text-slate-800 dark:text-slate-100 mb-2">
+              Henüz Makale Yok
+            </h3>
+            <p className="text-slate-600 dark:text-slate-400">
+              Yakında burada harika içerikler olacak!
             </p>
           </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
+            {latestArticles.slice(0, 4).map(article => (
+              <ArticleCard key={article.slug} article={article} />
+            ))}
+          </div>
         )}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
-          {filteredArticles.map(article => (
-            <ArticleCard key={article.slug} article={article} />
-          ))}
+      </div>
+
+      {/* Öne Çıkan Makaleler Section */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="mb-8">
+          <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">
+            Öne Çıkan Makaleler
+          </h2>
         </div>
+
+        {featuredArticles.length === 0 ? (
+          <div className="text-center py-16">
+            <div className="text-6xl mb-4">⭐</div>
+            <h3 className="text-2xl font-semibold text-slate-800 dark:text-slate-100 mb-2">
+              Henüz Öne Çıkan Makale Yok
+            </h3>
+            <p className="text-slate-600 dark:text-slate-400">
+              En popüler içerikler burada görünecek!
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+            {featuredArticles.map(article => (
+              <ArticleCard key={article.slug} article={article} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
