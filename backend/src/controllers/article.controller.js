@@ -2,6 +2,7 @@
 const slugify = require('slugify'); // URL dostu slug'lar için
 const { docClient, ARTICLES_TABLE, USERS_TABLE } = require('../config/aws.config');
 const { PutCommand, GetCommand, ScanCommand, DeleteCommand, UpdateCommand, QueryCommand } = require('@aws-sdk/lib-dynamodb');
+const { clearSitemapCache } = require('./sitemap.controller');
 
 // Yardımcı fonksiyon: Slug oluşturma
 // Not: Slug'ın benzersizliği veritabanı seviyesinde (primary key) sağlanır.
@@ -14,7 +15,7 @@ function createSlug(title) {
 }
 
 exports.createArticle = async (req, res, next) => {
-  const { title, description, content, coverImage, status = 'draft' } = req.body;
+  const { title, description, content, coverImage, status = 'draft', categories = [] } = req.body;
   const authorId = req.user.userId; // verifyToken middleware'inden gelir
 
   if (!title || !content) {
@@ -36,6 +37,7 @@ exports.createArticle = async (req, res, next) => {
       coverImage: coverImage || '', // S3 URL'si
       authorId, // Users tablosundaki userId'ye referans
       status, // 'draft' veya 'published'
+      categories: Array.isArray(categories) ? categories : [], // Kategoriler array olarak saklanır
       createdAt: now,
       updatedAt: now,
     };
@@ -47,6 +49,10 @@ exports.createArticle = async (req, res, next) => {
     };
     
     await docClient.send(new PutCommand(putParams));
+    
+    // Sitemap cache'ini temizle
+    clearSitemapCache();
+    
     res.status(201).json(newArticle);
   } catch (error) {
     if (error.name === 'ConditionalCheckFailedException') {
@@ -59,10 +65,10 @@ exports.createArticle = async (req, res, next) => {
 
 exports.updateArticle = async (req, res, next) => {
   const { slug: currentSlug } = req.params; // Düzenlenecek makalenin mevcut slug'ı
-  const { title, description, content, coverImage, status } = req.body;
+  const { title, description, content, coverImage, status, categories } = req.body;
   // const editorUserId = req.user.userId; // Makaleyi düzenleyen kullanıcı (isAdmin ile zaten yetkili)
 
-  if (!title && !description && !content && coverImage === undefined && status === undefined) {
+  if (!title && !description && !content && coverImage === undefined && status === undefined && categories === undefined) {
     return res.status(400).json({ message: 'Güncellenecek en az bir alan gönderilmelidir.' });
   }
 
@@ -111,6 +117,11 @@ exports.updateArticle = async (req, res, next) => {
       expressionAttributeNames['#s'] = 'status';
       expressionAttributeValues[':status'] = status;
     }
+    if (categories !== undefined) {
+      updateExpressionParts.push('#cat = :categories');
+      expressionAttributeNames['#cat'] = 'categories';
+      expressionAttributeValues[':categories'] = Array.isArray(categories) ? categories : [];
+    }
     
     updateExpressionParts.push('#ua = :updatedAt');
     expressionAttributeNames['#ua'] = 'updatedAt';
@@ -131,6 +142,10 @@ exports.updateArticle = async (req, res, next) => {
     };
 
     const { Attributes: updatedArticle } = await docClient.send(new UpdateCommand(updateParams));
+    
+    // Sitemap cache'ini temizle
+    clearSitemapCache();
+    
     res.status(200).json(updatedArticle);
 
   } catch (error) {
@@ -151,6 +166,10 @@ exports.deleteArticle = async (req, res, next) => {
     
     const deleteParams = { TableName: ARTICLES_TABLE, Key: { slug } };
     await docClient.send(new DeleteCommand(deleteParams));
+    
+    // Sitemap cache'ini temizle
+    clearSitemapCache();
+
     res.status(200).json({ message: `'${slug}' başlıklı makale başarıyla silindi.` });
   } catch (error) {
     console.error("Delete Article Error:", error);
@@ -275,6 +294,8 @@ exports.toggleArticleHighlight = async (req, res, next) => {
   const { isHighlighted } = req.body;
 
   try {
+    console.log(`Toggling highlight for article: ${slug}, isHighlighted: ${isHighlighted}`);
+    
     // Önce makalenin var olup olmadığını kontrol et
     const getParams = { TableName: ARTICLES_TABLE, Key: { slug } };
     const { Item: existingArticle } = await docClient.send(new GetCommand(getParams));
@@ -283,54 +304,167 @@ exports.toggleArticleHighlight = async (req, res, next) => {
       return res.status(404).json({ message: 'Makale bulunamadı.' });
     }
 
+    console.log(`Current article highlight status: ${existingArticle.isHighlight}`);
+
     // Makalenin öne çıkarma durumunu güncelle
     const updateParams = {
       TableName: ARTICLES_TABLE,
       Key: { slug },
-      UpdateExpression: 'SET isHighlighted = :isHighlighted, updatedAt = :now',
+      UpdateExpression: 'SET isHighlight = :isHighlight, updatedAt = :now',
       ExpressionAttributeValues: {
-        ':isHighlighted': isHighlighted,
+        ':isHighlight': isHighlighted,
         ':now': new Date().toISOString()
       },
       ReturnValues: 'ALL_NEW'
     };
 
     const { Attributes: updatedArticle } = await docClient.send(new UpdateCommand(updateParams));
-    res.status(200).json(updatedArticle);
+    console.log(`Article highlight status updated to: ${updatedArticle.isHighlight}`);
+    
+    res.status(200).json({
+      message: `Makale ${isHighlighted ? 'öne çıkarıldı' : 'öne çıkarma kaldırıldı'}`,
+      article: updatedArticle
+    });
   } catch (error) {
     console.error("Toggle Article Highlight Error:", error);
-    next(error);
+    res.status(500).json({ message: 'Makale öne çıkarma durumu güncellenemedi.' });
   }
 };
 
 // Öne çıkan makaleleri getir
 exports.getHighlightedArticles = async (req, res, next) => {
   try {
-    const params = {
+    console.log('Fetching highlighted articles...');
+    
+    // Tüm makaleleri getir
+    const scanParams = {
       TableName: ARTICLES_TABLE,
-      FilterExpression: 'isHighlighted = :isHighlighted AND #st = :status',
+      FilterExpression: '#st = :status',
       ExpressionAttributeNames: {
         '#st': 'status'
       },
       ExpressionAttributeValues: {
-        ':isHighlighted': true,
         ':status': 'published'
       }
     };
 
-    const { Items } = await docClient.send(new ScanCommand(params));
-    
+    const { Items: allArticles } = await docClient.send(new ScanCommand(scanParams));
+    console.log(`Found ${allArticles.length} published articles`);
+
+    // Öne çıkan makaleleri filtrele
+    const highlightedArticles = allArticles.filter(article => article.isHighlight === true);
+    console.log(`Found ${highlightedArticles.length} highlighted articles`);
+
     // Makaleleri tarihe göre sırala (en yeni en üstte)
-    const sortedItems = Items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    const sortedArticles = highlightedArticles.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     // Her makale için yazar bilgilerini ekle
     const articlesWithAuthors = await Promise.all(
-      sortedItems.map(article => enrichArticleWithAuthor(article))
+      sortedArticles.map(article => enrichArticleWithAuthor(article))
     );
 
+    console.log(`Returning ${articlesWithAuthors.length} highlighted articles`);
     res.status(200).json(articlesWithAuthors);
+    
   } catch (error) {
     console.error("Get Highlighted Articles Error:", error);
-    next(error);
+    res.status(500).json({ message: 'Öne çıkan makaleler getirilemedi.' });
   }
+};
+
+// Makale görüntülenme sayısını artır
+exports.incrementViewCount = async (req, res) => {
+  const { slug } = req.params;
+  
+  try {
+    // Makaleyi bul
+    const getCommand = new GetCommand({
+      TableName: ARTICLES_TABLE,
+      Key: { slug }
+    });
+    
+    const result = await docClient.send(getCommand);
+    
+    if (!result.Item) {
+      return res.status(404).json({ message: 'Makale bulunamadı.' });
+    }
+    
+    // Görüntülenme sayısını artır
+    const updateCommand = new UpdateCommand({
+      TableName: ARTICLES_TABLE,
+      Key: { slug },
+      UpdateExpression: 'SET viewCount = if_not_exists(viewCount, :zero) + :inc',
+      ExpressionAttributeValues: {
+        ':inc': 1,
+        ':zero': 0
+      },
+      ReturnValues: 'ALL_NEW'
+    });
+    
+    const updateResult = await docClient.send(updateCommand);
+    
+    res.json({ 
+      message: 'Görüntülenme sayısı güncellendi.',
+      viewCount: updateResult.Attributes.viewCount 
+    });
+    
+  } catch (error) {
+    console.error('Görüntülenme sayısı artırılırken hata:', error);
+    res.status(500).json({ message: 'Görüntülenme sayısı güncellenemedi.' });
+  }
+};
+
+// Admin: Görüntülenme sayısını manuel olarak ayarla
+exports.setViewCount = async (req, res) => {
+  const { slug } = req.params;
+  const { viewCount } = req.body;
+  
+  if (!req.user.isAdmin) {
+    return res.status(403).json({ message: 'Bu işlem için admin yetkisi gereklidir.' });
+  }
+  
+  if (typeof viewCount !== 'number' || viewCount < 0) {
+    return res.status(400).json({ message: 'Geçerli bir görüntülenme sayısı girin.' });
+  }
+  
+  try {
+    const updateCommand = new UpdateCommand({
+      TableName: ARTICLES_TABLE,
+      Key: { slug },
+      UpdateExpression: 'SET viewCount = :viewCount',
+      ExpressionAttributeValues: {
+        ':viewCount': viewCount
+      },
+      ReturnValues: 'ALL_NEW'
+    });
+    
+    const result = await docClient.send(updateCommand);
+    
+    if (!result.Attributes) {
+      return res.status(404).json({ message: 'Makale bulunamadı.' });
+    }
+    
+    res.json({ 
+      message: 'Görüntülenme sayısı güncellendi.',
+      viewCount: result.Attributes.viewCount 
+    });
+    
+  } catch (error) {
+    console.error('Görüntülenme sayısı ayarlanırken hata:', error);
+    res.status(500).json({ message: 'Görüntülenme sayısı güncellenemedi.' });
+  }
+};
+
+module.exports = {
+  listPublishedArticles: exports.listPublishedArticles,
+  getArticleBySlug: exports.getArticleBySlug,
+  createArticle: exports.createArticle,
+  updateArticle: exports.updateArticle,
+  deleteArticle: exports.deleteArticle,
+  listAllArticlesForAdmin: exports.listAllArticlesForAdmin,
+  getArticleBySlugForAdmin: exports.getArticleBySlugForAdmin,
+  toggleArticleHighlight: exports.toggleArticleHighlight,
+  getHighlightedArticles: exports.getHighlightedArticles,
+  incrementViewCount: exports.incrementViewCount,
+  setViewCount: exports.setViewCount
 };
