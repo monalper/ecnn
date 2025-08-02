@@ -37,7 +37,7 @@ const uploadCoverImage = async (req, res, next) => {
       Key: s3Key,
       Body: req.file.buffer,
       ContentType: req.file.mimetype,
-      ACL: 'public-read', // Make the file publicly accessible
+      // ACL: 'public-read' kaldırıldı - bucket ACL'leri desteklemiyor
     };
 
     await s3Client.send(new PutObjectCommand(params));
@@ -52,7 +52,25 @@ const uploadCoverImage = async (req, res, next) => {
     });
   } catch (error) {
     console.error('Kapak resmi yüklenirken hata:', error);
-    next(error);
+    
+    // Daha detaylı hata mesajları
+    if (error.name === 'AccessDenied') {
+      return res.status(403).json({ 
+        message: 'AWS erişim hatası. Lütfen AWS credentials\'ları kontrol edin.' 
+      });
+    } else if (error.name === 'NoSuchBucket') {
+      return res.status(404).json({ 
+        message: 'S3 bucket bulunamadı. Lütfen bucket adını kontrol edin.' 
+      });
+    } else if (error.message && error.message.includes('ACL')) {
+      return res.status(400).json({ 
+        message: 'Bucket ACL\'leri desteklemiyor. Dosya yükleme başarısız.' 
+      });
+    }
+    
+    res.status(500).json({ 
+      message: 'Dosya yükleme sırasında bir hata oluştu: ' + error.message 
+    });
   }
 };
 
