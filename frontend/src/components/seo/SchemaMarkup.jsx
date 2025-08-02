@@ -17,7 +17,7 @@ const SchemaMarkup = ({
           "@type": "Article",
           "headline": data.title,
           "description": data.description,
-          "image": data.image || `${baseUrl}/og-image.jpg`,
+          "image": data.image || `${baseUrl}/og-images/default/og-default.jpg`,
           "author": {
             "@type": "Person",
             "name": data.author || "OpenWall"
@@ -49,7 +49,7 @@ const SchemaMarkup = ({
           "@type": "WebSite",
           "name": "OpenWall",
           "url": baseUrl,
-          "description": "OpenWall - Teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat ve yemek gibi çeşitli alanlarda kaliteli içerikler sunan kapsamlı platform.",
+          "description": "OpenWall, çeşitli alanlarda yazılmış makaleleri okuyun.",
           "potentialAction": {
             "@type": "SearchAction",
             "target": `${baseUrl}/search?q={search_term_string}`,
@@ -64,7 +64,7 @@ const SchemaMarkup = ({
           "name": "OpenWall",
           "url": baseUrl,
           "logo": `${baseUrl}/logo.png`,
-          "description": "Çeşitli alanlarda kaliteli içerikler sunan kapsamlı platform",
+          "description": "Çeşitli alanlarda yazılmış makaleleri okuyun",
           "sameAs": [
             "https://twitter.com/openwall",
             "https://facebook.com/openwall",

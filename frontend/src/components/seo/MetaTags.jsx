@@ -19,8 +19,8 @@ const MetaTags = ({
 }) => {
   const siteName = 'OpenWall';
   const fullTitle = title ? `${title} | ${siteName}` : siteName;
-  const defaultDescription = 'OpenWall - Teknoloji, bilim ve güncel konular hakkında kaliteli içerikler.';
-  const defaultImage = 'https://openwall.com.tr/og-image.jpg'; // Varsayılan OG image
+  const defaultDescription = 'OpenWall, çeşitli alanlarda yazılmış makaleleri okuyun.';
+  const defaultImage = 'https://openwall.com.tr/og-images/default/og-default.jpg'; // Güncellenmiş OG image yolu
   const currentUrl = url || window.location.href;
   const twitterHandle = '@openwall';
 

@@ -67,6 +67,8 @@ const ArticleDetailPage = () => {
   // Tema algıla
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [twitterShareModalOpen, setTwitterShareModalOpen] = useState(false);
+  const [customTweetText, setCustomTweetText] = useState('');
   useEffect(() => {
     const checkDark = () => setIsDarkMode(document.documentElement.classList.contains('dark'));
     checkDark();
@@ -111,10 +113,19 @@ const ArticleDetailPage = () => {
     if (!article) return;
     const getShortLink = async () => {
       try {
-        const fullUrl = `${window.location.origin}/articles/${article.slug}`;
+        // Production URL'ini kullan
+        const fullUrl = process.env.NODE_ENV === 'production' 
+          ? `https://openwall.com.tr/articles/${article.slug}`
+          : `${window.location.origin}/articles/${article.slug}`;
+        
+        console.log('Kısa link oluşturuluyor:', fullUrl);
+        
         const res = await api.post('/shortlink', { url: fullUrl });
+        console.log('Kısa link oluşturuldu:', res.data.shortUrl);
+        
         setShortUrl(res.data.shortUrl);
       } catch (e) {
+        console.error('Kısa link oluşturma hatası:', e);
         setShortUrl('');
       }
     };
@@ -159,15 +170,71 @@ const ArticleDetailPage = () => {
   // Open Graph ve Twitter Card için meta veriler
   const pageTitle = article?.title || 'Makale';
   const pageDescription = article?.description || (article?.content ? article.content.substring(0, 120) : 'ECNN Makale');
-  const pageImage = article?.coverImage || `https://placehold.co/1200x675/E2E8F0/A0AEC0?text=${encodeURIComponent(article?.title?.substring(0,25) || 'Makale')}`;
+  
+  // OG Image yolu oluşturma fonksiyonu
+  const getOgImage = () => {
+    // Önce makale özel OG image'ı kontrol et
+    if (article?.ogImage) {
+      return article.ogImage;
+    }
+    // Sonra slug'a göre otomatik oluşturulan OG image'ı kontrol et
+    if (article?.slug) {
+      return `https://openwall.com.tr/og-images/articles/${article.slug}.jpg`;
+    }
+    // Varsayılan OG image'ı kullan
+    return 'https://openwall.com.tr/og-images/default/og-default.jpg';
+  };
+  
+  const pageImage = getOgImage();
   const pageUrl = typeof window !== 'undefined' ? window.location.href : '';
+
+  // Twitter paylaşım metni oluşturma fonksiyonları
+  const generateTweetTemplates = () => {
+    // Kısa link varsa onu kullan, yoksa production URL'ini kullan
+    const baseUrl = shortUrl || (process.env.NODE_ENV === 'production' 
+      ? `https://openwall.com.tr/articles/${article.slug}`
+      : window.location.href);
+    const category = article.categories?.[0]?.toLowerCase() || 'teknoloji';
+    
+    return [
+      {
+        name: 'Standart',
+        text: `📰 ${article.title}\n\n${article.description ? article.description.substring(0, 100) + '...\n\n' : ''}👤 ${author}\n⏱️ ${readingTime}\n\n#OpenWall #${category} #makale\n\n${baseUrl}`
+      },
+      {
+        name: 'Kısa ve Öz',
+        text: `📰 ${article.title}\n\n${article.description ? article.description.substring(0, 80) + '...\n\n' : ''}#OpenWall #${category}\n\n${baseUrl}`
+      },
+      {
+        name: 'Soru ile',
+        text: `🤔 ${article.title} hakkında ne düşünüyorsunuz?\n\n${article.description ? article.description.substring(0, 90) + '...\n\n' : ''}👤 ${author}\n\n#OpenWall #${category} #tartışma\n\n${baseUrl}`
+      },
+      {
+        name: 'Öneri',
+        text: `💡 Bu makaleyi mutlaka okumalısınız!\n\n📰 ${article.title}\n\n${article.description ? article.description.substring(0, 80) + '...\n\n' : ''}👤 ${author}\n\n#OpenWall #${category} #öneri\n\n${baseUrl}`
+      }
+    ];
+  };
+
+  const handleTwitterShare = (templateText) => {
+    const tweetText = templateText || customTweetText;
+    const encodedText = encodeURIComponent(tweetText);
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodedText}`;
+    window.open(twitterUrl, '_blank', 'noopener,noreferrer');
+    setTwitterShareModalOpen(false);
+  };
+
+  const handleCustomTweetChange = (e) => {
+    const text = e.target.value;
+    setCustomTweetText(text);
+  };
 
   return (
     <>
       <MetaTags
         title={article.title}
         description={article.description || article.content?.substring(0, 160)}
-        image={coverImage}
+        image={pageImage}
         url={window.location.href}
         type="article"
         author={author}
@@ -184,7 +251,7 @@ const ArticleDetailPage = () => {
         data={{
           title: article.title,
           description: article.description || article.content?.substring(0, 160),
-          image: coverImage,
+          image: pageImage,
           url: window.location.href,
           author: author,
           publishedTime: article.createdAt,
@@ -328,10 +395,11 @@ const ArticleDetailPage = () => {
             {/* Social Media Buttons */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-3 relative z-10">
               {/* X (Twitter) */}
-              <a
-                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title + '\n\n' + (shortUrl || window.location.href))}` }
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => {
+                  setCustomTweetText(generateTweetTemplates()[0].text);
+                  setTwitterShareModalOpen(true);
+                }}
                 aria-label="X'te paylaş"
                 className="group flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-sky-100 dark:hover:bg-sky-900/30 transition-all duration-200 hover:scale-105"
               >
@@ -339,11 +407,11 @@ const ArticleDetailPage = () => {
                   <SiX size={20} color="#fff" />
                 </div>
                 <span className="text-xs font-medium text-slate-700 dark:text-slate-300">X</span>
-              </a>
+              </button>
               
               {/* Facebook */}
               <a
-                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shortUrl || window.location.href)}`}
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shortUrl || (process.env.NODE_ENV === 'production' ? `https://openwall.com.tr/articles/${article.slug}` : window.location.href))}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook'ta paylaş"
@@ -357,7 +425,7 @@ const ArticleDetailPage = () => {
               
               {/* LinkedIn */}
               <a
-                href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(shortUrl || window.location.href)}&title=${encodeURIComponent(article.title)}`}
+                href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(shortUrl || (process.env.NODE_ENV === 'production' ? `https://openwall.com.tr/articles/${article.slug}` : window.location.href))}&title=${encodeURIComponent(article.title)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn'de paylaş"
@@ -371,7 +439,7 @@ const ArticleDetailPage = () => {
               
               {/* WhatsApp */}
               <a
-                href={`https://wa.me/?text=${encodeURIComponent(article.title + ' ' + (shortUrl || window.location.href))}`}
+                href={`https://wa.me/?text=${encodeURIComponent(article.title + ' ' + (shortUrl || (process.env.NODE_ENV === 'production' ? `https://openwall.com.tr/articles/${article.slug}` : window.location.href)))}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp'ta paylaş"
@@ -385,7 +453,7 @@ const ArticleDetailPage = () => {
               
               {/* Telegram */}
               <a
-                href={`https://t.me/share/url?url=${encodeURIComponent(shortUrl || window.location.href)}&text=${encodeURIComponent(article.title)}`}
+                href={`https://t.me/share/url?url=${encodeURIComponent(shortUrl || (process.env.NODE_ENV === 'production' ? `https://openwall.com.tr/articles/${article.slug}` : window.location.href))}&text=${encodeURIComponent(article.title)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Telegram'da paylaş"
@@ -399,7 +467,7 @@ const ArticleDetailPage = () => {
               
               {/* Reddit */}
               <a
-                href={`https://www.reddit.com/submit?url=${encodeURIComponent(shortUrl || window.location.href)}&title=${encodeURIComponent(article.title)}`}
+                href={`https://www.reddit.com/submit?url=${encodeURIComponent(shortUrl || (process.env.NODE_ENV === 'production' ? `https://openwall.com.tr/articles/${article.slug}` : window.location.href))}&title=${encodeURIComponent(article.title)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Reddit'te paylaş"
@@ -414,7 +482,8 @@ const ArticleDetailPage = () => {
               {/* Copy Link */}
               <button
                 onClick={() => {
-                  navigator.clipboard.writeText(shortUrl || window.location.href);
+                  const linkToCopy = shortUrl || (process.env.NODE_ENV === 'production' ? `https://openwall.com.tr/articles/${article.slug}` : window.location.href);
+                  navigator.clipboard.writeText(linkToCopy);
                   // Show a better notification
                   const notification = document.createElement('div');
                   notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
@@ -456,6 +525,119 @@ const ArticleDetailPage = () => {
         <div className="hidden lg:block sticky top-24 self-start ml-6 z-20" style={{ width: 160, height: 600 }}>
         </div>
       </div>
+
+      {/* Twitter Paylaşım Modal */}
+      {twitterShareModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-sky-500 rounded-full flex items-center justify-center">
+                  <SiX size={20} color="#fff" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">X'te Paylaş</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Tweet'inizi özelleştirin</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setTwitterShareModalOpen(false)}
+                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6">
+              {/* Tweet Templates */}
+              <div className="mb-6">
+                <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Tweet Şablonları</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {generateTweetTemplates().map((template, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCustomTweetText(template.text)}
+                      className="text-left p-3 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-sky-300 dark:hover:border-sky-600 hover:bg-sky-50 dark:hover:bg-sky-900/20 transition-all"
+                    >
+                      <div className="text-sm font-medium text-slate-900 dark:text-slate-100 mb-1">
+                        {template.name}
+                      </div>
+                      <div className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2">
+                        {template.text.substring(0, 80)}...
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Custom Tweet Editor */}
+              <div className="mb-6">
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                  Tweet Metni
+                </label>
+                <textarea
+                  value={customTweetText}
+                  onChange={handleCustomTweetChange}
+                  className="w-full h-32 p-3 border border-slate-300 dark:border-slate-600 rounded-lg resize-none focus:ring-2 focus:ring-sky-500 focus:border-transparent dark:bg-slate-700 dark:text-slate-100"
+                  placeholder="Tweet metninizi buraya yazın..."
+                  maxLength={280}
+                />
+                <div className="flex justify-between items-center mt-2">
+                  <div className="text-xs text-slate-500 dark:text-slate-400">
+                    {customTweetText.length}/280 karakter
+                  </div>
+                  <div className={`text-xs ${customTweetText.length > 260 ? 'text-red-500' : 'text-slate-500 dark:text-slate-400'}`}>
+                    {280 - customTweetText.length} karakter kaldı
+                  </div>
+                </div>
+              </div>
+
+              {/* Preview */}
+              <div className="mb-6">
+                <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Önizleme</h4>
+                <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 bg-sky-500 rounded-full flex items-center justify-center flex-shrink-0">
+                      <SiX size={16} color="#fff" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-semibold text-slate-900 dark:text-slate-100">OpenWall</span>
+                        <span className="text-slate-500 dark:text-slate-400">@openwall</span>
+                        <span className="text-slate-500 dark:text-slate-400">· şimdi</span>
+                      </div>
+                      <div className="text-slate-900 dark:text-slate-100 whitespace-pre-wrap text-sm">
+                        {customTweetText}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setTwitterShareModalOpen(false)}
+                  className="flex-1 px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                >
+                  İptal
+                </button>
+                <button
+                  onClick={() => handleTwitterShare()}
+                  disabled={!customTweetText.trim()}
+                  className="flex-1 px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Tweet'i Paylaş
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
     </>
   );
