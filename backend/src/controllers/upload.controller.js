@@ -4,6 +4,57 @@ const { PutObjectCommand } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
+const multer = require('multer');
+
+// Multer configuration for memory storage
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB limit
+  },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Sadece resim dosyaları yüklenebilir.'), false);
+    }
+  }
+});
+
+// Direct upload function to handle CORS issues
+const uploadCoverImage = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'Dosya yüklenmedi.' });
+    }
+
+    const userId = req.user.userId;
+    const fileExtension = path.extname(req.file.originalname);
+    const s3Key = `covers/${userId}/${uuidv4()}${fileExtension}`;
+
+    const params = {
+      Bucket: S3_BUCKET_NAME,
+      Key: s3Key,
+      Body: req.file.buffer,
+      ContentType: req.file.mimetype,
+      ACL: 'public-read', // Make the file publicly accessible
+    };
+
+    await s3Client.send(new PutObjectCommand(params));
+
+    const region = process.env.AWS_REGION || "eu-north-1";
+    const accessUrl = `https://${S3_BUCKET_NAME}.s3.${region}.amazonaws.com/${s3Key}`;
+
+    res.status(200).json({
+      message: 'Kapak resmi başarıyla yüklendi.',
+      accessUrl,
+      key: s3Key
+    });
+  } catch (error) {
+    console.error('Kapak resmi yüklenirken hata:', error);
+    next(error);
+  }
+};
 
 const generatePresignedUrl = async (req, res, next, folderPrefix) => {
   const { fileName, contentType } = req.body;
@@ -66,5 +117,7 @@ const getPresignedUrlForContentImage = (req, res, next) => {
 module.exports = {
   getPresignedUrlForCover,
   getPresignedUrlForAvatar,
-  getPresignedUrlForContentImage
+  getPresignedUrlForContentImage,
+  uploadCoverImage,
+  upload
 };

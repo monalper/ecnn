@@ -276,19 +276,17 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
     setIsUploading(true);
     setFormError('');
     try {
-      const presignedResponse = await api.post('/upload/cover', {
-        fileName: coverImageFile.name,
-        contentType: coverImageFile.type,
-      });
-      const { uploadUrl, accessUrl } = presignedResponse.data;
-      await fetch(uploadUrl, {
-        method: 'PUT',
-        body: coverImageFile,
+      // FormData kullanarak dosyayı doğrudan backend'e gönder
+      const formData = new FormData();
+      formData.append('coverImage', coverImageFile);
+      
+      const response = await api.post('/upload/cover-direct', formData, {
         headers: {
-          'Content-Type': coverImageFile.type
+          'Content-Type': 'multipart/form-data',
         },
       });
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      const { accessUrl } = response.data;
       setCurrentCoverImageUrl(accessUrl);
       setIsUploading(false);
       return accessUrl;
