@@ -4,6 +4,24 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Sistem temasını algıla ve uygula (Flash of wrong theme'i önlemek için) -->
+    <script>
+      (function() {
+        // localStorage'dan kaydedilmiş tema var mı kontrol et
+        const savedTheme = localStorage.getItem('theme');
+        
+        if (savedTheme) {
+          // Kaydedilmiş tema varsa onu kullan
+          document.documentElement.classList.add(savedTheme);
+        } else {
+          // Yoksa sistem temasını algıla
+          const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          document.documentElement.classList.add(systemTheme);
+        }
+      })();
+    </script>
+    
     <title>OpenWall - Teknoloji, Felsefe, Sanat, Spor ve Daha Fazlası</title>
     <meta name="description" content="OpenWall, çeşitli alanlarda yazılmış makaleleri okuyun." />
     <meta name="keywords" content="teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat, yemek, makale, haber, içerik, blog" />
