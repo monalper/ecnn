@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import api from '../../services/api';
 import axios from 'axios';
 import { useAuth } from '../../contexts/AuthContext';
+import thumbPlaceholder from '../../assets/ThumbPlaceholder.png';
 
 const AdminVideosPage = () => {
   const { user } = useAuth();
@@ -77,6 +78,9 @@ const AdminVideosPage = () => {
 
   const uploadVideo = async (file) => {
     try {
+      // Video süresini al
+      const duration = await getVideoDuration(file);
+      
       // Get presigned URL for video
       const presignedResponse = await api.post('/videos/upload', {
         fileName: file.name,
@@ -92,7 +96,7 @@ const AdminVideosPage = () => {
             'Content-Type': file.type,
             'Cache-Control': 'max-age=31536000'
           },
-          timeout: 60000 // 60 second timeout for videos
+          timeout: 300000 // 5 dakika timeout (büyük dosyalar için)
         });
       } catch (uploadError) {
         console.error('S3 video upload error:', uploadError);
@@ -102,7 +106,7 @@ const AdminVideosPage = () => {
         throw new Error('Video S3\'e yüklenirken hata oluştu.');
       }
 
-      return { key, accessUrl };
+      return { key, accessUrl, duration };
     } catch (error) {
       console.error('Video upload error:', error);
       if (error.message.includes('CORS')) {
@@ -112,21 +116,44 @@ const AdminVideosPage = () => {
     }
   };
 
+  // Video süresini alma fonksiyonu
+  const getVideoDuration = (file) => {
+    return new Promise((resolve) => {
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+      
+      video.onloadedmetadata = () => {
+        window.URL.revokeObjectURL(video.src);
+        resolve(Math.round(video.duration));
+      };
+      
+      video.onerror = () => {
+        window.URL.revokeObjectURL(video.src);
+        resolve(0); // Hata durumunda 0 döndür
+      };
+      
+      video.src = URL.createObjectURL(file);
+    });
+  };
+
   const uploadThumbnail = async (file) => {
     try {
+      // Thumbnail'i WhatsApp zengin önizleme için optimize et
+      const optimizedFile = await optimizeThumbnailForWhatsApp(file);
+      
       // Get presigned URL for thumbnail
       const presignedResponse = await api.post('/videos/upload-thumbnail', {
-        fileName: file.name,
-        contentType: file.type
+        fileName: optimizedFile.name,
+        contentType: optimizedFile.type
       });
 
       const { uploadUrl, key, accessUrl } = presignedResponse.data;
 
       // Upload to S3 directly using the presigned URL
       try {
-        await axios.put(uploadUrl, file, {
+        await axios.put(uploadUrl, optimizedFile, {
           headers: {
-            'Content-Type': file.type,
+            'Content-Type': optimizedFile.type,
             'Cache-Control': 'max-age=31536000'
           },
           timeout: 30000 // 30 second timeout
@@ -147,6 +174,58 @@ const AdminVideosPage = () => {
       }
       throw new Error('Thumbnail yüklenirken hata oluştu.');
     }
+  };
+
+  // WhatsApp zengin önizleme için thumbnail optimize etme fonksiyonu
+  const optimizeThumbnailForWhatsApp = (file) => {
+    return new Promise((resolve) => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      
+      img.onload = () => {
+        // WhatsApp zengin önizleme için optimal boyutlar
+        const targetWidth = 1200;
+        const targetHeight = 630;
+        
+        // Aspect ratio'yu koru
+        const aspectRatio = img.width / img.height;
+        let finalWidth = targetWidth;
+        let finalHeight = targetHeight;
+        
+        if (aspectRatio > targetWidth / targetHeight) {
+          // Resim daha geniş, yüksekliği ayarla
+          finalHeight = targetWidth / aspectRatio;
+        } else {
+          // Resim daha yüksek, genişliği ayarla
+          finalWidth = targetHeight * aspectRatio;
+        }
+        
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+        
+        // Arka planı siyah yap (video thumbnail'ları için)
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, targetWidth, targetHeight);
+        
+        // Resmi ortala ve boyutlandır
+        const offsetX = (targetWidth - finalWidth) / 2;
+        const offsetY = (targetHeight - finalHeight) / 2;
+        
+        ctx.drawImage(img, offsetX, offsetY, finalWidth, finalHeight);
+        
+        // JPEG olarak kaydet (WhatsApp için optimize)
+        canvas.toBlob((blob) => {
+          const optimizedFile = new File([blob], file.name.replace(/\.[^/.]+$/, '.jpg'), {
+            type: 'image/jpeg',
+            lastModified: Date.now()
+          });
+          resolve(optimizedFile);
+        }, 'image/jpeg', 0.9); // %90 kalite
+      };
+      
+      img.src = URL.createObjectURL(file);
+    });
   };
 
   const uploadSubtitle = async (file) => {
@@ -194,7 +273,7 @@ const AdminVideosPage = () => {
             'Content-Type': contentType,
             'Cache-Control': 'max-age=31536000'
           },
-          timeout: 30000 // 30 second timeout
+          timeout: 60000 // 1 dakika timeout
         });
       } catch (uploadError) {
         console.error('S3 subtitle upload error:', uploadError);
@@ -293,12 +372,14 @@ const AdminVideosPage = () => {
       let videoUrl = formData.videoUrl;
       let thumbnailKey = formData.thumbnailKey;
       let thumbnailUrl = formData.thumbnailUrl;
+      let duration = formData.duration ? parseInt(formData.duration) : 0;
 
       // Upload new video if file is selected
       if (formData.videoFile) {
         const uploadResult = await uploadVideo(formData.videoFile);
         videoKey = uploadResult.key;
         videoUrl = uploadResult.accessUrl;
+        duration = uploadResult.duration;
       }
 
       // Upload new thumbnail if file is selected
@@ -315,7 +396,7 @@ const AdminVideosPage = () => {
         videoUrl,
         thumbnailKey,
         thumbnailUrl,
-        duration: formData.duration ? parseInt(formData.duration) : 0,
+        duration: duration,
         subtitles: formData.subtitles
       };
 
@@ -462,7 +543,7 @@ const AdminVideosPage = () => {
               <div className="relative" style={{ paddingBottom: '56.25%' }}>
                 <div className="absolute inset-0 bg-black rounded overflow-hidden">
                   <img
-                    src={item.thumbnailUrl || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIyNSIgdmlld0JveD0iMCAwIDQwMCAyMjUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIyMjUiIGZpbGw9IiNmM2Y0ZjYiLz48cmVjdCB4PSIxNTAiIHk9Ijg3LjUiIHdpZHRoPSIxMDAiIGhlaWdodD0iNTAiIGZpbGw9IiNkMWQ1ZGIiIHJ4PSI4Ii8+PHBvbHlnb24gcG9pbnRzPSIxNzAsMTAwIDE3MCwxMjUgMTkwLDExMi41IiBmaWxsPSIjOWNhM2FmIi8+PHRleHQgeD0iMjAwIiB5PSIxNjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM2YjcyODAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCI+VmlkZW8gVGh1bWJuYWlsPC90ZXh0Pjwvc3ZnPg=='}
+                    src={item.thumbnailUrl || thumbPlaceholder}
                     alt={item.title}
                     className="w-full h-full object-cover"
                   />
@@ -675,7 +756,7 @@ const AdminVideosPage = () => {
                         className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-orange focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-orange file:text-white hover:file:bg-orange-600"
                       />
                       <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                        MP4, WebM, OGV • Maks. 100MB
+                        MP4, WebM, OGV • Sınırsız boyut
                       </p>
                     </div>
 

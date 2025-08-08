@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import thumbPlaceholder from '../assets/ThumbPlaceholder.png';
 
 const VideosPage = () => {
   const [videoItems, setVideoItems] = useState([]);
@@ -241,7 +242,7 @@ const VideosPage = () => {
                 <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
                   <div className="absolute inset-0 bg-black rounded-lg overflow-hidden">
                     <img
-                      src={item.thumbnailUrl || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIyNSIgdmlld0JveD0iMCAwIDQwMCAyMjUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIyMjUiIGZpbGw9IiNmM2Y0ZjYiLz48cmVjdCB4PSIxNTAiIHk9Ijg3LjUiIHdpZHRoPSIxMDAiIGhlaWdodD0iNTAiIGZpbGw9IiNkMWQ1ZGIiIHJ4PSI4Ii8+PHBvbHlnb24gcG9pbnRzPSIxNzAsMTAwIDE3MCwxMjUgMTkwLDExMi41IiBmaWxsPSIjOWNhM2FmIi8+PHRleHQgeD0iMjAwIiB5PSIxNjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM2YjcyODAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCI+VmlkZW8gVGh1bWJuYWlsPC90ZXh0Pjwvc3ZnPg=='}
+                      src={item.thumbnailUrl || thumbPlaceholder}
                       alt={item.title}
                       className="w-full h-full object-cover"
                       loading="lazy"

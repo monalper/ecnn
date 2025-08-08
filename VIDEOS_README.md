@@ -104,7 +104,7 @@ frontend/src/
 - OGV
 
 ### Dosya Boyutu Limitleri
-- Video: Maksimum 100MB
+- Video: Sınırsız boyut
 - Thumbnail: Maksimum 5MB
 
 ## Güvenlik

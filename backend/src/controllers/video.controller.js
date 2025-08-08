@@ -228,7 +228,7 @@ const getPresignedUrlForVideoUpload = async (req, res) => {
 
     const command = new PutObjectCommand(params);
     const uploadUrl = await getSignedUrl(s3Client, command, { 
-      expiresIn: 300,
+      expiresIn: 3600, // 1 saat süre (büyük dosyalar için)
       signableHeaders: new Set(['host']),
       unsignableHeaders: new Set(['x-amz-acl', 'x-amz-checksum-crc32', 'x-amz-sdk-checksum-algorithm'])
     });
@@ -283,7 +283,7 @@ const getPresignedUrlForThumbnailUpload = async (req, res) => {
 
     const command = new PutObjectCommand(params);
     const uploadUrl = await getSignedUrl(s3Client, command, { 
-      expiresIn: 300,
+      expiresIn: 1800, // 30 dakika süre
       signableHeaders: new Set(['host']),
       unsignableHeaders: new Set(['x-amz-acl', 'x-amz-checksum-crc32', 'x-amz-sdk-checksum-algorithm'])
     });
@@ -350,7 +350,7 @@ const getPresignedUrlForSubtitleUpload = async (req, res) => {
 
     const command = new PutObjectCommand(params);
     const uploadUrl = await getSignedUrl(s3Client, command, { 
-      expiresIn: 300,
+      expiresIn: 1800, // 30 dakika süre
       signableHeaders: new Set(['host']),
       unsignableHeaders: new Set(['x-amz-acl', 'x-amz-checksum-crc32', 'x-amz-sdk-checksum-algorithm'])
     });

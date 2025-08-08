@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitles = [] }) => {
+const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitles = [], autoPlay = false }) => {
   const videoRef = useRef(null);
   const containerRef = useRef(null);
   const subtitlePopupRef = useRef(null);
@@ -42,6 +42,27 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
     });
     setDebugSubtitleState(currentSubtitle || 'null');
   }, [currentSubtitle, showSubtitles]);
+
+  // Auto-play when video is loaded and autoPlay prop is true
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !autoPlay) return;
+
+    const handleCanPlay = () => {
+      if (autoPlay) {
+        video.play().catch(error => {
+          console.log('Auto-play failed:', error);
+          // Auto-play failed, user will need to click play button
+        });
+      }
+    };
+
+    video.addEventListener('canplay', handleCanPlay);
+    
+    return () => {
+      video.removeEventListener('canplay', handleCanPlay);
+    };
+  }, [autoPlay, src]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -991,44 +1012,14 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
               
               {/* Unified Settings Menu */}
               {showSettingsMenu && (
-                <div className="absolute bottom-full right-0 mb-2 bg-black/90 backdrop-blur-sm rounded-lg p-3 min-w-56 border border-white/20 shadow-lg z-20">
-                  {/* Header */}
-                  <div className="flex items-center justify-between mb-3 pb-2 border-b border-white/10">
-                    <div className="flex items-center">
-                      {currentSettingsView !== 'main' && (
-                        <button
-                          onClick={() => setCurrentSettingsView('main')}
-                          className="text-white/70 hover:text-white transition-colors p-1 mr-2"
-                        >
-                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-                          </svg>
-                        </button>
-                      )}
-                      <h3 className="text-white text-sm font-medium">
-                        {currentSettingsView === 'main' && 'Ayarlar'}
-                        {currentSettingsView === 'speed' && 'Hız'}
-                        {currentSettingsView === 'quality' && 'Kalite'}
-                        {currentSettingsView === 'subtitles' && 'Altyazı'}
-                      </h3>
-                    </div>
-                    <button
-                      onClick={toggleSettingsMenu}
-                      className="text-white/60 hover:text-white transition-colors p-1"
-                    >
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                      </svg>
-                    </button>
-                  </div>
-
+                <div className="absolute bottom-full right-0 mb-2 bg-black/95 backdrop-blur-sm rounded-lg p-2 min-w-48 border border-white/20 shadow-xl z-20">
                   {/* Main Settings Menu */}
                   {currentSettingsView === 'main' && (
                     <div className="space-y-1">
                       {/* Playback Speed Option */}
                       <button
                         onClick={() => setCurrentSettingsView('speed')}
-                        className="w-full flex items-center justify-between px-2 py-2 text-sm rounded transition-colors text-white/90 hover:bg-white/10"
+                        className="w-full flex items-center justify-between px-3 py-2 text-sm rounded transition-colors text-white/90 hover:bg-white/10"
                       >
                         <div className="flex items-center">
                           <svg className="w-4 h-4 text-white/70 mr-2" fill="currentColor" viewBox="0 0 24 24">
@@ -1047,7 +1038,7 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
                       {/* Video Quality Option */}
                       <button
                         onClick={() => setCurrentSettingsView('quality')}
-                        className="w-full flex items-center justify-between px-2 py-2 text-sm rounded transition-colors text-white/90 hover:bg-white/10"
+                        className="w-full flex items-center justify-between px-3 py-2 text-sm rounded transition-colors text-white/90 hover:bg-white/10"
                       >
                         <div className="flex items-center">
                           <svg className="w-4 h-4 text-white/70 mr-2" fill="currentColor" viewBox="0 0 24 24">
@@ -1067,7 +1058,7 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
                       {(subtitleTracks.length > 0 || (subtitles && subtitles.length > 0)) && (
                         <button
                           onClick={() => setCurrentSettingsView('subtitles')}
-                          className="w-full flex items-center justify-between px-2 py-2 text-sm rounded transition-colors text-white/90 hover:bg-white/10"
+                          className="w-full flex items-center justify-between px-3 py-2 text-sm rounded transition-colors text-white/90 hover:bg-white/10"
                         >
                           <div className="flex items-center">
                             <svg className="w-4 h-4 text-white/70 mr-2" fill="currentColor" viewBox="0 0 24 24">
@@ -1091,8 +1082,19 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
                   {/* Speed Settings Sub-menu */}
                   {currentSettingsView === 'speed' && (
                     <div className="space-y-2">
-                      <div className="text-white/60 text-xs mb-2">Hız seçin:</div>
-                      <div className="grid grid-cols-3 gap-1">
+                      <div className="flex items-center justify-between px-3 py-2 border-b border-white/10">
+                        <button
+                          onClick={() => setCurrentSettingsView('main')}
+                          className="text-white/70 hover:text-white transition-colors p-1"
+                        >
+                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                          </svg>
+                        </button>
+                        <span className="text-white text-sm font-medium">Hız</span>
+                        <div className="w-4"></div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-1 px-2">
                         {[0.5, 0.75, 1, 1.25, 1.5, 2].map((speed) => (
                           <button
                             key={speed}
@@ -1113,12 +1115,23 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
                   {/* Quality Settings Sub-menu */}
                   {currentSettingsView === 'quality' && (
                     <div className="space-y-1">
-                      <div className="text-white/60 text-xs mb-2">Kalite seçin:</div>
+                      <div className="flex items-center justify-between px-3 py-2 border-b border-white/10">
+                        <button
+                          onClick={() => setCurrentSettingsView('main')}
+                          className="text-white/70 hover:text-white transition-colors p-1"
+                        >
+                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                          </svg>
+                        </button>
+                        <span className="text-white text-sm font-medium">Kalite</span>
+                        <div className="w-4"></div>
+                      </div>
                       {availableQualities.map((quality) => (
                         <button
                           key={quality}
                           onClick={() => changeVideoQuality(quality)}
-                          className={`w-full flex items-center justify-between px-2 py-2 text-sm rounded transition-colors ${
+                          className={`w-full flex items-center justify-between px-3 py-2 text-sm rounded transition-colors ${
                             quality === videoQuality 
                               ? 'text-white bg-white/20' 
                               : 'text-white/80 hover:bg-white/10'
@@ -1138,10 +1151,23 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
                   {/* Subtitle Settings Sub-menu */}
                   {currentSettingsView === 'subtitles' && (
                     <div className="space-y-2">
+                      <div className="flex items-center justify-between px-3 py-2 border-b border-white/10">
+                        <button
+                          onClick={() => setCurrentSettingsView('main')}
+                          className="text-white/70 hover:text-white transition-colors p-1"
+                        >
+                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                          </svg>
+                        </button>
+                        <span className="text-white text-sm font-medium">Altyazı</span>
+                        <div className="w-4"></div>
+                      </div>
+                      
                       {/* Enable/Disable subtitle option */}
                       <button
                         onClick={showSubtitles ? disableSubtitles : enableSubtitles}
-                        className={`w-full flex items-center justify-between px-2 py-2 text-sm rounded transition-colors ${
+                        className={`w-full flex items-center justify-between px-3 py-2 text-sm rounded transition-colors ${
                           showSubtitles 
                             ? 'text-red-400 bg-red-500/10' 
                             : 'text-green-400 bg-green-500/10'
@@ -1160,13 +1186,13 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
                       {/* Subtitle tracks */}
                       {showSubtitles && subtitleTracks.length > 0 && (
                         <div className="pt-2 border-t border-white/10">
-                          <div className="text-white/60 text-xs mb-2">Altyazı seç:</div>
+                          <div className="text-white/60 text-xs mb-2 px-3">Altyazı seç:</div>
                           <div className="space-y-1">
                             {subtitleTracks.map((track, index) => (
                               <button
                                 key={index}
                                 onClick={() => selectSubtitleTrack(index)}
-                                className={`w-full flex items-center justify-between px-2 py-2 text-sm rounded transition-colors ${
+                                className={`w-full flex items-center justify-between px-3 py-2 text-sm rounded transition-colors ${
                                   track.active 
                                     ? 'text-white bg-white/20' 
                                     : 'text-white/80 hover:bg-white/10'
@@ -1185,13 +1211,6 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
                       )}
                     </div>
                   )}
-
-                  {/* Footer with keyboard shortcuts */}
-                  <div className="mt-3 pt-2 border-t border-white/10">
-                    <div className="text-white/40 text-xs text-center">
-                      Openwall Player
-                    </div>
-                  </div>
                 </div>
               )}
             </div>

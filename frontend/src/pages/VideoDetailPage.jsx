@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate } from 'react-router-dom';
 import CustomVideoPlayer from '../components/CustomVideoPlayer';
 import api from '../services/api';
+import thumbPlaceholder from '../assets/ThumbPlaceholder.png';
 
 const VideoDetailPage = () => {
   const { id } = useParams();
@@ -52,6 +53,20 @@ const VideoDetailPage = () => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
+  // WhatsApp için video süresi formatı
+  const formatDurationForWhatsApp = (seconds) => {
+    if (!seconds) return '0:00';
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    
+    if (hours > 0) {
+      return `${hours}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    } else {
+      return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+    }
   };
 
   const formatDate = (dateString) => {
@@ -148,13 +163,63 @@ const VideoDetailPage = () => {
       <Helmet>
         <title>{video.title} - OpenWall</title>
         <meta name="description" content={video.description || `OpenWall video: ${video.title}`} />
-        <meta property="og:title" content={`${video.title} - OpenWall`} />
+        
+        {/* Open Graph Meta Tags - Facebook/WhatsApp için */}
+        <meta property="og:title" content={video.title} />
         <meta property="og:description" content={video.description || `OpenWall video: ${video.title}`} />
         <meta property="og:type" content="video" />
-        <meta property="og:url" content={`https://openwall.com.tr/videos/${video.id}`} />
-        {video.thumbnailUrl && (
-          <meta property="og:image" content={video.thumbnailUrl} />
+        <meta property="og:url" content={`https://www.openwall.com.tr/videos/${video.id}`} />
+        <meta property="og:site_name" content="OpenWall" />
+        <meta property="og:locale" content="tr_TR" />
+        
+        {/* Video özel meta etiketleri */}
+        <meta property="og:video" content={video.videoUrl} />
+        <meta property="og:video:type" content="video/mp4" />
+        <meta property="og:video:width" content="1280" />
+        <meta property="og:video:height" content="720" />
+        <meta property="og:video:duration" content={video.duration || 0} />
+        <meta property="og:video:url" content={video.videoUrl} />
+        
+        {/* Video oynatıcı URL'si */}
+        <meta property="og:video:secure_url" content={video.videoUrl} />
+        <meta property="og:video:tag" content="video" />
+        <meta property="og:video:tag" content="OpenWall" />
+        
+        {/* Video süresi meta etiketi */}
+        {video.duration && (
+          <meta property="og:video:duration" content={formatDurationForWhatsApp(video.duration)} />
         )}
+        
+        {/* Thumbnail için Open Graph */}
+        {video.thumbnailUrl && (
+          <>
+            <meta property="og:image" content={video.thumbnailUrl} />
+            <meta property="og:image:width" content="1280" />
+            <meta property="og:image:height" content="720" />
+            <meta property="og:image:type" content="image/jpeg" />
+            <meta property="og:image:alt" content={video.title} />
+          </>
+        )}
+        
+        {/* Twitter Card Meta Tags */}
+        <meta name="twitter:card" content="player" />
+        <meta name="twitter:site" content="@openwall" />
+        <meta name="twitter:title" content={video.title} />
+        <meta name="twitter:description" content={video.description || `OpenWall video: ${video.title}`} />
+        {video.thumbnailUrl && (
+          <meta name="twitter:image" content={video.thumbnailUrl} />
+        )}
+        <meta name="twitter:player" content={`https://www.openwall.com.tr/videos/${video.id}`} />
+        <meta name="twitter:player:width" content="1280" />
+        <meta name="twitter:player:height" content="720" />
+        
+        {/* Ek meta etiketleri */}
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="OpenWall" />
+        <meta name="keywords" content={`video, ${video.title}, OpenWall`} />
+        
+        {/* Canonical URL */}
+        <link rel="canonical" href={`https://www.openwall.com.tr/videos/${video.id}`} />
       </Helmet>
 
       <div className="max-w-7xl mx-auto px-4 py-4 lg:py-6">
@@ -162,51 +227,45 @@ const VideoDetailPage = () => {
           {/* Main Content */}
           <div className="flex-1">
             {/* Video Player */}
-            <div className="bg-black rounded-lg overflow-hidden shadow-lg mb-4">
+            <div className="bg-black rounded-lg overflow-hidden shadow-lg mb-8">
               <CustomVideoPlayer
                 src={video.videoUrl}
-                poster={video.thumbnailUrl}
+                poster={video.thumbnailUrl || thumbPlaceholder}
                 title={video.title}
                 subtitles={video.subtitles || []}
+                autoPlay={true}
               />
             </div>
 
             {/* Video Information */}
             <div className="px-2 lg:px-0">
-              <h1 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mb-3">
+              <h1 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mb-6">
                 {video.title}
               </h1>
-              
-              {/* Video Stats */}
-              <div className="mb-4">
-                <div className="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400">
-                  {video.viewCount !== undefined && (
-                    <span>{video.viewCount} görüntülenme</span>
-                  )}
-                </div>
-              </div>
 
               {/* Description */}
-              {video.description && (
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                  {video.createdAt && (
-                    <p className="text-sm text-gray-500 dark:text-gray-400 opacity-50 mb-2">
-                      {formatFullDate(video.createdAt)}
-                    </p>
-                  )}
-                  <div className={`text-gray-700 dark:text-gray-300 leading-relaxed text-sm lg:text-base ${!showFullDescription && 'line-clamp-3'}`}>
-                    {video.description}
-                  </div>
-                  {video.description.length > 200 && (
-                    <button
-                      onClick={() => setShowFullDescription(!showFullDescription)}
-                      className="text-brand-orange hover:text-orange-600 font-medium mt-2 transition-colors text-sm"
-                    >
-                      {showFullDescription ? 'Daha az göster' : 'Daha fazla göster'}
-                    </button>
-                  )}
-                </div>
-              )}
+              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                {video.createdAt && (
+                  <p className="text-sm text-gray-500 dark:text-gray-400 opacity-50 mb-2">
+                    {formatFullDate(video.createdAt)}
+                  </p>
+                )}
+                {video.description && (
+                  <>
+                    <div className={`text-gray-700 dark:text-gray-300 leading-relaxed text-sm lg:text-base ${!showFullDescription && 'line-clamp-3'}`}>
+                      {video.description}
+                    </div>
+                    {video.description.length > 200 && (
+                      <button
+                        onClick={() => setShowFullDescription(!showFullDescription)}
+                        className="text-brand-orange hover:text-orange-600 font-medium mt-2 transition-colors text-sm"
+                      >
+                        {showFullDescription ? 'Daha az göster' : 'Daha fazla göster'}
+                      </button>
+                    )}
+                  </>
+                )}
+              </div>
             </div>
           </div>
 
@@ -226,7 +285,7 @@ const VideoDetailPage = () => {
                   >
                     <div className="relative flex-shrink-0" style={{ width: '120px', height: '72px' }}>
                       <img
-                        src={relatedVideo.thumbnailUrl}
+                        src={relatedVideo.thumbnailUrl || thumbPlaceholder}
                         alt={relatedVideo.title}
                         className="w-full h-full object-cover rounded-lg"
                       />
