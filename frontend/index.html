@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    
+    <!-- Favicon Configuration -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Sistem temasını algıla ve uygula -->
+    <script>
+      (function() {
+        const savedTheme = localStorage.getItem('theme');
+        
+        if (savedTheme) {
+          document.documentElement.classList.add(savedTheme);
+        } else {
+          const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          document.documentElement.classList.add(systemTheme);
+        }
+      })();
+    </script>
+    
+    <title>A OpenWall Archive</title>
+    <meta name="description" content="OpenWall entellektüel konularda yazılar içeren aynı zamanda kendi içerisinde bir sözlük barındıran internet sitesidir." />
+    <meta name="keywords" content="teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat, yemek, makale, haber, içerik, blog" />
+    <meta name="author" content="OpenWall" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://openwall.com.tr" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://openwall.com.tr" />
+    <meta property="og:title" content="A OpenWall Archive" />
+    <meta property="og:description" content="OpenWall entellektüel konularda yazılar içeren aynı zamanda kendi içerisinde bir sözlük barındıran internet sitesidir." />
+    <meta property="og:image" content="https://openwall.com.tr/og-images/default/og-default.jpg" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://openwall.com.tr" />
+    <meta property="twitter:title" content="A OpenWall Archive" />
+    <meta property="twitter:description" content="OpenWall entellektüel konularda yazılar içeren aynı zamanda kendi içerisinde bir sözlük barındıran internet sitesidir." />
+    <meta property="twitter:image" content="https://openwall.com.tr/og-images/default/og-default.jpg" />
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5253715298133137"
+     crossorigin="anonymous"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

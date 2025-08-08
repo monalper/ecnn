@@ -1,0 +1,338 @@
+/* ECNN - Kopya/frontend/src/index.css */
+
+.header-site-title:hover {
+  color: #F1AF3E !important;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Line clamp utilities for text truncation */
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+/* Text selection color */
+::selection {
+  background-color: #fef08a; /* Tailwind's yellow-200 */
+  color: #000000;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f8f9fa;
+  color: #2d3748;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html.dark body {
+  background-color: #0F0F0F; /* Updated dark theme primary color */
+  color: #fff; /* Updated to pure white for better contrast */
+}
+
+/* Dark theme secondary color for containers and boxes */
+html.dark .bg-slate-50,
+html.dark .bg-slate-100,
+html.dark .bg-slate-200,
+html.dark .bg-slate-300,
+html.dark .bg-slate-400,
+html.dark .bg-slate-500,
+html.dark .bg-slate-600,
+html.dark .bg-slate-700,
+html.dark .bg-slate-800,
+html.dark .bg-slate-900,
+html.dark .bg-white,
+html.dark .bg-gray-50,
+html.dark .bg-gray-100,
+html.dark .bg-gray-200,
+html.dark .bg-gray-300,
+html.dark .bg-gray-400,
+html.dark .bg-gray-500,
+html.dark .bg-gray-600,
+html.dark .bg-gray-700,
+html.dark .bg-gray-800,
+html.dark .bg-gray-900 {
+  background-color: #2A2A2A !important; /* Secondary dark theme color for containers */
+}
+
+/* Light theme box colors - set to #EEEEEE */
+html.light .bg-slate-50,
+html.light .bg-slate-100,
+html.light .bg-slate-200,
+html.light .bg-white,
+html.light .bg-gray-50,
+html.light .bg-gray-100 {
+  background-color: #EEEEEE !important; /* Light theme box color */
+}
+
+/* Dark theme text colors */
+html.dark .text-slate-900,
+html.dark .text-slate-800,
+html.dark .text-slate-700,
+html.dark .text-slate-600,
+html.dark .text-slate-500,
+html.dark .text-slate-400,
+html.dark .text-slate-300,
+html.dark .text-slate-200,
+html.dark .text-slate-100,
+html.dark .text-gray-900,
+html.dark .text-gray-800,
+html.dark .text-gray-700,
+html.dark .text-gray-600,
+html.dark .text-gray-500,
+html.dark .text-gray-400,
+html.dark .text-gray-300,
+html.dark .text-gray-200,
+html.dark .text-gray-100 {
+  color: #fff !important; /* Pure white text for better contrast */
+}
+
+/* Dark theme border colors */
+html.dark .border-slate-200,
+html.dark .border-slate-300,
+html.dark .border-slate-400,
+html.dark .border-slate-500,
+html.dark .border-slate-600,
+html.dark .border-slate-700,
+html.dark .border-slate-800,
+html.dark .border-slate-900,
+html.dark .border-gray-200,
+html.dark .border-gray-300,
+html.dark .border-gray-400,
+html.dark .border-gray-500,
+html.dark .border-gray-600,
+html.dark .border-gray-700,
+html.dark .border-gray-800,
+html.dark .border-gray-900 {
+  border-color: #f5f5f5 !important; /* Light gray borders for better visibility */
+}
+
+/* Hero section border in dark mode */
+html.dark .hero-section-border {
+  border-color: #f5f5f7 !important;
+}
+
+
+/* Tailwind Typography için temel stiller (ArticleDetailPage.jsx'de kullanılacak) */
+.prose {
+  color: theme('colors.slate.700');
+}
+html.dark .prose {
+  color: #fff; /* Updated to pure white */
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  color: theme('colors.slate.900');
+  font-family: theme('fontFamily.sans');
+}
+html.dark .prose h1, html.dark .prose h2, html.dark .prose h3, html.dark .prose h4, html.dark .prose h5, html.dark .prose h6 {
+  color: #fff; /* Updated to pure white */
+}
+
+.prose p {
+  line-height: 1.75; /* Okunabilirlik için satır yüksekliği */
+  font-family: theme('fontFamily.serif'); /* Makale içeriği için serif font */
+}
+.prose a {
+  color: theme('colors.blue.600');
+  text-decoration: none;
+}
+html.dark .prose a {
+  color: theme('colors.blue.400');
+}
+
+.prose a:hover {
+  text-decoration: underline;
+}
+.prose strong {
+  color: theme('colors.slate.800');
+  font-weight: 600;
+}
+html.dark .prose strong {
+  color: #fff; /* Updated to pure white */
+}
+
+.prose blockquote {
+  border-left-color: theme('colors.orange.500');
+  color: theme('colors.slate.600');
+  font-style: italic;
+}
+html.dark .prose blockquote {
+  border-left-color: theme('colors.orange.400');
+  color: #f5f5f5; /* Updated to light gray */
+}
+
+
+/* Article Detail Page için özel stiller */
+.article-content h1, .article-content h2, .article-content h3 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+}
+html.dark .article-content h1,
+html.dark .article-content h2,
+html.dark .article-content h3 {
+  color: #fff; /* Updated to pure white */
+}
+
+
+.article-content p, .article-content li, .article-content blockquote {
+  font-family: 'Lora', serif;
+  font-size: 1.125rem;
+  line-height: 1.8;
+}
+html.dark .article-content p,
+html.dark .article-content li,
+html.dark .article-content blockquote {
+  color: #f5f5f5; /* Updated to light gray */
+}
+
+
+.article-references ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem; /* Girinti */
+}
+.article-references li {
+  font-family: 'Lora', serif;
+  font-size: 1rem; /* Referanslar için biraz daha küçük */
+  margin-bottom: 0.5rem;
+}
+
+/* Header için yükseklik değişkeni */
+:root {
+  --header-height: 4rem; /* 64px */
+}
+@media (min-width: 768px) { /* md breakpoint */
+  :root {
+    --header-height: 5rem; /* 80px */
+  }
+}
+
+html.dark ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+html.dark ::-webkit-scrollbar-track {
+  background: #0F0F0F; /* Updated dark theme primary color */
+  border-radius: 0;
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background: #f5f5f7; /* Updated to dark-secondary color */
+  border-radius: 0px;
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #404040; /* Slightly lighter than dark-secondary for hover effect */
+}
+
+html.dark ::-webkit-scrollbar-track {
+  background-color: #0F0F0F; /* Updated dark theme primary color */
+  border-left: 1px solid #f5f5f7; /* Updated to dark-secondary color */
+}
+
+html.light ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+html.light ::-webkit-scrollbar-track {
+  background: #f5f5f7;
+  border-radius: 0;
+}
+html.light ::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  border-radius: 0px;
+}
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: #cfcfcf;
+}
+
+html.light ::-webkit-scrollbar-track {
+  background-color: #f5f5f7;
+  border-left: 1px solid #d1d5db; /* slate-300 gibi bir gri */
+}
+
+/* 404 Page Animations */
+@keyframes letterReveal {
+  0% {
+    opacity: 0;
+    filter: blur(15px);
+    transform: scale(0.7) translateY(20px);
+  }
+  30% {
+    opacity: 0.3;
+    filter: blur(8px);
+    transform: scale(0.85) translateY(10px);
+  }
+  60% {
+    opacity: 0.7;
+    filter: blur(3px);
+    transform: scale(0.95) translateY(3px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+    transform: scale(1) translateY(0px);
+  }
+}
+
+@keyframes textReveal {
+  0% {
+    opacity: 0;
+    filter: blur(8px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+}
+
+@keyframes linkReveal {
+  0% {
+    opacity: 0;
+    filter: blur(5px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+}
+
+.animate-letter-reveal {
+  display: inline-block;
+  animation: letterReveal 0.8s ease-out forwards;
+}
+
+.animate-text-reveal {
+  animation: textReveal 0.8s ease-out 1.2s both;
+}
+
+.animate-link-reveal {
+  animation: linkReveal 0.6s ease-out 2s both;
+}
+
+/* Letter animation delays */
+.letter-1 { animation-delay: 0s; }
+.letter-2 { animation-delay: 0.1s; }
+.letter-3 { animation-delay: 0.2s; }
+.letter-4 { animation-delay: 0.3s; }
+.letter-5 { animation-delay: 0.4s; }
+.letter-6 { animation-delay: 0.5s; }
+.letter-7 { animation-delay: 0.6s; }
+.letter-8 { animation-delay: 0.7s; }
