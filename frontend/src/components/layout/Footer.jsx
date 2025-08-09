@@ -91,22 +91,6 @@ const Footer = () => (
               </li>
               <li>
                 <a
-                  href="/categories"
-                  className="text-slate-600 dark:text-slate-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors duration-200 text-sm"
-                >
-                  Kategoriler
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/highlights"
-                  className="text-slate-600 dark:text-slate-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors duration-200 text-sm"
-                >
-                  Öne Çıkanlar
-                </a>
-              </li>
-              <li>
-                <a
                   href="/gallery"
                   className="text-slate-600 dark:text-slate-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors duration-200 text-sm"
                 >

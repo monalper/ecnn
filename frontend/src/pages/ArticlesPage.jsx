@@ -431,26 +431,6 @@ const ArticlesPage = () => {
           </>
         )}
       </div>
-
-      {/* Öne Çıkan Makaleler Linki - Mobile Optimized */}
-      <div className="mt-12 sm:mt-20 text-center px-3 sm:px-4 lg:px-8 pb-4 sm:pb-8">
-        <div className="bg-gradient-to-r from-brand-orange/10 via-yellow-500/10 to-red-500/10 rounded-xl sm:rounded-2xl p-6 sm:p-8 border border-brand-orange/20">
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100 mb-3 sm:mb-4">
-            Öne Çıkan Makaleleri Keşfedin
-          </h3>
-          <p className="text-sm sm:text-lg text-slate-600 dark:text-slate-400 mb-4 sm:mb-6 max-w-2xl mx-auto">
-            En popüler ve önemli makalelerimizi anasayfada bulabilirsiniz. 
-            Güncel teknoloji trendlerini ve derinlemesine analizleri kaçırmayın.
-          </p>
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-brand-orange hover:bg-brand-orange/90 text-white font-semibold rounded-xl transition-colors shadow-lg hover:shadow-xl text-sm sm:text-base"
-          >
-            <FaFire className="w-4 h-4 sm:w-5 sm:h-5" />
-            Anasayfaya Dön
-          </Link>
-        </div>
-      </div>
     </>
   );
 };
