@@ -8,6 +8,7 @@ Sitemap: https://openwall.com.tr/sitemap.xml
 Disallow: /admin/
 Disallow: /api/
 Disallow: /private/
+Disallow: /login
 
 # Next.js sistem dosyalarını engelle
 Disallow: /_next/
@@ -40,6 +41,9 @@ Disallow: /wp-config.php~
 Disallow: /wp-config.php.txt
 Disallow: /wp-config.php.html
 Disallow: /wp-config.php.htm
+
+# Host
+Host: https://openwall.com.tr
 
 # Crawl-delay (sunucu yükünü azaltmak için)
 Crawl-delay: 1 

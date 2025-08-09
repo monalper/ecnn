@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import { FaArrowLeft, FaDownload, FaShare, FaHeart, FaEye } from 'react-icons/fa';
+import SchemaMarkup from '../components/seo/SchemaMarkup';
 import api from '../services/api';
 
 const GalleryItemPage = () => {
@@ -75,7 +77,30 @@ const GalleryItemPage = () => {
         <meta property="og:image" content={galleryItem.imageUrl} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`https://openwall.com.tr/gallery/${galleryItem.id}`} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={galleryItem.title} />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${galleryItem.title} - Galeri - OpenWall`} />
+        <meta name="twitter:description" content={galleryItem.description || `OpenWall galeri - ${galleryItem.title}`} />
+        <meta name="twitter:image" content={galleryItem.imageUrl} />
+        
+        {/* Canonical URL */}
+        <link rel="canonical" href={`https://openwall.com.tr/gallery/${galleryItem.id}`} />
       </Helmet>
+
+      {/* Schema.org ImageObject Markup */}
+      <SchemaMarkup
+        type="ImageObject"
+        data={{
+          title: galleryItem.title,
+          description: galleryItem.description || `OpenWall galeri - ${galleryItem.title}`,
+          imageUrl: galleryItem.imageUrl,
+          uploadDate: galleryItem.createdAt
+        }}
+      />
 
       <div className="container mx-auto px-4 py-8">
         {/* Back Button */}

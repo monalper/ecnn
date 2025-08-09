@@ -1,7 +1,7 @@
 {
-  "name": "OpenWall",
+  "name": "OpenWall - Entellektüel İçerikler ve Makaleler",
   "short_name": "OpenWall",
-  "description": "OpenWall, pek çok entellektüel alanda yazılmış makaleleri okuyun.",
+  "description": "OpenWall, teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat ve yemek gibi çeşitli alanlarda kaliteli içerikler sunan kapsamlı bir platformdur.",
   "icons": [
     {
       "src": "/favicon-16x16.png",
@@ -32,5 +32,10 @@
   "theme_color": "#f97316",
   "background_color": "#ffffff",
   "display": "standalone",
-  "start_url": "/"
+  "start_url": "/",
+  "scope": "/",
+  "orientation": "portrait-primary",
+  "categories": ["education", "news", "entertainment"],
+  "lang": "tr",
+  "dir": "ltr"
 } 

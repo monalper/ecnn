@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import CustomVideoPlayer from '../components/CustomVideoPlayer';
 import api from '../services/api';
 import thumbPlaceholder from '../assets/ThumbPlaceholder.png';
+import SchemaMarkup from '../components/seo/SchemaMarkup';
 
 const VideoDetailPage = () => {
   const { id } = useParams();
@@ -221,6 +222,20 @@ const VideoDetailPage = () => {
         {/* Canonical URL */}
         <link rel="canonical" href={`https://www.openwall.com.tr/videos/${video.id}`} />
       </Helmet>
+
+      {/* Schema.org VideoObject Markup */}
+      <SchemaMarkup
+        type="VideoObject"
+        data={{
+          title: video.title,
+          description: video.description || `OpenWall video: ${video.title}`,
+          thumbnailUrl: video.thumbnailUrl,
+          videoUrl: video.videoUrl,
+          embedUrl: `https://www.openwall.com.tr/videos/${video.id}`,
+          uploadDate: video.createdAt,
+          duration: video.duration
+        }}
+      />
 
       <div className="max-w-7xl mx-auto px-4 py-4 lg:py-6">
         <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">

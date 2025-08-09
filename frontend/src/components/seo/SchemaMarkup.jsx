@@ -116,6 +116,42 @@ const SchemaMarkup = ({
           }
         };
         
+      case 'VideoObject':
+        return {
+          "@context": "https://schema.org",
+          "@type": "VideoObject",
+          "name": data.title,
+          "description": data.description,
+          "thumbnailUrl": data.thumbnailUrl,
+          "uploadDate": data.uploadDate,
+          "duration": data.duration,
+          "contentUrl": data.videoUrl,
+          "embedUrl": data.embedUrl,
+          "publisher": {
+            "@type": "Organization",
+            "name": "OpenWall",
+            "logo": {
+              "@type": "ImageObject",
+              "url": `${baseUrl}/logo.png`
+            }
+          }
+        };
+        
+      case 'ImageObject':
+        return {
+          "@context": "https://schema.org",
+          "@type": "ImageObject",
+          "name": data.title,
+          "description": data.description,
+          "contentUrl": data.imageUrl,
+          "thumbnailUrl": data.thumbnailUrl,
+          "uploadDate": data.uploadDate,
+          "publisher": {
+            "@type": "Organization",
+            "name": "OpenWall"
+          }
+        };
+        
       default:
         return null;
     }

@@ -51,6 +51,27 @@ const Breadcrumb = ({ items = [] }) => {
         case 'disclaimer':
           name = 'Yasal Uyarı';
           break;
+        case 'gallery':
+          name = 'Galeri';
+          break;
+        case 'videos':
+          name = 'Videolar';
+          break;
+        case 'convert':
+          name = 'Dosya Dönüştürücü';
+          break;
+        case 'designer':
+          name = 'Tasarım Araçları';
+          break;
+        case 'charts':
+          name = 'Grafik Oluşturucu';
+          break;
+        case 'climatechange':
+          name = 'İklim Değişikliği';
+          break;
+        case 'dict':
+          name = 'Sözlük';
+          break;
         default:
           // Slug'ı başlık formatına çevir
           name = segment

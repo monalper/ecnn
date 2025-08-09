@@ -62,16 +62,18 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-site-background dark:bg-dark-primary">
       <MetaTags
-        title="OpenWall - Entellektüel İçerikler"
-        description="OpenWall, teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat ve yemek gibi çeşitli alanlarda kaliteli içerikler sunan kapsamlı bir platformdur."
-        keywords="teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat, yemek, makale, haber, içerik, blog"
+        title="OpenWall - Entellektüel İçerikler ve Makaleler"
+        description="OpenWall, teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat ve yemek gibi çeşitli alanlarda kaliteli içerikler sunan kapsamlı bir platformdur. Güncel makaleler, öne çıkan yazılar ve entellektüel tartışmalar."
+        keywords="teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat, yemek, makale, haber, içerik, blog, entellektüel, düşünce, analiz, araştırma"
+        type="website"
       />
-      <SchemaMarkup />
+      <SchemaMarkup type="WebSite" />
+      <SchemaMarkup type="Organization" />
       
       {/* Hero Section - OpenWall Grid Style */}
       <div className="container mx-auto px-3 sm:px-4 lg:px-8">
         <div className="relative rounded-2xl sm:rounded-3xl transition-colors mb-6 sm:mb-8 hero-section-border" style={{ border: '1px solid transparent' }}>
-          <div className="relative h-[280px] sm:h-[340px] md:h-[400px] flex items-center justify-center bg-[#101624] rounded-2xl sm:rounded-3xl overflow-hidden">
+          <div className="relative h-[375px] sm:h-[475px] md:h-[575px] lg:h-[675px] xl:h-[750px] flex items-center justify-center bg-[#101624] rounded-2xl sm:rounded-3xl overflow-hidden">
             {/* Video background */}
             <div className="absolute inset-0 z-0">
               <video
