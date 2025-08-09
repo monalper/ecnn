@@ -11,7 +11,7 @@
     <priority>1.0</priority>
   </url>
   
-  <!-- Makaleler Sayfası -->
+  <!-- Makaleler Sayfası - Sitelinks için kritik -->
   <url>
     <loc>https://openwall.com.tr/articles</loc>
     <lastmod>2024-01-15</lastmod>
@@ -19,15 +19,15 @@
     <priority>0.9</priority>
   </url>
   
-  <!-- Kategoriler -->
+  <!-- Kategoriler - Sitelinks için kritik -->
   <url>
     <loc>https://openwall.com.tr/categories</loc>
     <lastmod>2024-01-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
   
-  <!-- Öne Çıkanlar -->
+  <!-- Öne Çıkanlar - Sitelinks için kritik -->
   <url>
     <loc>https://openwall.com.tr/highlights</loc>
     <lastmod>2024-01-15</lastmod>
@@ -35,15 +35,7 @@
     <priority>0.9</priority>
   </url>
   
-  <!-- Hakkımızda -->
-  <url>
-    <loc>https://openwall.com.tr/about</loc>
-    <lastmod>2024-01-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <!-- Galeri -->
+  <!-- Galeri - Sitelinks için kritik -->
   <url>
     <loc>https://openwall.com.tr/gallery</loc>
     <lastmod>2024-01-15</lastmod>
@@ -51,7 +43,7 @@
     <priority>0.8</priority>
   </url>
   
-  <!-- Videolar -->
+  <!-- Videolar - Sitelinks için kritik -->
   <url>
     <loc>https://openwall.com.tr/videos</loc>
     <lastmod>2024-01-15</lastmod>
@@ -59,7 +51,7 @@
     <priority>0.8</priority>
   </url>
   
-  <!-- Sözlük -->
+  <!-- Sözlük - Sitelinks için kritik -->
   <url>
     <loc>https://openwall.com.tr/dictionary</loc>
     <lastmod>2024-01-15</lastmod>
@@ -67,12 +59,20 @@
     <priority>0.8</priority>
   </url>
   
+  <!-- Hakkımızda - Sitelinks için kritik -->
+  <url>
+    <loc>https://openwall.com.tr/about</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
   <!-- Dosya Dönüştürücü -->
   <url>
     <loc>https://openwall.com.tr/convert</loc>
     <lastmod>2024-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
   </url>
   
   <!-- Tasarım Araçları -->
@@ -80,7 +80,7 @@
     <loc>https://openwall.com.tr/designer</loc>
     <lastmod>2024-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
   </url>
   
   <!-- Grafik Oluşturucu -->
@@ -88,7 +88,7 @@
     <loc>https://openwall.com.tr/charts</loc>
     <lastmod>2024-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
   </url>
   
   <!-- İklim Değişikliği -->
@@ -96,7 +96,7 @@
     <loc>https://openwall.com.tr/climatechange</loc>
     <lastmod>2024-01-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   
   <!-- Yasal Uyarı -->

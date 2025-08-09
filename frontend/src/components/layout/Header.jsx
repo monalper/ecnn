@@ -25,6 +25,19 @@ const Header = ({ scrollPercent, customTitle }) => {
 
   return (
     <header className="bg-site-background dark:bg-dark-primary border-b border-slate-200 dark:border-white/20 fixed top-0 left-0 right-0 z-50 h-16 md:h-20 transition-colors">
+      {/* Sitelinks için semantic navigation - Google için görünür ama kullanıcı için gizli */}
+      <nav aria-label="Ana site navigasyonu" className="sr-only">
+        <ul>
+          <li><a href="https://openwall.com.tr/articles">Makaleler</a></li>
+          <li><a href="https://openwall.com.tr/categories">Kategoriler</a></li>
+          <li><a href="https://openwall.com.tr/highlights">Öne Çıkanlar</a></li>
+          <li><a href="https://openwall.com.tr/gallery">Galeri</a></li>
+          <li><a href="https://openwall.com.tr/videos">Videolar</a></li>
+          <li><a href="https://openwall.com.tr/dictionary">Sözlük</a></li>
+          <li><a href="https://openwall.com.tr/about">Hakkımızda</a></li>
+        </ul>
+      </nav>
+      
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-full relative">
         <div className="flex-1 hidden md:block" />
         <Link to="/" className="header-site-title text-xl md:text-2xl font-bold font-logo text-text-heading tracking-tight flex items-center gap-1 absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2" style={{whiteSpace: 'nowrap'}}>
