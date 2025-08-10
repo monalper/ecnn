@@ -45,7 +45,78 @@
   "start_url": "/",
   "scope": "/",
   "orientation": "portrait-primary",
-  "categories": ["education", "news", "entertainment"],
+  "categories": ["education", "news", "entertainment", "lifestyle", "technology", "politics", "business", "health", "sports", "arts", "travel", "food"],
   "lang": "tr",
-  "dir": "ltr"
+  "dir": "ltr",
+  "screenshots": [
+    {
+      "src": "/og-images/default/og-default.jpg",
+      "sizes": "1200x630",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "OpenWall Ana Sayfa"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Makaleler",
+      "short_name": "Makaleler",
+      "description": "Tüm makaleleri görüntüle",
+      "url": "/articles",
+      "icons": [
+        {
+          "src": "/favicon-32x32.png",
+          "sizes": "32x32"
+        }
+      ]
+    },
+    {
+      "name": "Kategoriler",
+      "short_name": "Kategoriler",
+      "description": "İçerik kategorilerini keşfet",
+      "url": "/categories",
+      "icons": [
+        {
+          "src": "/favicon-32x32.png",
+          "sizes": "32x32"
+        }
+      ]
+    },
+    {
+      "name": "Öne Çıkanlar",
+      "short_name": "Öne Çıkanlar",
+      "description": "Günün öne çıkan içerikleri",
+      "url": "/highlights",
+      "icons": [
+        {
+          "src": "/favicon-32x32.png",
+          "sizes": "32x32"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "protocol_handlers": [
+    {
+      "protocol": "web+openwall",
+      "url": "/%s"
+    }
+  ],
+  "file_handlers": [
+    {
+      "action": "/convert",
+      "accept": {
+        "text/*": [".txt", ".md", ".html"],
+        "image/*": [".jpg", ".jpeg", ".png", ".gif", ".webp"],
+        "application/pdf": [".pdf"]
+      }
+    }
+  ]
 } 
