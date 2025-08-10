@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
+import VideoCard from '../components/VideoCard';
 import api from '../services/api';
 import thumbPlaceholder from '../assets/ThumbPlaceholder.png';
 
@@ -110,7 +111,7 @@ const VideosPage = () => {
         </Helmet>
 
         {/* Background video content with blur */}
-        <div className="container mx-auto px-4 py-8 blur-sm pointer-events-none">
+        <div className="px-4 py-8 blur-sm pointer-events-none">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
               Videolar
@@ -219,7 +220,7 @@ const VideosPage = () => {
         <meta property="og:url" content="https://openwall.com.tr/videos" />
       </Helmet>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="px-4 py-8">
         {!Array.isArray(videoItems) || videoItems.length === 0 ? (
           <div className="text-center py-20">
             <div className="text-6xl mb-4">🎥</div>
@@ -233,42 +234,10 @@ const VideosPage = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {videoItems.map((item) => (
-              <div
+              <VideoCard
                 key={item.id}
-                className="relative cursor-pointer"
-                onClick={() => handleVideoClick(item)}
-              >
-                {/* 16:9 Aspect Ratio Container */}
-                <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-                  <div className="absolute inset-0 bg-black rounded-lg overflow-hidden">
-                    <img
-                      src={item.thumbnailUrl || thumbPlaceholder}
-                      alt={item.title}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                  
-                  {/* Duration badge */}
-                  {item.duration && (
-                    <div className="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white text-xs px-2 py-1 rounded">
-                      {formatDuration(item.duration)}
-                    </div>
-                  )}
-                </div>
-
-                {/* Video info */}
-                <div className="mt-3">
-                  <h3 className="font-bold text-gray-900 dark:text-white text-base line-clamp-2">
-                    {item.title}
-                  </h3>
-                  {item.createdAt && (
-                    <p className="text-gray-600 dark:text-gray-400 text-xs mt-1 opacity-50">
-                      {formatUploadTime(item.createdAt)}
-                    </p>
-                  )}
-                </div>
-              </div>
+                video={item}
+              />
             ))}
           </div>
         )}

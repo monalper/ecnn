@@ -78,7 +78,7 @@ function AppContent() {
     <div className="flex flex-col min-h-screen font-sans text-slate-800 dark:text-slate-200 transition-colors">
       <ConditionalHeaderFooter />
       <ThemeToggleButton />
-      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24 md:pt-28 transition-colors">
+      <main className="flex-grow px-4 sm:px-6 lg:px-8 py-8 pt-24 md:pt-28 transition-colors">
         <Suspense fallback={<div className="text-center py-20 text-lg font-semibold">Sayfa Yükleniyor...</div>}>
           <Routes>
             {/* Public Routes */}

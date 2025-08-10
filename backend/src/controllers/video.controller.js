@@ -4,12 +4,41 @@ const { s3Client, S3_BUCKET_NAME } = require('../config/aws.config');
 const { PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const path = require('path');
+const { docClient, USERS_TABLE } = require('../config/aws.config');
+const { GetCommand } = require('@aws-sdk/lib-dynamodb');
+
+// Helper function to get username by userId
+const getUsernameById = async (userId) => {
+  try {
+    const params = {
+      TableName: USERS_TABLE,
+      Key: { userId }
+    };
+    const { Item: user } = await docClient.send(new GetCommand(params));
+    return user ? user.username : 'Bilinmeyen';
+  } catch (error) {
+    console.error('Username fetch error:', error);
+    return 'Bilinmeyen';
+  }
+};
 
 // Get all video items
 const getAllVideoItems = async (req, res) => {
   try {
     const items = await VideoModel.getAll();
-    res.json(items);
+    
+    // Add username for each video
+    const itemsWithUsername = await Promise.all(
+      items.map(async (item) => {
+        if (item.createdBy) {
+          const username = await getUsernameById(item.createdBy);
+          return { ...item, createdByUsername: username };
+        }
+        return item;
+      })
+    );
+    
+    res.json(itemsWithUsername);
   } catch (error) {
     console.error('Video items fetch error:', error);
     
@@ -33,6 +62,12 @@ const getVideoItemById = async (req, res) => {
       return res.status(404).json({ message: 'Video öğesi bulunamadı.' });
     }
     
+    // Add username if createdBy exists
+    if (item.createdBy) {
+      const username = await getUsernameById(item.createdBy);
+      item.createdByUsername = username;
+    }
+    
     res.json(item);
   } catch (error) {
     console.error('Video item fetch error:', error);
@@ -54,6 +89,13 @@ const createVideoItem = async (req, res) => {
     if (!title || !videoKey || !videoUrl) {
       return res.status(400).json({ 
         message: 'Başlık, video anahtarı ve video URL\'i gereklidir.' 
+      });
+    }
+
+    // Başlık uzunluğu kontrolü
+    if (title.length > 100) {
+      return res.status(400).json({ 
+        message: 'Başlık 100 karakterden uzun olamaz.' 
       });
     }
 
@@ -92,6 +134,13 @@ const updateVideoItem = async (req, res) => {
   try {
     const { id } = req.params;
     const { title, description, videoKey, videoUrl, thumbnailKey, thumbnailUrl, duration, subtitles } = req.body;
+
+    // Başlık uzunluğu kontrolü
+    if (title !== undefined && title.length > 100) {
+      return res.status(400).json({ 
+        message: 'Başlık 100 karakterden uzun olamaz.' 
+      });
+    }
 
     const updates = {};
     if (title !== undefined) updates.title = title;

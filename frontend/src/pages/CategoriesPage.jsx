@@ -106,7 +106,7 @@ const CategoriesPage = () => {
         keywords="kategoriler, teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat, yemek"
       />
       
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+      <div className="px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-slate-800 dark:text-white mb-4">
             Kategoriler

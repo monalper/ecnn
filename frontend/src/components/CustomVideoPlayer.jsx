@@ -1,4 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { 
+  FiSettings, 
+  FiPlay, 
+  FiPause, 
+  FiVolume2, 
+  FiVolumeX, 
+  FiMaximize, 
+  FiMinimize,
+  FiChevronRight,
+  FiChevronLeft,
+  FiCheck,
+  FiX,
+  FiClock,
+  FiMonitor,
+  FiType,
+  FiVolume
+} from 'react-icons/fi';
 
 const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitles = [], autoPlay = false }) => {
   const videoRef = useRef(null);
@@ -72,6 +89,44 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
       setDuration(video.duration);
       if (video.videoWidth && video.videoHeight) {
         setVideoAspectRatio(video.videoWidth / video.videoHeight);
+        
+        // Video kalite seçeneklerini belirle
+        const videoWidth = video.videoWidth;
+        const videoHeight = video.videoHeight;
+        
+        // Mevcut video çözünürlüğü
+        const currentQuality = `${videoWidth}x${videoHeight}`;
+        
+        // Kalite seçeneklerini oluştur (mevcut kaliteden düşüğe doğru)
+        const qualityOptions = [];
+        
+        // Mevcut çözünürlük
+        qualityOptions.push(currentQuality);
+        
+        // Mevcut kaliteden düşük kaliteleri ekle
+        if (videoHeight > 720) {
+          qualityOptions.push('1280x720'); // HD
+        }
+        if (videoHeight > 480) {
+          qualityOptions.push('854x480'); // SD
+        }
+        if (videoHeight > 360) {
+          qualityOptions.push('640x360'); // Low
+        }
+        
+        // Otomatik seçeneği en sona ekle
+        qualityOptions.push('auto');
+        
+        // Mevcut çözünürlük zaten listedeyse tekrar ekleme
+        const uniqueQualities = qualityOptions.filter((quality, index, arr) => 
+          arr.indexOf(quality) === index
+        );
+        
+        setAvailableQualities(uniqueQualities);
+        setVideoQuality(currentQuality); // Varsayılan olarak mevcut çözünürlüğü seç
+        
+        console.log('Video kalite seçenekleri yüklendi:', uniqueQualities);
+        console.log('Mevcut video çözünürlüğü:', currentQuality);
       }
     };
 
@@ -759,13 +814,88 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
     }
   };
 
+  const getQualityDisplayName = (quality) => {
+    if (quality === 'auto') return 'Otomatik';
+    
+    // Çözünürlük bilgisini parse et
+    const [width, height] = quality.split('x').map(Number);
+    
+    // HD ve 4K etiketlerini belirle
+    let qualityLabel = '';
+    if (width >= 2560 && height >= 1440) {
+      qualityLabel = <span className="text-yellow-400 text-xs ml-2 font-semibold bg-yellow-400/10 px-2 py-1 rounded">4K</span>;
+    } else if (width >= 1280 && height >= 720) {
+      qualityLabel = <span className="text-yellow-400 text-xs ml-2 font-semibold bg-yellow-400/10 px-2 py-1 rounded">HD</span>;
+    }
+    
+    // Çözünürlüğü p formatında göster
+    let displayQuality = quality;
+    if (height === 1080) displayQuality = '1080p';
+    else if (height === 720) displayQuality = '720p';
+    else if (height === 480) displayQuality = '480p';
+    else if (height === 360) displayQuality = '360p';
+    
+    return (
+      <div className="flex items-center justify-between w-full">
+        <span>{displayQuality}</span>
+        {qualityLabel}
+      </div>
+    );
+  };
+
   const changeVideoQuality = (quality) => {
     setVideoQuality(quality);
     setShowQualityMenu(false);
     setShowSettingsMenu(false);
     setCurrentSettingsView('main');
-    console.log('Video quality changed to:', quality);
-    // TODO: Implement actual quality change logic
+    
+    const video = videoRef.current;
+    if (!video) return;
+    
+    if (quality === 'auto') {
+      console.log('Video kalitesi otomatik olarak ayarlandı');
+      // Otomatik kalite için video source'unu orijinal hale getir
+      video.src = src;
+      video.setAttribute('data-quality', 'auto');
+    } else {
+      console.log('Video kalitesi değiştirildi:', quality);
+      
+      // Seçilen çözünürlüğe göre video source'unu değiştir
+      const [width, height] = quality.split('x').map(Number);
+      
+      // QualitySources prop'undan uygun video URL'ini al
+      let newVideoSrc = src; // Varsayılan olarak orijinal source
+      
+      // Eğer qualitySources prop'u varsa ve seçilen kalite için URL varsa kullan
+      if (qualitySources && qualitySources[quality]) {
+        newVideoSrc = qualitySources[quality];
+        console.log('Yeni video URL yükleniyor:', newVideoSrc);
+      }
+      
+      // Video source'unu değiştir
+      video.src = newVideoSrc;
+      video.setAttribute('data-quality', quality);
+      
+      // Video container'ın aspect ratio'sunu güncelle
+      const aspectRatio = width / height;
+      setVideoAspectRatio(aspectRatio);
+      
+      // Video elementinin boyutunu ayarla
+      video.style.width = '100%';
+      video.style.height = '100%';
+      
+      // Video'yu yeniden yükle
+      video.load();
+      
+      // Eğer video oynatılıyorsa, yeni kalitede devam et
+      if (isPlaying) {
+        const currentTime = video.currentTime;
+        video.currentTime = currentTime;
+        video.play().catch(error => {
+          console.log('Video yeniden oynatılamadı:', error);
+        });
+      }
+    }
   };
 
   // Update video playback speed when speed changes
@@ -809,7 +939,7 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
   return (
     <div 
       ref={containerRef}
-      className={`relative bg-black rounded-xl overflow-hidden shadow-2xl ${isFullscreen ? 'fixed inset-0 z-50' : 'w-full max-w-5xl mx-auto'} ${!showControls ? 'cursor-none' : ''}`}
+      className={`relative bg-black rounded-xl overflow-hidden shadow-2xl ${isFullscreen ? 'fixed inset-0 z-50' : 'w-full'} ${!showControls ? 'cursor-none' : ''}`}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
@@ -825,6 +955,7 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
           style={getVideoContainerStyle()}
           className={`${isFullscreen ? 'absolute inset-0' : 'absolute inset-0 w-full h-full'} transition-all duration-300`}
           onClick={handleVideoClick}
+          data-quality={videoQuality}
         />
       </div>
 
@@ -1005,52 +1136,42 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
                 className="text-white transition-all duration-300 flex items-center justify-center"
                 title="Ayarlar"
               >
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
-                </svg>
+                <FiSettings className="w-6 h-6" />
               </button>
               
               {/* Unified Settings Menu */}
               {showSettingsMenu && (
-                <div className="absolute bottom-full right-0 mb-2 bg-black/95 backdrop-blur-sm rounded-lg p-2 min-w-48 border border-white/20 shadow-xl z-20">
+                <div className="absolute bottom-full right-0 mb-2 bg-black/90 backdrop-blur-sm rounded-lg p-1 min-w-44 border border-white/10 shadow-2xl z-20">
                   {/* Main Settings Menu */}
                   {currentSettingsView === 'main' && (
-                    <div className="space-y-1">
+                    <div className="space-y-0.5">
                       {/* Playback Speed Option */}
                       <button
                         onClick={() => setCurrentSettingsView('speed')}
-                        className="w-full flex items-center justify-between px-3 py-2 text-sm rounded transition-colors text-white/90 hover:bg-white/10"
+                        className="w-full flex items-center justify-between px-3 py-2.5 text-sm rounded hover:bg-white/10 transition-colors text-white/90"
                       >
                         <div className="flex items-center">
-                          <svg className="w-4 h-4 text-white/70 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M13 2.05v3.03c3.39.49 6 3.39 6 6.92 0 .9-.18 1.75-.5 2.54l2.6 1.53c.56-1.24.9-2.62.9-4.07 0-5.18-3.95-9.45-9-9.95zM12 19c-3.87 0-7-3.13-7-7 0-3.53 2.61-6.43 6-6.92V2.05c-5.06.5-9 4.76-9 9.95 0 5.52 4.47 10 9.99 10 3.31 0 6.24-1.61 8.06-4.09l-2.6-1.53C16.17 17.98 14.21 19 12 19z"/>
-                          </svg>
+                          <FiClock className="w-4 h-4 text-white/70 mr-3" />
                           <span>Hız</span>
                         </div>
                         <div className="flex items-center text-white/60">
-                          <span className="text-white font-medium mr-1">{playbackSpeed}x</span>
-                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
-                          </svg>
+                          <span className="text-white font-medium mr-2">{playbackSpeed}x</span>
+                          <FiChevronRight className="w-3 h-3" />
                         </div>
                       </button>
 
                       {/* Video Quality Option */}
                       <button
                         onClick={() => setCurrentSettingsView('quality')}
-                        className="w-full flex items-center justify-between px-3 py-2 text-sm rounded transition-colors text-white/90 hover:bg-white/10"
+                        className="w-full flex items-center justify-between px-3 py-2.5 text-sm rounded hover:bg-white/10 transition-colors text-white/90"
                       >
                         <div className="flex items-center">
-                          <svg className="w-4 h-4 text-white/70 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 12H3V5h18v10z"/>
-                          </svg>
+                          <FiMonitor className="w-4 h-4 text-white/70 mr-3" />
                           <span>Kalite</span>
                         </div>
                         <div className="flex items-center text-white/60">
-                          <span className="text-white font-medium mr-1">{videoQuality}</span>
-                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
-                          </svg>
+                          <span className="text-white font-medium mr-2">{getQualityDisplayName(videoQuality)}</span>
+                          <FiChevronRight className="w-3 h-3" />
                         </div>
                       </button>
 
@@ -1058,21 +1179,17 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
                       {(subtitleTracks.length > 0 || (subtitles && subtitles.length > 0)) && (
                         <button
                           onClick={() => setCurrentSettingsView('subtitles')}
-                          className="w-full flex items-center justify-between px-3 py-2 text-sm rounded transition-colors text-white/90 hover:bg-white/10"
+                          className="w-full flex items-center justify-between px-3 py-2.5 text-sm rounded hover:bg-white/10 transition-colors text-white/90"
                         >
                           <div className="flex items-center">
-                            <svg className="w-4 h-4 text-white/70 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM4 12h4v2H4v-2zm10 6H4v-2h10v2zm6 0h-4v-2h4v2zm0-4H10v-2h10v2z"/>
-                            </svg>
+                            <FiType className="w-4 h-4 text-white/70 mr-3" />
                             <span>Altyazı</span>
                           </div>
                           <div className="flex items-center text-white/60">
-                            <span className={`font-medium mr-1 ${showSubtitles ? 'text-green-400' : 'text-red-400'}`}>
+                            <span className={`font-medium mr-2 ${showSubtitles ? 'text-green-400' : 'text-red-400'}`}>
                               {showSubtitles ? 'Açık' : 'Kapalı'}
                             </span>
-                            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
-                            </svg>
+                            <FiChevronRight className="w-3 h-3" />
                           </div>
                         </button>
                       )}
@@ -1087,19 +1204,17 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
                           onClick={() => setCurrentSettingsView('main')}
                           className="text-white/70 hover:text-white transition-colors p-1"
                         >
-                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-                          </svg>
+                          <FiChevronLeft className="w-4 h-4" />
                         </button>
                         <span className="text-white text-sm font-medium">Hız</span>
                         <div className="w-4"></div>
                       </div>
-                      <div className="grid grid-cols-3 gap-1 px-2">
+                      <div className="grid grid-cols-3 gap-1 px-2 pb-2">
                         {[0.5, 0.75, 1, 1.25, 1.5, 2].map((speed) => (
                           <button
                             key={speed}
                             onClick={() => changePlaybackSpeed(speed)}
-                            className={`px-2 py-1 text-xs rounded transition-colors ${
+                            className={`px-2 py-1.5 text-xs rounded transition-colors ${
                               speed === playbackSpeed 
                                 ? 'text-white bg-white/20' 
                                 : 'text-white/80 hover:bg-white/10'
@@ -1120,9 +1235,7 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
                           onClick={() => setCurrentSettingsView('main')}
                           className="text-white/70 hover:text-white transition-colors p-1"
                         >
-                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-                          </svg>
+                          <FiChevronLeft className="w-4 h-4" />
                         </button>
                         <span className="text-white text-sm font-medium">Kalite</span>
                         <div className="w-4"></div>
@@ -1131,17 +1244,15 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
                         <button
                           key={quality}
                           onClick={() => changeVideoQuality(quality)}
-                          className={`w-full flex items-center justify-between px-3 py-2 text-sm rounded transition-colors ${
+                          className={`w-full flex items-center justify-between px-3 py-2.5 text-sm rounded transition-colors ${
                             quality === videoQuality 
                               ? 'text-white bg-white/20' 
                               : 'text-white/80 hover:bg-white/10'
                           }`}
                         >
-                          <span>{quality}</span>
+                          <span>{getQualityDisplayName(quality)}</span>
                           {quality === videoQuality && (
-                            <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                            </svg>
+                            <FiCheck className="w-4 h-4 text-white" />
                           )}
                         </button>
                       ))}
@@ -1156,9 +1267,7 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
                           onClick={() => setCurrentSettingsView('main')}
                           className="text-white/70 hover:text-white transition-colors p-1"
                         >
-                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-                          </svg>
+                          <FiChevronLeft className="w-4 h-4" />
                         </button>
                         <span className="text-white text-sm font-medium">Altyazı</span>
                         <div className="w-4"></div>
@@ -1167,20 +1276,18 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
                       {/* Enable/Disable subtitle option */}
                       <button
                         onClick={showSubtitles ? disableSubtitles : enableSubtitles}
-                        className={`w-full flex items-center justify-between px-3 py-2 text-sm rounded transition-colors ${
+                        className={`w-full flex items-center justify-between px-3 py-2.5 text-sm rounded transition-colors ${
                           showSubtitles 
                             ? 'text-red-400 bg-red-500/10' 
                             : 'text-green-400 bg-green-500/10'
                         }`}
                       >
                         <span>{showSubtitles ? 'Altyazıları Kapat' : 'Altyazıları Aç'}</span>
-                        <svg className={`w-4 h-4 ${showSubtitles ? 'text-red-400' : 'text-green-400'}`} fill="currentColor" viewBox="0 0 24 24">
-                          {showSubtitles ? (
-                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                          ) : (
-                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                          )}
-                        </svg>
+                        {showSubtitles ? (
+                          <FiX className="w-4 h-4 text-red-400" />
+                        ) : (
+                          <FiCheck className="w-4 h-4 text-green-400" />
+                        )}
                       </button>
                       
                       {/* Subtitle tracks */}
@@ -1192,7 +1299,7 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
                               <button
                                 key={index}
                                 onClick={() => selectSubtitleTrack(index)}
-                                className={`w-full flex items-center justify-between px-3 py-2 text-sm rounded transition-colors ${
+                                className={`w-full flex items-center justify-between px-3 py-2.5 text-sm rounded transition-colors ${
                                   track.active 
                                     ? 'text-white bg-white/20' 
                                     : 'text-white/80 hover:bg-white/10'
@@ -1200,9 +1307,7 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
                               >
                                 <span>{track.label}</span>
                                 {track.active && (
-                                  <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                                  </svg>
+                                  <FiCheck className="w-4 h-4 text-white" />
                                 )}
                               </button>
                             ))}

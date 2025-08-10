@@ -711,16 +711,22 @@ const AdminVideosPage = () => {
                     {/* Title */}
                     <div className="mb-4">
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Başlık *
+                        Başlık * <span className="text-xs text-gray-500">({formData.title.length}/100)</span>
                       </label>
                       <input
                         type="text"
                         value={formData.title}
                         onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+                        maxLength={100}
                         className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-orange focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors"
-                        placeholder="Video başlığını girin"
+                        placeholder="Video başlığını girin (maksimum 100 karakter)"
                         required
                       />
+                      {formData.title.length >= 90 && (
+                        <p className={`text-xs mt-1 ${formData.title.length >= 100 ? 'text-red-500' : 'text-orange-500'}`}>
+                          {formData.title.length >= 100 ? 'Maksimum karakter sayısına ulaştınız!' : `${100 - formData.title.length} karakter kaldı`}
+                        </p>
+                      )}
                     </div>
 
                     {/* Description */}

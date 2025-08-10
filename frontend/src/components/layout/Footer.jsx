@@ -11,7 +11,7 @@ const socialLinks = [
 
 const Footer = () => (
   <footer className="bg-white dark:bg-dark-primary border-t border-slate-200 dark:border-[#f5f5f5]/20 mt-16">
-    <div className="container mx-auto px-6 py-12">
+    <div className="px-8 sm:px-12 lg:px-16 xl:px-20 2xl:px-24 py-12">
       {/* Main Footer Content */}
       <div className="flex flex-col lg:flex-row justify-between items-start gap-8 mb-8">
         {/* Brand Section */}

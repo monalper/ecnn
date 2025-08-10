@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate } from 'react-router-dom';
 import CustomVideoPlayer from '../components/CustomVideoPlayer';
+import VideoCard from '../components/VideoCard';
 import api from '../services/api';
 import thumbPlaceholder from '../assets/ThumbPlaceholder.png';
 import SchemaMarkup from '../components/seo/SchemaMarkup';
@@ -237,23 +238,25 @@ const VideoDetailPage = () => {
         }}
       />
 
-      <div className="max-w-7xl mx-auto px-4 py-4 lg:py-6">
+      <div className="w-full px-0 py-4 lg:py-6">
         <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
           {/* Main Content */}
-          <div className="flex-1">
+          <div className="flex-1 lg:flex-[2]">
             {/* Video Player */}
-            <div className="bg-black rounded-lg overflow-hidden shadow-lg mb-8">
-              <CustomVideoPlayer
-                src={video.videoUrl}
-                poster={video.thumbnailUrl || thumbPlaceholder}
-                title={video.title}
-                subtitles={video.subtitles || []}
-                autoPlay={true}
-              />
+            <div className="px-4 lg:px-6 mb-8">
+              <div className="bg-black rounded-lg overflow-hidden shadow-lg w-full">
+                <CustomVideoPlayer
+                  src={video.videoUrl}
+                  poster={video.thumbnailUrl || thumbPlaceholder}
+                  title={video.title}
+                  subtitles={video.subtitles || []}
+                  autoPlay={true}
+                />
+              </div>
             </div>
 
             {/* Video Information */}
-            <div className="px-2 lg:px-0">
+            <div className="px-4 lg:px-6">
               <h1 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mb-6">
                 {video.title}
               </h1>
@@ -285,37 +288,15 @@ const VideoDetailPage = () => {
           </div>
 
           {/* Sidebar - Related Videos */}
-          <div className="lg:w-96 mt-6 lg:mt-0">
-            <div className="px-2 lg:px-0">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                Diğer Videolar
-              </h3>
-              
-              <div className="space-y-3">
+          <div className="lg:w-96 lg:flex-[1] mt-6 lg:mt-0">
+            <div className="px-4 lg:px-0">
+              <div className="space-y-4">
                 {relatedVideos.map((relatedVideo) => (
-                  <div
+                  <VideoCard
                     key={relatedVideo.id}
-                    onClick={() => navigate(`/videos/${relatedVideo.id}`)}
-                    className="cursor-pointer hover:opacity-80 transition-opacity flex space-x-3"
-                  >
-                    <div className="relative flex-shrink-0" style={{ width: '120px', height: '72px' }}>
-                      <img
-                        src={relatedVideo.thumbnailUrl || thumbPlaceholder}
-                        alt={relatedVideo.title}
-                        className="w-full h-full object-cover rounded-lg"
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-bold text-gray-900 dark:text-white mb-1 leading-tight">
-                        {relatedVideo.title}
-                      </h4>
-                      {relatedVideo.createdAt && (
-                        <p className="text-xs text-gray-500 dark:text-gray-400 opacity-50">
-                          {formatDate(relatedVideo.createdAt)}
-                        </p>
-                      )}
-                    </div>
-                  </div>
+                    video={relatedVideo}
+                    layout="horizontal"
+                  />
                 ))}
               </div>
               

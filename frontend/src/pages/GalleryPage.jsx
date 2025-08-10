@@ -83,7 +83,7 @@ const GalleryPage = () => {
         </Helmet>
 
         {/* Background gallery content with blur */}
-        <div className="container mx-auto px-4 py-8 blur-sm pointer-events-none">
+        <div className="px-4 py-8 blur-sm pointer-events-none">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
               Görseller
@@ -190,7 +190,7 @@ const GalleryPage = () => {
         <meta property="og:url" content="https://openwall.com.tr/gallery" />
       </Helmet>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="px-4 py-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Görseller

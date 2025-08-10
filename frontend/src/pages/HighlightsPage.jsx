@@ -51,7 +51,7 @@ const HighlightsPage = () => {
   return (
     <div className="min-h-screen bg-site-background">
       {/* Hero Section - Minimal & Professional */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="px-4 sm:px-6 lg:px-8">
         {heroArticle ? (
           <section className="flex flex-col md:flex-row items-center gap-10 py-12 md:py-20">
             {/* Cover Image */}
@@ -96,7 +96,7 @@ const HighlightsPage = () => {
       </div>
 
       {/* Articles Section */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="px-4 sm:px-6 lg:px-8 py-12">
         {articles.length === 0 && !loading && (
           <div className="text-center py-10">
             <h2 className="text-2xl font-semibold text-text-muted">

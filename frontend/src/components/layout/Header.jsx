@@ -38,7 +38,7 @@ const Header = ({ scrollPercent, customTitle }) => {
         </ul>
       </nav>
       
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-full relative">
+      <div className="px-4 sm:px-6 lg:px-8 flex items-center justify-between h-full relative">
         <div className="flex-1 hidden md:block" />
         <Link to="/" className="header-site-title text-xl md:text-2xl font-bold font-logo text-text-heading tracking-tight flex items-center gap-1 absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2" style={{whiteSpace: 'nowrap'}}>
           {isConvertPage ? (
@@ -100,7 +100,7 @@ const Header = ({ scrollPercent, customTitle }) => {
       {/* Mobile Menu Dropdown */}
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b border-slate-200 shadow-lg">
-          <nav className="container mx-auto px-4 py-3 flex flex-col space-y-3">
+          <nav className="px-4 py-3 flex flex-col space-y-3">
             <Link 
               to="/" 
               className="header-nav-link text-sm font-bold tracking-extrawidest uppercase text-text-muted hover:text-text-main transition-colors"

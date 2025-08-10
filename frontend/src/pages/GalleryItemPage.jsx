@@ -102,7 +102,7 @@ const GalleryItemPage = () => {
         }}
       />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="px-4 py-8">
         {/* Back Button */}
         <div className="mb-6">
           <button
