@@ -65,6 +65,18 @@ const MetaTags = ({
           {tags.map((tag, index) => (
             <meta key={index} property="article:tag" content={tag} />
           ))}
+          {/* Yeni eklenen makale meta tag'leri */}
+          <meta property="article:content_tier" content="premium" />
+          <meta property="article:content_rating" content="general" />
+          <meta property="article:content_language" content="tr-TR" />
+          <meta property="article:content_region" content="TR" />
+          <meta property="article:content_category" content="entellektuel-icerik" />
+          <meta property="article:content_type" content="makale" />
+          <meta property="article:content_format" content="html" />
+          <meta property="article:content_length" content={wordCount ? `${wordCount} kelime` : ''} />
+          <meta property="article:reading_time" content={readingTime} />
+          <meta property="article:difficulty_level" content="orta" />
+          <meta property="article:target_audience" content="entellektuel-kitle" />
         </>
       )}
       

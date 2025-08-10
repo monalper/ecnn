@@ -259,9 +259,79 @@ const ArticleDetailPage = () => {
           section: "Technology",
           keywords: article.tags?.join(', '),
           wordCount: article.content?.replace(/<[^>]+>/g, '').split(/\s+/).length,
-          readingTime: readingTime
+          readingTime: readingTime,
+          content: article.content,
+          tags: article.tags || [],
+          references: article.references || []
         }}
+        breadcrumbs={[
+          { name: 'Ana Sayfa', url: 'https://openwall.com.tr' },
+          { name: 'Makaleler', url: 'https://openwall.com.tr/articles' },
+          { name: article.title, url: window.location.href }
+        ]}
       />
+      
+      {/* Ek yapılandırılmış veri */}
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": article.title,
+            "description": article.description || article.content?.substring(0, 160),
+            "url": window.location.href,
+            "mainEntity": {
+              "@type": "Article",
+              "headline": article.title,
+              "description": article.description || article.content?.substring(0, 160),
+              "image": pageImage,
+              "author": {
+                "@type": "Person",
+                "name": author || "OpenWall"
+              },
+              "publisher": {
+                "@type": "Organization",
+                "name": "OpenWall",
+                "logo": {
+                  "@type": "ImageObject",
+                  "url": "https://openwall.com.tr/logo.png"
+                }
+              },
+              "datePublished": article.createdAt,
+              "dateModified": article.updatedAt,
+              "articleSection": article.categories?.[0] || "General",
+              "keywords": article.tags?.join(', '),
+              "wordCount": article.content?.replace(/<[^>]+>/g, '').split(/\s+/).length,
+              "timeRequired": readingTime,
+              "inLanguage": "tr-TR",
+              "isAccessibleForFree": true
+            },
+            "breadcrumb": {
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Ana Sayfa",
+                  "item": "https://openwall.com.tr"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Makaleler",
+                  "item": "https://openwall.com.tr/articles"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": article.title,
+                  "item": window.location.href
+                }
+              ]
+            }
+          })}
+        </script>
+      </Helmet>
       
       <Header scrollPercent={scrollPercent} />
 
@@ -283,6 +353,30 @@ const ArticleDetailPage = () => {
 
         <Helmet>
             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5253715298133137" crossOrigin="anonymous"></script>
+            
+            {/* Ek SEO meta tag'leri */}
+            <meta name="article:content_tier" content="premium" />
+            <meta name="article:content_rating" content="general" />
+            <meta name="article:content_language" content="tr-TR" />
+            <meta name="article:content_region" content="TR" />
+            <meta name="article:content_category" content="entellektuel-icerik" />
+            <meta name="article:content_type" content="makale" />
+            <meta name="article:content_format" content="html" />
+            <meta name="article:content_length" content={`${article.content?.replace(/<[^>]+>/g, '').split(/\s+/).length || 0} kelime`} />
+            <meta name="article:reading_time" content={readingTime} />
+            <meta name="article:difficulty_level" content="orta" />
+            <meta name="article:target_audience" content="entellektuel-kitle" />
+            
+            {/* Makale içeriği için ek meta bilgiler */}
+            {article.tags && article.tags.map((tag, index) => (
+              <meta key={index} name="article:tag" content={tag} />
+            ))}
+            {article.categories && article.categories.map((category, index) => (
+              <meta key={index} name="article:category" content={category} />
+            ))}
+            {article.references && article.references.length > 0 && (
+              <meta name="article:references" content={article.references.join(', ')} />
+            )}
         </Helmet>
         {/* Kapak görseli */}
         <div className="w-full aspect-[16/9] bg-dark-secondary flex items-center justify-center">
@@ -322,6 +416,22 @@ const ArticleDetailPage = () => {
           className="prose prose-slate max-w-none mb-10 break-words text-left md:text-justify"
           style={{ fontFamily: 'Inter, sans-serif', fontSize: '17px', fontWeight: 400, lineHeight: 1.7, textAlign: window.innerWidth >= 768 ? 'justify' : 'left' }}
         >
+          {/* Makale içeriği için ek SEO bilgileri */}
+          <div itemScope itemType="https://schema.org/Article" style={{ display: 'none' }}>
+            <meta itemProp="headline" content={article.title} />
+            <meta itemProp="description" content={article.description || article.content?.substring(0, 160)} />
+            <meta itemProp="image" content={pageImage} />
+            <meta itemProp="author" content={author} />
+            <meta itemProp="datePublished" content={article.createdAt} />
+            <meta itemProp="dateModified" content={article.updatedAt} />
+            <meta itemProp="articleSection" content={article.categories?.[0] || "General"} />
+            <meta itemProp="keywords" content={article.tags?.join(', ')} />
+            <meta itemProp="wordCount" content={article.content?.replace(/<[^>]+>/g, '').split(/\s+/).length} />
+            <meta itemProp="timeRequired" content={readingTime} />
+            <meta itemProp="inLanguage" content="tr-TR" />
+            <meta itemProp="isAccessibleForFree" content="true" />
+          </div>
+          
           <div dangerouslySetInnerHTML={{ __html: contentWithSources }} />
         </div>
         {/* References */}
@@ -337,6 +447,21 @@ const ArticleDetailPage = () => {
             </ol>
           </section>
         )}
+        
+        {/* Ek SEO bilgileri */}
+        <section className="mt-8 mb-6 text-sm text-slate-600 dark:text-slate-400">
+          <div className="flex flex-wrap gap-4">
+            {article.tags && article.tags.map((tag, index) => (
+              <span key={index} className="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-full text-xs">
+                #{tag}
+              </span>
+            ))}
+          </div>
+          <div className="mt-4 text-xs">
+            <p>Bu makale {article.content?.replace(/<[^>]+>/g, '').split(/\s+/).length || 0} kelime içermektedir ve yaklaşık {readingTime} okuma süresi vardır.</p>
+            <p>Son güncelleme: {new Date(article.updatedAt).toLocaleDateString('tr-TR')}</p>
+          </div>
+        </section>
         {/* Paylaşım Önizleme Kartı - makalenin sonunda, genişliği içerik ile aynı */}
         <section className="flex flex-col items-center justify-center my-8 sm:my-12 md:my-16">
           <div className="bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-dark-primary dark:via-dark-secondary dark:to-dark-primary rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-10 max-w-4xl w-full border-4 border-dashed border-slate-300 dark:border-slate-600 mx-auto relative overflow-hidden">

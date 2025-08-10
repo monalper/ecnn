@@ -83,6 +83,22 @@ const generateSitemap = async (req, res) => {
     </image:image>`;
       }
       
+      // Makale içerik bilgileri ekle
+      if (article.content) {
+        const wordCount = article.content.replace(/<[^>]+>/g, '').split(/\s+/).length;
+        sitemap += `
+    <news:news>
+      <news:publication>
+        <news:name>OpenWall</news:name>
+        <news:language>tr</news:language>
+      </news:publication>
+      <news:publication_date>${article.createdAt}</news:publication_date>
+      <news:title>${article.title}</news:title>
+      <news:keywords>${article.tags ? article.tags.join(',') : ''}</news:keywords>
+      <news:stock_tickers>${article.categories ? article.categories.join(',') : ''}</news:stock_tickers>
+    </news:news>`;
+      }
+      
       sitemap += `
   </url>
 `;
@@ -121,6 +137,11 @@ const generateRobotsTxt = async (req, res) => {
     const robotsTxt = `User-agent: *
 Allow: /
 
+# Makale sayfalarına tam erişim
+Allow: /articles/
+Allow: /categories/
+Allow: /highlights/
+
 # Admin sayfalarını engelle
 Disallow: /admin/
 Disallow: /login
@@ -131,11 +152,32 @@ Disallow: /api/
 # Sitemap
 Sitemap: ${baseUrl}/sitemap.xml
 
-# Crawl-delay
+# Crawl-delay (makale sayfaları için daha hızlı)
 Crawl-delay: 1
 
 # Host
 Host: ${baseUrl}
+
+# Google için özel kurallar
+User-agent: Googlebot
+Allow: /articles/
+Allow: /categories/
+Allow: /highlights/
+Crawl-delay: 0.5
+
+# Bing için özel kurallar
+User-agent: Bingbot
+Allow: /articles/
+Allow: /categories/
+Allow: /highlights/
+Crawl-delay: 0.5
+
+# Yandex için özel kurallar
+User-agent: YandexBot
+Allow: /articles/
+Allow: /categories/
+Allow: /highlights/
+Crawl-delay: 0.5
 `;
 
     res.setHeader('Content-Type', 'text/plain');

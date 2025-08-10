@@ -40,7 +40,23 @@ const SchemaMarkup = ({
           "articleSection": data.section || "General",
           "keywords": data.keywords || data.tags?.join(', '),
           "wordCount": data.wordCount,
-          "timeRequired": data.readingTime
+          "timeRequired": data.readingTime,
+          // Yeni eklenen alanlar
+          "articleBody": data.content,
+          "inLanguage": "tr-TR",
+          "isAccessibleForFree": true,
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "OpenWall",
+            "url": baseUrl
+          },
+          "about": data.tags || [],
+          "mentions": data.references || [],
+          "publisherImprint": {
+            "@type": "Organization",
+            "name": "OpenWall",
+            "url": baseUrl
+          }
         };
         
       case 'WebSite':
