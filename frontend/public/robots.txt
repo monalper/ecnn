@@ -1,0 +1,49 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://openwall.com.tr/sitemap.xml
+
+# Admin ve API dizinlerini engelle
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+Disallow: /login
+
+# Next.js sistem dosyalarını engelle
+Disallow: /_next/
+Disallow: /static/
+
+# WordPress güvenlik (eğer kullanılıyorsa)
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /wp-content/plugins/
+Disallow: /wp-content/themes/
+Disallow: /wp-content/uploads/
+Disallow: /wp-content/cache/
+Disallow: /wp-content/backup-db/
+Disallow: /wp-content/backups/
+Disallow: /wp-content/blogs.dir/
+Disallow: /wp-content/upgrade/
+Disallow: /wp-links-opml.php
+Disallow: /wp-trackback.php
+Disallow: /xmlrpc.php
+Disallow: /readme.html
+Disallow: /license.txt
+Disallow: /wp-config.php
+Disallow: /wp-config-sample.php
+Disallow: /wp-config.php.bak
+Disallow: /wp-config.php.old
+Disallow: /wp-config.php.save
+Disallow: /wp-config.php.swp
+Disallow: /wp-config.php.swo
+Disallow: /wp-config.php~
+Disallow: /wp-config.php.txt
+Disallow: /wp-config.php.html
+Disallow: /wp-config.php.htm
+
+# Host
+Host: https://openwall.com.tr
+
+# Crawl-delay (sunucu yükünü azaltmak için)
+Crawl-delay: 1 
