@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+  
+  <!-- Ana Sayfa -->
+  <url>
+    <loc>https://openwall.com.tr/</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://openwall.com.tr/site-logo.png</image:loc>
+      <image:title>OpenWall Logo</image:title>
+      <image:caption>OpenWall - Entellektüel İçerikler ve Makaleler</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Makaleler Sayfası - Sitelinks için kritik -->
+  <url>
+    <loc>https://openwall.com.tr/articles</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://openwall.com.tr/og-images/default/og-default.jpg</image:loc>
+      <image:title>OpenWall Makaleler</image:title>
+      <image:caption>Teknoloji, felsefe, sanat ve daha fazlası hakkında makaleler</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Kategoriler - Sitelinks için kritik -->
+  <url>
+    <loc>https://openwall.com.tr/categories</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://openwall.com.tr/og-images/default/og-default.jpg</image:loc>
+      <image:title>OpenWall Kategoriler</image:title>
+      <image:caption>16 farklı kategoride içerik</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Öne Çıkanlar - Sitelinks için kritik -->
+  <url>
+    <loc>https://openwall.com.tr/highlights</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://openwall.com.tr/og-images/default/og-default.jpg</image:loc>
+      <image:title>OpenWall Öne Çıkanlar</image:title>
+      <image:caption>Günün öne çıkan içerikleri</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Galeri - Sitelinks için kritik -->
+  <url>
+    <loc>https://openwall.com.tr/gallery</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://openwall.com.tr/og-images/default/og-default.jpg</image:loc>
+      <image:title>OpenWall Galeri</image:title>
+      <image:caption>Görsel içerik galerisi</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Videolar - Sitelinks için kritik -->
+  <url>
+    <loc>https://openwall.com.tr/videos</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <video:video>
+      <video:thumbnail_loc>https://openwall.com.tr/og-images/default/og-default.jpg</video:thumbnail_loc>
+      <video:title>OpenWall Video İçerikleri</video:title>
+      <video:description>Eğitici ve bilgilendirici video içerikler</video:description>
+      <video:content_loc>https://openwall.com.tr/videos</video:content_loc>
+      <video:duration>600</video:duration>
+      <video:family_friendly>yes</video:family_friendly>
+    </video:video>
+  </url>
+  
+  <!-- Sözlük - Sitelinks için kritik -->
+  <url>
+    <loc>https://openwall.com.tr/dictionary</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://openwall.com.tr/og-images/default/og-default.jpg</image:loc>
+      <image:title>OpenWall Sözlük</image:title>
+      <image:caption>Terimler ve kavramlar sözlüğü</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Hakkımızda - Sitelinks için kritik -->
+  <url>
+    <loc>https://openwall.com.tr/about</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://openwall.com.tr/og-images/default/og-default.jpg</image:loc>
+      <image:title>OpenWall Hakkında</image:title>
+      <image:caption>Platform hakkında detaylı bilgi</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Dosya Dönüştürücü -->
+  <url>
+    <loc>https://openwall.com.tr/convert</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://openwall.com.tr/og-images/default/og-default.jpg</image:loc>
+      <image:title>OpenWall Dosya Dönüştürücü</image:title>
+      <image:caption>Çeşitli dosya formatlarını dönüştürün</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Tasarım Araçları -->
+  <url>
+    <loc>https://openwall.com.tr/designer</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://openwall.com.tr/og-images/default/og-default.jpg</image:loc>
+      <image:title>OpenWall Tasarım Araçları</image:title>
+      <image:caption>Grafik tasarım ve düzenleme araçları</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Grafik Oluşturucu -->
+  <url>
+    <loc>https://openwall.com.tr/charts</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://openwall.com.tr/og-images/default/og-default.jpg</image:loc>
+      <image:title>OpenWall Grafik Oluşturucu</image:title>
+      <image:caption>Veri görselleştirme araçları</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- İklim Değişikliği -->
+  <url>
+    <loc>https://openwall.com.tr/climatechange</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://openwall.com.tr/og-images/default/og-default.jpg</image:loc>
+      <image:title>OpenWall İklim Değişikliği</image:title>
+      <image:caption>Çevre ve iklim değişikliği içerikleri</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Yasal Uyarı -->
+  <url>
+    <loc>https://openwall.com.tr/legal/disclaimer</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <image:image>
+      <image:loc>https://openwall.com.tr/og-images/default/og-default.jpg</image:loc>
+      <image:title>OpenWall Yasal Uyarı</image:title>
+      <image:caption>Platform kullanım şartları ve yasal bilgiler</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Kategori Sayfaları -->
+  <url>
+    <loc>https://openwall.com.tr/category/teknoloji</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://openwall.com.tr/category/felsefe</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://openwall.com.tr/category/sanat</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://openwall.com.tr/category/spor</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://openwall.com.tr/category/siyaset</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://openwall.com.tr/category/ekonomi</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://openwall.com.tr/category/saglik</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://openwall.com.tr/category/egitim</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://openwall.com.tr/category/cevre</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://openwall.com.tr/category/sosyoloji</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://openwall.com.tr/category/psikoloji</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://openwall.com.tr/category/din</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://openwall.com.tr/category/muzik</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://openwall.com.tr/category/sinema</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://openwall.com.tr/category/seyahat</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://openwall.com.tr/category/yemek</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+</urlset> 
