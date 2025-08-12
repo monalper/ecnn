@@ -155,33 +155,32 @@ const VideoCard = ({
                   src={video.thumbnailUrl || thumbPlaceholder}
                   alt={video.title}
                   className="w-full h-full object-cover"
-                  loading="lazy"
                 />
               )}
+              
+              {/* Duration overlay */}
+              {showDuration && video.duration && (
+                <div className="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white text-xs px-2 py-1 rounded">
+                  {formatDuration(video.duration)}
+                </div>
+              )}
             </div>
-            
-            {/* Duration badge */}
-            {showDuration && video.duration && (
-              <div className="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white text-xs px-2 py-1 rounded">
-                {formatDuration(video.duration)}
-              </div>
-            )}
           </div>
-
-          {/* Video info - mobil */}
+          
+          {/* Mobil başlık ve bilgiler */}
           <div className="mt-3">
-            <h4 className="text-base font-bold text-gray-900 dark:text-white mb-2 leading-tight line-clamp-2">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-2">
               {video.title}
-            </h4>
+            </h3>
             {renderTimeAndSubtitles()}
           </div>
         </div>
 
         {/* Masaüstü yatay düzen */}
-        <div className="hidden lg:flex space-x-3">
-          {/* Thumbnail/Video Container */}
-          <div className="relative flex-shrink-0" style={{ width: '160px', height: '90px' }}>
-            <div className="w-full h-full bg-black rounded-lg overflow-hidden">
+        <div className="hidden lg:flex space-x-4">
+          {/* Video thumbnail */}
+          <div className="relative flex-shrink-0 w-80" style={{ paddingBottom: '22.5%' }}>
+            <div className="absolute inset-0 bg-black rounded-lg overflow-hidden">
               {isHovered && video.videoUrl ? (
                 <video
                   ref={videoRef}
@@ -197,24 +196,28 @@ const VideoCard = ({
                   src={video.thumbnailUrl || thumbPlaceholder}
                   alt={video.title}
                   className="w-full h-full object-cover"
-                  loading="lazy"
                 />
               )}
+              
+              {/* Duration overlay */}
+              {showDuration && video.duration && (
+                <div className="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white text-xs px-2 py-1 rounded">
+                  {formatDuration(video.duration)}
+                </div>
+              )}
             </div>
-            
-            {/* Duration badge */}
-            {showDuration && video.duration && (
-              <div className="absolute bottom-1 right-1 bg-black bg-opacity-80 text-white text-xs px-1 py-0.5 rounded">
-                {formatDuration(video.duration)}
-              </div>
-            )}
           </div>
-
-          {/* Video info */}
+          
+          {/* Video bilgileri */}
           <div className="flex-1 min-w-0">
-            <h4 className="text-base font-bold text-gray-900 dark:text-white mb-2 leading-tight line-clamp-2" style={{ width: '250px' }}>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white line-clamp-2 mb-2">
               {video.title}
-            </h4>
+            </h3>
+            {video.description && (
+              <p className="text-gray-600 dark:text-gray-300 line-clamp-3 mb-3">
+                {video.description}
+              </p>
+            )}
             {renderTimeAndSubtitles()}
           </div>
         </div>
@@ -266,7 +269,11 @@ const VideoCard = ({
         <h3 className="font-bold text-gray-900 dark:text-white text-base line-clamp-2 leading-tight">
           {video.title}
         </h3>
-        {renderTimeAndSubtitles()}
+        {showUploadTime && video.createdAt && (
+          <p className="text-gray-600 dark:text-gray-400 text-xs mt-1 opacity-50">
+            {formatUploadTime(video.createdAt)}
+          </p>
+        )}
       </div>
     </div>
   );
