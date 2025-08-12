@@ -245,6 +245,10 @@ const VideosPage = () => {
               <React.Fragment key={item.id}>
                 <VideoCard
                   video={item}
+                  layout="horizontal"
+                  mobileLayout={true}
+                  showDuration={true}
+                  showUploadTime={true}
                 />
                 {/* Show advertisement card every 7 videos, starting after the 7th video */}
                 {(index + 1) % 7 === 0 && (

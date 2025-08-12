@@ -5,6 +5,7 @@ import thumbPlaceholder from '../assets/ThumbPlaceholder.png';
 const VideoCard = ({ 
   video, 
   layout = 'vertical', // 'vertical' | 'horizontal'
+  mobileLayout = false, // Force mobile layout even on desktop
   showDuration = true,
   showUploadTime = true,
   className = ''
@@ -112,14 +113,14 @@ const VideoCard = ({
     
     if (!hasSubtitles) {
       return (
-        <p className="text-sm text-gray-500 dark:text-gray-400 opacity-50 mt-3">
+        <p className="text-sm text-gray-500 dark:text-gray-400 opacity-50 mt-2">
           {timeText}
         </p>
       );
     }
     
     return (
-      <p className="text-sm text-gray-500 dark:text-gray-400 opacity-50 mt-3">
+      <p className="text-sm text-gray-500 dark:text-gray-400 opacity-50 mt-2">
         {timeText} · <span className="text-gray-500 dark:text-gray-400 opacity-100">Altyazılı</span>
       </p>
     );
@@ -136,7 +137,7 @@ const VideoCard = ({
         className={`cursor-pointer hover:opacity-80 transition-opacity ${className}`}
       >
         {/* Mobilde dikey düzen, masaüstünde yatay düzen */}
-        <div className="block lg:hidden">
+        <div className={`${mobileLayout ? 'block' : 'block lg:hidden'}`}>
           {/* Mobil dikey düzen */}
           <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
             <div className="absolute inset-0 bg-black rounded-lg overflow-hidden">
@@ -168,8 +169,8 @@ const VideoCard = ({
           </div>
           
           {/* Mobil başlık ve bilgiler */}
-          <div className="mt-3">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-2">
+          <div className={`${mobileLayout ? 'mt-4' : 'mt-2'}`}>
+            <h3 className={`${mobileLayout ? 'text-base' : 'text-sm'} font-semibold text-gray-900 dark:text-white line-clamp-2 leading-tight`}>
               {video.title}
             </h3>
             {renderTimeAndSubtitles()}
@@ -177,9 +178,9 @@ const VideoCard = ({
         </div>
 
         {/* Masaüstü yatay düzen */}
-        <div className="hidden lg:flex space-x-4">
+        <div className={`${mobileLayout ? 'hidden' : 'hidden lg:flex'} space-x-4`}>
           {/* Video thumbnail */}
-          <div className="relative flex-shrink-0 w-80" style={{ paddingBottom: '22.5%' }}>
+          <div className="relative flex-shrink-0 w-48 h-28">
             <div className="absolute inset-0 bg-black rounded-lg overflow-hidden">
               {isHovered && video.videoUrl ? (
                 <video
@@ -201,7 +202,7 @@ const VideoCard = ({
               
               {/* Duration overlay */}
               {showDuration && video.duration && (
-                <div className="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white text-xs px-2 py-1 rounded">
+                <div className="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white text-sm px-2 py-1 rounded">
                   {formatDuration(video.duration)}
                 </div>
               )}
@@ -209,15 +210,10 @@ const VideoCard = ({
           </div>
           
           {/* Video bilgileri */}
-          <div className="flex-1 min-w-0">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white line-clamp-2 mb-2">
+          <div className="flex-1 min-w-0" style={{ width: '200px', maxWidth: '250px' }}>
+            <h3 className="text-base font-semibold text-gray-900 dark:text-white line-clamp-2 mb-2 leading-tight">
               {video.title}
             </h3>
-            {video.description && (
-              <p className="text-gray-600 dark:text-gray-300 line-clamp-3 mb-3">
-                {video.description}
-              </p>
-            )}
             {renderTimeAndSubtitles()}
           </div>
         </div>

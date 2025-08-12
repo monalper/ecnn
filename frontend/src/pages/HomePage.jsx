@@ -188,7 +188,13 @@ const HomePage = () => {
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
             {latestVideos.slice(0, 8).map((video, index) => (
               <React.Fragment key={video.id}>
-                <VideoCard video={video} />
+                <VideoCard 
+                  video={video} 
+                  layout="horizontal"
+                  mobileLayout={true}
+                  showDuration={true}
+                  showUploadTime={true}
+                />
                 {/* Show advertisement card every 7 videos, starting after the 7th video */}
                 {(index + 1) % 7 === 0 && (
                   <AdvertisementCard />
