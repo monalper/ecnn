@@ -23,6 +23,14 @@
       "dest": "/site.webmanifest"
     },
     {
+      "src": "/reklam.png",
+      "dest": "/reklam.png"
+    },
+    {
+      "src": "/test-reklam.html",
+      "dest": "/test-reklam.html"
+    },
+    {
       "src": "/assets/(.*)",
       "dest": "/assets/$1"
     },

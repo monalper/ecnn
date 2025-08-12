@@ -1,19 +1,46 @@
 import React, { useState } from 'react';
-import reklamImage from '../assets/reklam.png';
 
 const AdvertisementCard = ({ className = '' }) => {
-  const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const [currentImagePath, setCurrentImagePath] = useState('/reklam.png');
 
-  const handleImageError = () => {
-    setImageError(true);
-  };
+  // Multiple fallback paths to try
+  const imagePaths = [
+    '/reklam.png',
+    '/assets/reklam.png',
+    '../assets/reklam.png',
+    './reklam.png'
+  ];
+
+  // Log the image path for debugging
+  console.log('AdvertisementCard: Current image path is', currentImagePath);
 
   const handleImageLoad = () => {
+    console.log('Reklam image loaded successfully from:', currentImagePath);
     setImageLoaded(true);
+    setImageError(false);
   };
 
-  // SVG-based advertisement icon that won't be blocked
+  const handleImageError = () => {
+    console.log('Reklam image failed to load from:', currentImagePath);
+    
+    // Try next fallback path
+    const currentIndex = imagePaths.indexOf(currentImagePath);
+    if (currentIndex < imagePaths.length - 1) {
+      const nextPath = imagePaths[currentIndex + 1];
+      console.log('Trying next fallback path:', nextPath);
+      setCurrentImagePath(nextPath);
+      setImageLoaded(false);
+      setImageError(false);
+    } else {
+      console.log('All fallback paths failed, showing gradient fallback');
+      setImageError(true);
+      setImageLoaded(false);
+    }
+  };
+
+  // SVG-based advertisement icon as backup
   const AdIcon = () => (
     <svg 
       className="w-16 h-16 text-white" 
@@ -30,21 +57,41 @@ const AdvertisementCard = ({ className = '' }) => {
       {/* 16:9 Aspect Ratio Container - exactly like VideoCard */}
       <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
         <div className="absolute inset-0 bg-black rounded-lg overflow-hidden">
-          {!imageError ? (
-            <img
-              src={reklamImage}
-              alt="Reklam"
-              className="w-full h-full object-cover"
-              loading="lazy"
-              onError={handleImageError}
-              onLoad={handleImageLoad}
-              style={{ display: imageLoaded ? 'block' : 'none' }}
-            />
-          ) : null}
+          {/* Always show the image - it should be visible */}
+          <img
+            key={currentImagePath}
+            src={currentImagePath}
+            alt="Reklam"
+            className="w-full h-full object-cover reklam-image"
+            loading="lazy"
+            onLoad={handleImageLoad}
+            onError={handleImageError}
+            style={{ 
+              display: 'block !important',
+              opacity: imageLoaded ? 1 : 0.8,
+              transition: 'opacity 0.3s ease',
+              visibility: 'visible !important',
+              position: 'relative',
+              zIndex: 1,
+              maxWidth: '100%',
+              height: 'auto',
+              minHeight: '100%'
+            }}
+          />
           
-          {/* Fallback content when image is blocked or fails to load */}
+          {/* Loading state overlay */}
+          {!imageLoaded && !imageError && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
+              <div className="text-center text-white">
+                <AdIcon />
+                <div className="text-sm font-medium mt-2">Yükleniyor...</div>
+              </div>
+            </div>
+          )}
+
+          {/* Error fallback - show gradient background with icon */}
           {imageError && (
-            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500">
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 z-20">
               <div className="text-center text-white">
                 <AdIcon />
                 <div className="text-sm font-medium mt-2">Reklam Alanı</div>
@@ -52,24 +99,15 @@ const AdvertisementCard = ({ className = '' }) => {
               </div>
             </div>
           )}
-          
-          {/* Loading state */}
-          {!imageLoaded && !imageError && (
-            <div className="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-700">
-              <div className="animate-pulse text-gray-400">
-                <AdIcon />
-              </div>
-            </div>
-          )}
         </div>
       </div>
 
       {/* Advertisement info - exactly like video info */}
-      <div className="mt-3">
+      <div className="mt-4">
         <h3 className="font-bold text-gray-900 dark:text-white text-base line-clamp-2 leading-tight">
           Reklam
         </h3>
-        <p className="text-gray-500 dark:text-gray-400 text-sm mt-3 opacity-50">
+        <p className="text-gray-500 dark:text-gray-400 text-sm mt-2 opacity-50">
           Openwall tarafından
         </p>
       </div>

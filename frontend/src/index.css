@@ -349,3 +349,23 @@ html.light ::-webkit-scrollbar-track {
 .letter-6 { animation-delay: 0.5s; }
 .letter-7 { animation-delay: 0.6s; }
 .letter-8 { animation-delay: 0.7s; }
+
+/* Ensure advertisement images are always visible */
+img[alt="Reklam"],
+img[src*="reklam"] {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Override any potential ad-blocking CSS */
+.advertisement-image,
+.reklam-image {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
