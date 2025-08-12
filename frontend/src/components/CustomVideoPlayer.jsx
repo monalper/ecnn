@@ -13,11 +13,17 @@ import {
   FiClock,
   FiMonitor,
   FiType,
-  FiVolume
+  FiVolume,
+  FiMoreVertical,
+  FiDownload,
+  FiShare2,
+  FiInfo,
+  FiRotateCw,
+  FiSettings
 } from 'react-icons/fi';
 import { IoMdSettings } from 'react-icons/io';
 
-const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitles = [], autoPlay = false }) => {
+const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitles = [], autoPlay = false, qualitySources = {} }) => {
   const videoRef = useRef(null);
   const containerRef = useRef(null);
   const subtitlePopupRef = useRef(null);
@@ -49,6 +55,10 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
   const [currentSettingsView, setCurrentSettingsView] = useState('main'); // 'main', 'speed', 'quality', 'subtitles'
   const controlsTimeoutRef = useRef(null);
   const [lastClickTime, setLastClickTime] = useState(0);
+  
+  // Custom right-click menu state
+  const [showContextMenu, setShowContextMenu] = useState(false);
+  const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
 
   // Debug subtitle state changes
   useEffect(() => {
@@ -449,8 +459,11 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
     }
   };
 
-  const toggleSubtitles = () => {
+  const toggleSubtitlePopup = () => {
     setShowSubtitlePopup(!showSubtitlePopup);
+    setShowSpeedMenu(false);
+    setShowQualityMenu(false);
+    setShowSettingsMenu(false);
   };
 
   const selectSubtitleTrack = (trackIndex) => {
@@ -936,12 +949,141 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
     setLastClickTime(currentTime);
   };
 
+  // Custom right-click menu handlers
+  const handleContextMenu = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const rect = containerRef.current.getBoundingClientRect();
+    let x = e.clientX - rect.left;
+    let y = e.clientY - rect.top;
+    
+    // Determine if click is in top or bottom half of the player
+    const isTopHalf = y < rect.height / 2;
+    
+    // Ensure menu stays within container bounds
+    const menuWidth = 192; // min-w-48 = 12rem = 192px
+    const menuHeight = 400; // Approximate height
+    
+    // Adjust X position if menu would go outside right edge
+    if (x + menuWidth/2 > rect.width) {
+      x = rect.width - menuWidth/2;
+    }
+    if (x - menuWidth/2 < 0) {
+      x = menuWidth/2;
+    }
+    
+    // Adjust Y position based on which half was clicked
+    if (isTopHalf) {
+      // Clicked in top half - show menu below cursor
+      if (y + menuHeight > rect.height) {
+        y = rect.height - menuHeight - 20; // Ensure menu fits
+      }
+    } else {
+      // Clicked in bottom half - show menu above cursor
+      if (y - menuHeight < 0) {
+        y = menuHeight + 20; // Ensure menu fits
+      }
+    }
+    
+    setContextMenuPosition({ x, y, isTopHalf });
+    setShowContextMenu(true);
+    
+    // Close context menu when clicking outside
+    const handleClickOutside = () => {
+      setShowContextMenu(false);
+      document.removeEventListener('click', handleClickOutside);
+    };
+    
+    setTimeout(() => {
+      document.addEventListener('click', handleClickOutside);
+    }, 100);
+  };
+
+  const handleContextMenuAction = (action) => {
+    setShowContextMenu(false);
+    
+    switch (action) {
+      case 'playPause':
+        togglePlay();
+        break;
+      case 'fullscreen':
+        toggleFullscreen();
+        break;
+      case 'mute':
+        toggleMute();
+        break;
+      case 'settings':
+        toggleSettingsMenu();
+        break;
+      case 'speed':
+        toggleSpeedMenu();
+        break;
+      case 'quality':
+        toggleQualityMenu();
+        break;
+      case 'subtitles':
+        if (subtitleTracks.length > 0) {
+          toggleSubtitlePopup();
+        }
+        break;
+      case 'reset':
+        resetVideo();
+        break;
+      case 'info':
+        showVideoInfo();
+        break;
+      case 'toggleSubtitles':
+        if (subtitleTracks.length > 0) {
+          setShowSubtitles(!showSubtitles);
+          setShowSubtitlePopup(false); // Close subtitle popup if open
+          setShowSettingsMenu(false); // Close settings menu if open
+          setCurrentSettingsView('main');
+          console.log('Subtitles toggled:', showSubtitles ? 'Disabled' : 'Enabled');
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
+  const resetVideo = () => {
+    const video = videoRef.current;
+    if (video) {
+      video.currentTime = 0;
+      setCurrentTime(0);
+      if (isPlaying) {
+        video.play().catch(console.error);
+      }
+    }
+  };
+
+  const showVideoInfo = () => {
+    const video = videoRef.current;
+    if (video) {
+      const info = {
+        title: title || 'Video',
+        duration: formatTime(duration),
+        currentTime: formatTime(currentTime),
+        volume: Math.round(volume * 100),
+        muted: isMuted,
+        playbackSpeed: playbackSpeed,
+        quality: videoQuality,
+        subtitles: subtitleTracks.length > 0 ? `${subtitleTracks.length} track(s)` : 'None',
+        fullscreen: isFullscreen
+      };
+      
+      alert(`Video Information:\n${Object.entries(info).map(([key, value]) => `${key}: ${value}`).join('\n')}`);
+    }
+  };
+
   return (
     <div 
       ref={containerRef}
       className={`relative bg-black rounded-xl overflow-hidden shadow-2xl ${isFullscreen ? 'fixed inset-0 z-50' : 'w-full'} ${!showControls ? 'cursor-none' : ''}`}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      onContextMenu={handleContextMenu}
     >
       {/* Video Container */}
       <div 
@@ -955,6 +1097,7 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
           style={getVideoContainerStyle()}
           className={`${isFullscreen ? 'absolute inset-0' : 'absolute inset-0 w-full h-full'} transition-all duration-300`}
           onClick={handleVideoClick}
+          onContextMenu={handleContextMenu}
           data-quality={videoQuality}
         />
       </div>
@@ -1354,6 +1497,138 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
               {currentSubtitleRef.current}
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Custom Right-Click Context Menu */}
+      {showContextMenu && (
+        <div 
+          className="absolute z-50 bg-gray-900/95 backdrop-blur-sm border border-gray-700 rounded-lg shadow-2xl py-2 min-w-48"
+          style={{
+            left: `${contextMenuPosition.x}px`,
+            top: `${contextMenuPosition.y}px`,
+            transform: contextMenuPosition.isTopHalf ? 'translate(-50%, 0)' : 'translate(-50%, -100%)'
+          }}
+        >
+          {/* Play/Pause */}
+          <button
+            onClick={() => handleContextMenuAction('playPause')}
+            className="w-full flex items-center px-4 py-3 text-white hover:bg-gray-700/50 transition-colors duration-200 text-left"
+          >
+            {isPlaying ? (
+              <>
+                <FiPause className="w-4 h-4 mr-3 text-gray-300" />
+                <span>Duraklat</span>
+              </>
+            ) : (
+              <>
+                <FiPlay className="w-4 h-4 mr-3 text-gray-300" />
+                <span>Oynat</span>
+              </>
+            )}
+          </button>
+
+          {/* Fullscreen */}
+          <button
+            onClick={() => handleContextMenuAction('fullscreen')}
+            className="w-full flex items-center px-4 py-3 text-white hover:bg-gray-700/50 transition-colors duration-200 text-left"
+          >
+            {isFullscreen ? (
+              <>
+                <FiMinimize className="w-4 h-4 mr-3 text-gray-300" />
+                <span>Küçült</span>
+              </>
+            ) : (
+              <>
+                <FiMaximize className="w-4 h-4 mr-3 text-gray-300" />
+                <span>Tam Ekran</span>
+              </>
+            )}
+          </button>
+
+          {/* Mute/Unmute */}
+          <button
+            onClick={() => handleContextMenuAction('mute')}
+            className="w-full flex items-center px-4 py-3 text-white hover:bg-gray-700/50 transition-colors duration-200 text-left"
+          >
+            {isMuted ? (
+              <>
+                <FiVolume2 className="w-4 h-4 mr-3 text-gray-300" />
+                <span>Sesi Aç</span>
+              </>
+            ) : (
+              <>
+                <FiVolumeX className="w-4 h-4 mr-3 text-gray-300" />
+                <span>Sesi Kapat</span>
+              </>
+            )}
+          </button>
+
+          <div className="border-t border-gray-700 my-1"></div>
+
+          {/* Subtitles */}
+          {subtitleTracks.length > 0 && (
+            <button
+              onClick={() => handleContextMenuAction('subtitles')}
+              className="w-full flex items-center px-4 py-3 text-white hover:bg-gray-700/50 transition-colors duration-200 text-left"
+            >
+              <FiType className="w-4 h-4 mr-3 text-gray-300" />
+              <span>Altyazılar</span>
+            </button>
+          )}
+
+          {/* Subtitle Toggle - Direct Enable/Disable */}
+          {subtitleTracks.length > 0 && (
+            <button
+              onClick={() => handleContextMenuAction('toggleSubtitles')}
+              className={`w-full flex items-center px-4 py-3 transition-all duration-200 text-left ${
+                showSubtitles 
+                  ? 'text-red-400 hover:bg-red-500/20 hover:text-red-300' 
+                  : 'text-green-400 hover:bg-green-500/20 hover:text-green-300'
+              }`}
+            >
+              {showSubtitles ? (
+                <>
+                  <FiX className="w-4 h-4 mr-3 text-red-400" />
+                  <span className="font-medium">Altyazıları Kapat</span>
+                </>
+              ) : (
+                <>
+                  <FiCheck className="w-4 h-4 mr-3 text-green-400" />
+                  <span className="font-medium">Altyazıları Aç</span>
+                </>
+              )}
+            </button>
+          )}
+
+          <div className="border-t border-gray-700 my-1"></div>
+
+          {/* Settings */}
+          <button
+            onClick={() => handleContextMenuAction('settings')}
+            className="w-full flex items-center px-4 py-3 text-white hover:bg-gray-700/50 transition-colors duration-200 text-left"
+          >
+            <FiSettings className="w-4 h-4 mr-3 text-gray-300" />
+            <span>Ayarlar</span>
+          </button>
+
+          {/* Reset Video */}
+          <button
+            onClick={() => handleContextMenuAction('reset')}
+            className="w-full flex items-center px-4 py-3 text-white hover:bg-gray-700/50 transition-colors duration-200 text-left"
+          >
+            <FiRotateCw className="w-4 h-4 mr-3 text-gray-300" />
+            <span>Videoyu Sıfırla</span>
+          </button>
+
+          {/* Video Info */}
+          <button
+            onClick={() => handleContextMenuAction('info')}
+            className="w-full flex items-center px-4 py-3 text-white hover:bg-gray-700/50 transition-colors duration-200 text-left"
+          >
+            <FiInfo className="w-4 h-4 mr-3 text-gray-300" />
+            <span>Video Bilgileri</span>
+          </button>
         </div>
       )}
     </div>
