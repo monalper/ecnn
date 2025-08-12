@@ -176,4 +176,4 @@ Bu proje MIT lisansı altında lisanslanmıştır.
 
 ## İletişim
 
-Sorularınız için: [your-email@example.com] 
+Sorularınız için: [iaercan@hotmail.com] 
