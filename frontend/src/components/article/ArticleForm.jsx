@@ -30,7 +30,6 @@ import { InlineCode } from '../../extensions/InlineCodeExtension';
 import { Math } from '../../extensions/MathExtension';
 import { Chemistry } from '../../extensions/ChemistryExtension';
 import { ScientificNotation } from '../../extensions/ScientificNotationExtension';
-import { UnitConverter } from '../../extensions/UnitConverterExtension';
 import { CountdownTimer } from '../../extensions/CountdownTimerExtension';
 import { AutoSave } from '../../extensions/AutoSaveExtension';
 
@@ -237,7 +236,6 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
       // Math, // Temporarily disabled
       // Chemistry, // Temporarily disabled
       // ScientificNotation, // Temporarily disabled
-      // UnitConverter, // Temporarily disabled
       // CountdownTimer, // Temporarily disabled
       AutoSave.configure({
         delay: 5000, // 5 saniye
@@ -1030,30 +1028,6 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               title="Bilimsel Gösterim"
             >
               <FaSuperscript />
-            </button>
-            */}
-
-            {/* Birim Dönüştürücü - Temporarily disabled
-            <button
-              type="button"
-              onClick={() => {
-                const value = window.prompt('Değeri girin (örn: 100):');
-                const fromUnit = window.prompt('Kaynak birimi girin (örn: km):');
-                const toUnit = window.prompt('Hedef birimi girin (örn: m):');
-                const convertedValue = window.prompt('Dönüştürülmüş değeri girin (örn: 100000):');
-                if (value && fromUnit && toUnit && convertedValue) {
-                  editor.chain().focus().setUnitConverter({ 
-                    value, 
-                    fromUnit, 
-                    toUnit, 
-                    convertedValue 
-                  }).run();
-                }
-              }}
-              className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
-              title="Birim Dönüştürücü"
-            >
-              <FaCalculator />
             </button>
             */}
 

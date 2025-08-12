@@ -23,9 +23,6 @@ const HighlightsPage = lazy(() => import('./pages/HighlightsPage')); // Yeni
 const DisclaimerPage = lazy(() => import('./pages/DisclaimerPage')); // Yasal Uyarı
 const ClimateChangePage = lazy(() => import('./pages/ClimateChangePage')); // İklim Değişikliği
 const DictionaryPage = lazy(() => import('./pages/DictionaryPage'));
-const ConvertPage = lazy(() => import('./pages/ConvertPage')); // Dosya Dönüştürücü
-const DesignerPage = lazy(() => import('./pages/DesignerPage')); // Tasarım Araçları
-const ChartsPage = lazy(() => import('./pages/ChartsPage')); // Grafik Oluşturucu
 const GalleryPage = lazy(() => import('./pages/GalleryPage')); // Galeri
 const GalleryItemPage = lazy(() => import('./pages/GalleryItemPage')); // Galeri Öğesi
 const VideosPage = lazy(() => import('./pages/VideosPage')); // Videolar
@@ -96,9 +93,6 @@ function AppContent() {
             <Route path="/legal/disclaimer" element={<DisclaimerPage />} />
             <Route path="/climatechange" element={<ClimateChangePage />} />
             <Route path="/dictionary" element={<DictionaryPage />} />
-            <Route path="/convert" element={<ConvertPage />} />
-            <Route path="/designer" element={<DesignerPage />} />
-            <Route path="/charts" element={<ChartsPage />} />
             <Route path="/video-demo" element={<VideoDetailDemo />} />
             
             <Route path="/login" element={
