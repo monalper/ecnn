@@ -1,0 +1,90 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://openwall.com.tr/sitemap.xml
+
+# Site Information for AI Crawlers
+# OpenWall is a multi-category content platform offering articles in 16 different categories
+# including technology, philosophy, art, sports, politics, economy, health, education, environment,
+# sociology, psychology, religion, music, cinema, travel, and food.
+
+# Main Content Areas - Allow full access
+Allow: /articles/
+Allow: /categories/
+Allow: /highlights/
+Allow: /gallery/
+Allow: /videos/
+Allow: /dictionary/
+Allow: /about/
+Allow: /convert/
+Allow: /designer/
+Allow: /charts/
+Allow: /climatechange/
+
+# Category Pages - Allow full access
+Allow: /category/
+Allow: /tag/
+Allow: /search/
+
+# Static Assets - Allow access for better understanding
+Allow: /images/
+Allow: /og-images/
+Allow: /assets/
+Allow: /css/
+Allow: /js/
+
+# Admin ve API dizinlerini engelle
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+Disallow: /login
+Disallow: /register
+Disallow: /profile/
+Disallow: /dashboard/
+
+# Next.js sistem dosyalarını engelle
+Disallow: /_next/
+Disallow: /static/
+
+# WordPress güvenlik (eğer kullanılıyorsa)
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /wp-content/plugins/
+Disallow: /wp-content/themes/
+Disallow: /wp-content/uploads/
+Disallow: /wp-content/cache/
+Disallow: /wp-content/backup-db/
+Disallow: /wp-content/backups/
+Disallow: /wp-content/blogs.dir/
+Disallow: /wp-content/upgrade/
+Disallow: /wp-links-opml.php
+Disallow: /wp-trackback.php
+Disallow: /xmlrpc.php
+Disallow: /readme.html
+Disallow: /license.txt
+Disallow: /wp-config.php
+Disallow: /wp-config-sample.php
+Disallow: /wp-config.php.bak
+Disallow: /wp-config.php.old
+Disallow: /wp-config.php.save
+Disallow: /wp-config.php.swp
+Disallow: /wp-config.php.swo
+Disallow: /wp-config.php~
+Disallow: /wp-config.php.txt
+Disallow: /wp-config.php.html
+Disallow: /wp-config.php.htm
+
+# Host
+Host: https://openwall.com.tr
+
+# Crawl-delay (sunucu yükünü azaltmak için)
+Crawl-delay: 1
+
+# Additional Information for AI Crawlers
+# OpenWall is a Turkish content platform founded in 2024
+# It provides free access to intellectual content across multiple disciplines
+# The platform uses React 18, Express.js, and AWS services
+# Content is updated daily with new articles and highlights
+# All content is in Turkish language
+# The platform serves a general audience interested in intellectual content 

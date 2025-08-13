@@ -5,7 +5,10 @@ import thumbPlaceholder from '../assets/ThumbPlaceholder.png';
 const VideoCard = ({ 
   video, 
   layout = 'vertical', // 'vertical' | 'horizontal'
+<<<<<<< HEAD
   mobileLayout = false, // Force mobile layout even on desktop
+=======
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
   showDuration = true,
   showUploadTime = true,
   className = ''
@@ -113,14 +116,22 @@ const VideoCard = ({
     
     if (!hasSubtitles) {
       return (
+<<<<<<< HEAD
         <p className="text-sm text-gray-500 dark:text-gray-400 opacity-50 mt-2">
+=======
+        <p className="text-sm text-gray-500 dark:text-gray-400 opacity-50 mt-3">
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
           {timeText}
         </p>
       );
     }
     
     return (
+<<<<<<< HEAD
       <p className="text-sm text-gray-500 dark:text-gray-400 opacity-50 mt-2">
+=======
+      <p className="text-sm text-gray-500 dark:text-gray-400 opacity-50 mt-3">
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
         {timeText} · <span className="text-gray-500 dark:text-gray-400 opacity-100">Altyazılı</span>
       </p>
     );
@@ -137,7 +148,11 @@ const VideoCard = ({
         className={`cursor-pointer hover:opacity-80 transition-opacity ${className}`}
       >
         {/* Mobilde dikey düzen, masaüstünde yatay düzen */}
+<<<<<<< HEAD
         <div className={`${mobileLayout ? 'block' : 'block lg:hidden'}`}>
+=======
+        <div className="block lg:hidden">
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
           {/* Mobil dikey düzen */}
           <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
             <div className="absolute inset-0 bg-black rounded-lg overflow-hidden">
@@ -156,6 +171,7 @@ const VideoCard = ({
                   src={video.thumbnailUrl || thumbPlaceholder}
                   alt={video.title}
                   className="w-full h-full object-cover"
+<<<<<<< HEAD
                 />
               )}
               
@@ -173,15 +189,42 @@ const VideoCard = ({
             <h3 className={`${mobileLayout ? 'text-base' : 'text-sm'} font-semibold text-gray-900 dark:text-white line-clamp-2 leading-tight`}>
               {video.title}
             </h3>
+=======
+                  loading="lazy"
+                />
+              )}
+            </div>
+            
+            {/* Duration badge */}
+            {showDuration && video.duration && (
+              <div className="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white text-xs px-2 py-1 rounded">
+                {formatDuration(video.duration)}
+              </div>
+            )}
+          </div>
+
+          {/* Video info - mobil */}
+          <div className="mt-3">
+            <h4 className="text-base font-bold text-gray-900 dark:text-white mb-2 leading-tight line-clamp-2">
+              {video.title}
+            </h4>
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
             {renderTimeAndSubtitles()}
           </div>
         </div>
 
         {/* Masaüstü yatay düzen */}
+<<<<<<< HEAD
         <div className={`${mobileLayout ? 'hidden' : 'hidden lg:flex'} space-x-4`}>
           {/* Video thumbnail */}
           <div className="relative flex-shrink-0 w-48 h-28">
             <div className="absolute inset-0 bg-black rounded-lg overflow-hidden">
+=======
+        <div className="hidden lg:flex space-x-3">
+          {/* Thumbnail/Video Container */}
+          <div className="relative flex-shrink-0" style={{ width: '160px', height: '90px' }}>
+            <div className="w-full h-full bg-black rounded-lg overflow-hidden">
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
               {isHovered && video.videoUrl ? (
                 <video
                   ref={videoRef}
@@ -197,6 +240,7 @@ const VideoCard = ({
                   src={video.thumbnailUrl || thumbPlaceholder}
                   alt={video.title}
                   className="w-full h-full object-cover"
+<<<<<<< HEAD
                 />
               )}
               
@@ -214,6 +258,26 @@ const VideoCard = ({
             <h3 className="text-base font-semibold text-gray-900 dark:text-white line-clamp-2 mb-2 leading-tight">
               {video.title}
             </h3>
+=======
+                  loading="lazy"
+                />
+              )}
+            </div>
+            
+            {/* Duration badge */}
+            {showDuration && video.duration && (
+              <div className="absolute bottom-1 right-1 bg-black bg-opacity-80 text-white text-xs px-1 py-0.5 rounded">
+                {formatDuration(video.duration)}
+              </div>
+            )}
+          </div>
+
+          {/* Video info */}
+          <div className="flex-1 min-w-0">
+            <h4 className="text-base font-bold text-gray-900 dark:text-white mb-2 leading-tight line-clamp-2" style={{ width: '250px' }}>
+              {video.title}
+            </h4>
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
             {renderTimeAndSubtitles()}
           </div>
         </div>
@@ -265,11 +329,15 @@ const VideoCard = ({
         <h3 className="font-bold text-gray-900 dark:text-white text-base line-clamp-2 leading-tight">
           {video.title}
         </h3>
+<<<<<<< HEAD
         {showUploadTime && video.createdAt && (
           <p className="text-gray-600 dark:text-gray-400 text-xs mt-1 opacity-50">
             {formatUploadTime(video.createdAt)}
           </p>
         )}
+=======
+        {renderTimeAndSubtitles()}
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
       </div>
     </div>
   );

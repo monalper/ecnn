@@ -23,6 +23,7 @@
       "dest": "/site.webmanifest"
     },
     {
+<<<<<<< HEAD
       "src": "/reklam.png",
       "dest": "/reklam.png"
     },
@@ -31,6 +32,8 @@
       "dest": "/test-reklam.html"
     },
     {
+=======
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
       "src": "/assets/(.*)",
       "dest": "/assets/$1"
     },
@@ -38,6 +41,7 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
+<<<<<<< HEAD
   ],
   "headers": [
     {
@@ -189,5 +193,7 @@
         }
       ]
     }
+=======
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
   ]
 } 

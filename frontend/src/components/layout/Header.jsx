@@ -18,6 +18,14 @@ const Header = ({ scrollPercent, customTitle }) => {
 
   const { theme, toggleTheme } = useTheme();
 
+<<<<<<< HEAD
+=======
+  // Convert sayfası için özel başlık
+  const isConvertPage = location.pathname === '/convert';
+  const isDesignerPage = location.pathname === '/designer';
+  const isChartsPage = location.pathname === '/charts';
+
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
   return (
     <header className="bg-site-background dark:bg-dark-primary border-b border-slate-200 dark:border-white/20 fixed top-0 left-0 right-0 z-50 h-16 md:h-20 transition-colors">
       {/* Sitelinks için semantic navigation - Google için görünür ama kullanıcı için gizli */}
@@ -36,7 +44,26 @@ const Header = ({ scrollPercent, customTitle }) => {
       <div className="px-4 sm:px-6 lg:px-8 flex items-center justify-between h-full relative">
         <div className="flex-1 hidden md:block" />
         <Link to="/" className="header-site-title text-xl md:text-2xl font-bold font-logo text-text-heading tracking-tight flex items-center gap-1 absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2" style={{whiteSpace: 'nowrap'}}>
+<<<<<<< HEAD
           {customTitle === 'dictionary' ? (
+=======
+          {isConvertPage ? (
+            <span>
+              <span>openwall </span>
+              <span className="lora-italic-semibold">convert</span>
+            </span>
+          ) : isDesignerPage ? (
+            <span>
+              <span>openwall </span>
+              <span className="lora-italic-semibold">designer</span>
+            </span>
+          ) : isChartsPage ? (
+            <span>
+              <span>openwall </span>
+              <span className="lora-italic-semibold">charts</span>
+            </span>
+          ) : customTitle === 'dictionary' ? (
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
             <span>
               <span>openwall </span>
               <span className="lora-italic-semibold">dictionary</span>
@@ -110,6 +137,30 @@ const Header = ({ scrollPercent, customTitle }) => {
               HIGHLIGHTS
             </Link>
             <Link 
+<<<<<<< HEAD
+=======
+              to="/convert" 
+              className="header-nav-link text-sm font-bold tracking-extrawidest uppercase text-text-muted hover:text-text-main transition-colors"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              CONVERT
+            </Link>
+            <Link 
+              to="/designer" 
+              className="header-nav-link text-sm font-bold tracking-extrawidest uppercase text-text-muted hover:text-text-main transition-colors"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              DESIGNER
+            </Link>
+            <Link
+              to="/charts"
+              className="header-nav-link text-sm font-bold tracking-extrawidest uppercase text-text-muted hover:text-text-main transition-colors"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              CHARTS
+            </Link>
+            <Link 
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
               to="/about" 
               className="header-nav-link text-sm font-bold tracking-extrawidest uppercase text-text-muted hover:text-text-main transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}

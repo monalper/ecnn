@@ -57,6 +57,18 @@ const Breadcrumb = ({ items = [] }) => {
         case 'videos':
           name = 'Videolar';
           break;
+<<<<<<< HEAD
+=======
+        case 'convert':
+          name = 'Dosya Dönüştürücü';
+          break;
+        case 'designer':
+          name = 'Tasarım Araçları';
+          break;
+        case 'charts':
+          name = 'Grafik Oluşturucu';
+          break;
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
         case 'climatechange':
           name = 'İklim Değişikliği';
           break;

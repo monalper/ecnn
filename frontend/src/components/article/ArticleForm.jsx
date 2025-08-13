@@ -30,6 +30,10 @@ import { InlineCode } from '../../extensions/InlineCodeExtension';
 import { Math } from '../../extensions/MathExtension';
 import { Chemistry } from '../../extensions/ChemistryExtension';
 import { ScientificNotation } from '../../extensions/ScientificNotationExtension';
+<<<<<<< HEAD
+=======
+import { UnitConverter } from '../../extensions/UnitConverterExtension';
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
 import { CountdownTimer } from '../../extensions/CountdownTimerExtension';
 import { AutoSave } from '../../extensions/AutoSaveExtension';
 
@@ -236,6 +240,10 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
       // Math, // Temporarily disabled
       // Chemistry, // Temporarily disabled
       // ScientificNotation, // Temporarily disabled
+<<<<<<< HEAD
+=======
+      // UnitConverter, // Temporarily disabled
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
       // CountdownTimer, // Temporarily disabled
       AutoSave.configure({
         delay: 5000, // 5 saniye
@@ -1031,6 +1039,33 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
             </button>
             */}
 
+<<<<<<< HEAD
+=======
+            {/* Birim Dönüştürücü - Temporarily disabled
+            <button
+              type="button"
+              onClick={() => {
+                const value = window.prompt('Değeri girin (örn: 100):');
+                const fromUnit = window.prompt('Kaynak birimi girin (örn: km):');
+                const toUnit = window.prompt('Hedef birimi girin (örn: m):');
+                const convertedValue = window.prompt('Dönüştürülmüş değeri girin (örn: 100000):');
+                if (value && fromUnit && toUnit && convertedValue) {
+                  editor.chain().focus().setUnitConverter({ 
+                    value, 
+                    fromUnit, 
+                    toUnit, 
+                    convertedValue 
+                  }).run();
+                }
+              }}
+              className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
+              title="Birim Dönüştürücü"
+            >
+              <FaCalculator />
+            </button>
+            */}
+
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
             {/* Countdown Timer - Temporarily disabled
             <button
               type="button"

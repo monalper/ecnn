@@ -22,7 +22,10 @@ const app = express();
 const allowedOrigins = [
   'https://ecnn.vercel.app',      // Eski/diğer frontend
   'http://localhost:5173',       // Local geliştirme
+<<<<<<< HEAD
   'http://localhost:5174',       // Local geliştirme (yeni port)
+=======
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
   'https://openwall.vercel.app', // YENİ frontend domaininiz
   'https://openwall.com.tr',     // EKLENEN: Yeni domain
   'https://www.openwall.com.tr'  // www'lu domain de desteklensin

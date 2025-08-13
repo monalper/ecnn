@@ -310,8 +310,11 @@ const VideoDetailPage = () => {
                     key={relatedVideo.id}
                     video={relatedVideo}
                     layout="horizontal"
+<<<<<<< HEAD
                     showDuration={true}
                     showUploadTime={true}
+=======
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
                   />
                 ))}
               </div>

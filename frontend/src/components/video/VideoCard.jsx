@@ -162,11 +162,15 @@ const VideoCard = ({ video }) => {
         )}
         
         {/* Upload time */}
+<<<<<<< HEAD
         {video.createdAt && (
           <p className="text-gray-600 dark:text-gray-400 text-xs mt-1 opacity-50">
             {formatUploadTime(video.createdAt)}
           </p>
         )}
+=======
+        {renderTimeAndSubtitles()}
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
       </div>
     </div>
   );

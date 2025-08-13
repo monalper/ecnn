@@ -13,6 +13,7 @@ import {
   FiClock,
   FiMonitor,
   FiType,
+<<<<<<< HEAD
   FiVolume,
   FiMoreVertical,
   FiDownload,
@@ -24,6 +25,13 @@ import {
 import { IoMdSettings } from 'react-icons/io';
 
 const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitles = [], autoPlay = false, qualitySources = {} }) => {
+=======
+  FiVolume
+} from 'react-icons/fi';
+import { IoMdSettings } from 'react-icons/io';
+
+const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitles = [], autoPlay = false }) => {
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
   const videoRef = useRef(null);
   const containerRef = useRef(null);
   const subtitlePopupRef = useRef(null);
@@ -55,10 +63,13 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
   const [currentSettingsView, setCurrentSettingsView] = useState('main'); // 'main', 'speed', 'quality', 'subtitles'
   const controlsTimeoutRef = useRef(null);
   const [lastClickTime, setLastClickTime] = useState(0);
+<<<<<<< HEAD
   
   // Custom right-click menu state
   const [showContextMenu, setShowContextMenu] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
+=======
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
 
   // Debug subtitle state changes
   useEffect(() => {
@@ -459,11 +470,16 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
     }
   };
 
+<<<<<<< HEAD
   const toggleSubtitlePopup = () => {
     setShowSubtitlePopup(!showSubtitlePopup);
     setShowSpeedMenu(false);
     setShowQualityMenu(false);
     setShowSettingsMenu(false);
+=======
+  const toggleSubtitles = () => {
+    setShowSubtitlePopup(!showSubtitlePopup);
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
   };
 
   const selectSubtitleTrack = (trackIndex) => {
@@ -949,6 +965,7 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
     setLastClickTime(currentTime);
   };
 
+<<<<<<< HEAD
   // Custom right-click menu handlers
   const handleContextMenu = (e) => {
     e.preventDefault();
@@ -1077,13 +1094,18 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
     }
   };
 
+=======
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
   return (
     <div 
       ref={containerRef}
       className={`relative bg-black rounded-xl overflow-hidden shadow-2xl ${isFullscreen ? 'fixed inset-0 z-50' : 'w-full'} ${!showControls ? 'cursor-none' : ''}`}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+<<<<<<< HEAD
       onContextMenu={handleContextMenu}
+=======
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
     >
       {/* Video Container */}
       <div 
@@ -1097,7 +1119,10 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
           style={getVideoContainerStyle()}
           className={`${isFullscreen ? 'absolute inset-0' : 'absolute inset-0 w-full h-full'} transition-all duration-300`}
           onClick={handleVideoClick}
+<<<<<<< HEAD
           onContextMenu={handleContextMenu}
+=======
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
           data-quality={videoQuality}
         />
       </div>
@@ -1499,6 +1524,7 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
           </div>
         </div>
       )}
+<<<<<<< HEAD
 
       {/* Custom Right-Click Context Menu */}
       {showContextMenu && (
@@ -1631,6 +1657,8 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
           </button>
         </div>
       )}
+=======
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
     </div>
   );
 };

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from 'react';
 
 const AdvertisementCard = ({ className = '' }) => {
@@ -52,11 +53,18 @@ const AdvertisementCard = ({ className = '' }) => {
     </svg>
   );
 
+=======
+import React from 'react';
+import reklamImage from '../assets/reklam.png';
+
+const AdvertisementCard = ({ className = '' }) => {
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
   return (
     <div className={`relative ${className}`}>
       {/* 16:9 Aspect Ratio Container - exactly like VideoCard */}
       <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
         <div className="absolute inset-0 bg-black rounded-lg overflow-hidden">
+<<<<<<< HEAD
           {/* Always show the image - it should be visible */}
           <img
             key={currentImagePath}
@@ -99,15 +107,31 @@ const AdvertisementCard = ({ className = '' }) => {
               </div>
             </div>
           )}
+=======
+          <img
+            src={reklamImage}
+            alt="Reklam"
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
         </div>
       </div>
 
       {/* Advertisement info - exactly like video info */}
+<<<<<<< HEAD
       <div className="mt-4">
         <h3 className="font-bold text-gray-900 dark:text-white text-base line-clamp-2 leading-tight">
           Reklam
         </h3>
         <p className="text-gray-500 dark:text-gray-400 text-sm mt-2 opacity-50">
+=======
+      <div className="mt-3">
+        <h3 className="font-bold text-gray-900 dark:text-white text-base line-clamp-2 leading-tight">
+          Reklam
+        </h3>
+        <p className="text-gray-500 dark:text-gray-400 text-sm mt-3 opacity-50">
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
           Openwall tarafından
         </p>
       </div>

@@ -41,6 +41,33 @@ const Footer = () => (
                   Sözlük
                 </a>
               </li>
+<<<<<<< HEAD
+=======
+              <li>
+                <a
+                  href="/convert"
+                  className="text-slate-600 dark:text-slate-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors duration-200 text-sm"
+                >
+                  Dönüştürücü
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/designer"
+                  className="text-slate-600 dark:text-slate-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors duration-200 text-sm"
+                >
+                  Tasarım Araçları
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/charts"
+                  className="text-slate-600 dark:text-slate-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors duration-200 text-sm"
+                >
+                  Grafik Oluşturucu
+                </a>
+              </li>
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
             </ul>
           </div>
 
@@ -67,6 +94,17 @@ const Footer = () => (
               </li>
               <li>
                 <a
+<<<<<<< HEAD
+=======
+                  href="/gallery"
+                  className="text-slate-600 dark:text-slate-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors duration-200 text-sm"
+                >
+                  Görseller
+                </a>
+              </li>
+              <li>
+                <a
+>>>>>>> f3eb23d59c213da59111a603fb32a1b88604e8cb
                   href="/videos"
                   className="text-slate-600 dark:text-slate-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors duration-200 text-sm"
                 >
