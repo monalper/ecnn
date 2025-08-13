@@ -1,0 +1,1244 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    
+    <!-- Favicon Configuration -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    
+    <!-- Enhanced Favicon Configuration for Better Visibility -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64x64.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="128x128" href="/favicon-128x128.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="256x256" href="/favicon-256x256.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-TileColor" content="#f97316" />
+    <meta name="msapplication-TileImage" content="/mstile-144x144.png" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+    
+    <!-- Google Logo Recognition -->
+    <link rel="icon" type="image/png" sizes="512x512" href="/site-logo.png" />
+    <meta name="msapplication-TileImage" content="/android-chrome-144x144.png" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+    
+    <!-- Google Sitelinks Optimization -->
+    <meta name="google:site_verification" content="your-verification-code" />
+    <meta name="google:sitelinks_searchbox" content="true" />
+    <meta name="google:sitelinks_searchbox_query" content="OpenWall Archive" />
+    
+    <!-- Sitelinks Branding -->
+    <meta name="google:brand" content="OpenWall Archive" />
+    <meta name="google:brand_name" content="OpenWall Archive" />
+    <meta name="google:brand_description" content="Entellektüel İçerikler ve Makaleler Arşivi" />
+    
+    <!-- Enhanced Site Information for Search Engines -->
+    <meta name="application-name" content="OpenWall Archive" />
+    <meta name="apple-mobile-web-app-title" content="OpenWall Archive" />
+    <meta name="msapplication-TileTitle" content="OpenWall Archive" />
+    
+    <!-- Site Branding Meta Tags -->
+    <meta name="brand" content="OpenWall Archive" />
+    <meta name="brand:name" content="OpenWall Archive" />
+    <meta name="brand:type" content="Content Archive" />
+    <meta name="brand:category" content="Intellectual Content Platform" />
+    <meta name="brand:description" content="A comprehensive archive of intellectual content and articles" />
+    <meta name="brand:tagline" content="Entellektüel İçerikler ve Makaleler Arşivi" />
+    
+    <!-- Favicon for Search Engines -->
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" />
+    
+    <!-- Preload Critical Favicons -->
+    <link rel="preload" href="/favicon.ico" as="image" />
+    <link rel="preload" href="/favicon-32x32.png" as="image" />
+    <link rel="preload" href="/site-logo.png" as="image" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Sistem temasını algıla ve uygula -->
+    <script>
+      (function() {
+        const savedTheme = localStorage.getItem('theme');
+        
+        if (savedTheme) {
+          document.documentElement.classList.add(savedTheme);
+        } else {
+          const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          document.documentElement.classList.add(systemTheme);
+        }
+      })();
+    </script>
+    
+    <title>OpenWall Archive</title>
+    <meta name="description" content="OpenWall Archive, teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat ve yemek gibi çeşitli alanlarda kaliteli içerikler sunan kapsamlı bir arşiv platformudur." />
+    <meta name="keywords" content="teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat, yemek, makale, haber, içerik, blog, entellektüel, düşünce, analiz, araştırma" />
+    <meta name="author" content="OpenWall" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://openwall.com.tr" />
+    
+    <!-- Enhanced Meta Tags for AI Understanding -->
+    <meta name="application-name" content="OpenWall" />
+    <meta name="category" content="İçerik Platformu" />
+    <meta name="classification" content="Blog, Haber Sitesi, Eğitim Platformu" />
+    <meta name="coverage" content="Worldwide" />
+    <meta name="distribution" content="Global" />
+    <meta name="rating" content="General" />
+    <meta name="revisit-after" content="1 days" />
+    <meta name="target" content="all" />
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="format-detection" content="telephone=no" />
+    
+    <!-- Makale sayfaları için ek meta bilgiler -->
+    <meta name="article:content_type" content="makale" />
+    <meta name="article:content_format" content="html" />
+    <meta name="article:content_language" content="tr-TR" />
+    <meta name="article:content_region" content="TR" />
+    <meta name="article:content_category" content="entellektuel-icerik" />
+    <meta name="article:content_rating" content="general" />
+    <meta name="article:content_tier" content="premium" />
+    <meta name="article:content_difficulty" content="orta" />
+    <meta name="article:content_target_audience" content="entellektuel-kitle" />
+    <meta name="article:content_update_frequency" content="günlük" />
+    <meta name="article:content_quality" content="yüksek" />
+    <meta name="article:content_verification" content="editöryal-kontrol" />
+    
+    <!-- Content Type and Language Details -->
+    <meta name="content-language" content="tr" />
+    <meta name="content-type" content="text/html; charset=UTF-8" />
+    <meta name="content-script-type" content="text/javascript" />
+    <meta name="content-style-type" content="text/css" />
+    
+    <!-- Site Purpose and Mission -->
+    <meta name="purpose" content="OpenWall, entellektüel içerik arayan okuyucular için çok kategorili bir platform sunar. Amacımız kaliteli, güncel ve düşündürücü içeriklerle okuyucularımızı bilgilendirmek ve düşünmeye teşvik etmektir." />
+    <meta name="mission" content="Türkiye'de ve dünyada entellektüel içerik üretimi ve paylaşımını desteklemek, okuyuculara çeşitli alanlarda kaliteli bilgi sunmak." />
+    
+    <!-- Target Audience -->
+    <meta name="audience" content="Entellektüel içerik arayan okuyucular, öğrenciler, akademisyenler, profesyoneller, genel okuyucu kitlesi" />
+    <meta name="age-group" content="18+" />
+    <meta name="education-level" content="Lise ve üzeri" />
+    
+    <!-- Content Categories and Topics -->
+    <meta name="topics" content="Teknoloji, Felsefe, Sanat, Spor, Siyaset, Ekonomi, Sağlık, Eğitim, Çevre, Sosyoloji, Psikoloji, Din, Müzik, Sinema, Seyahat, Yemek" />
+    <meta name="content-focus" content="Güncel olaylar, analizler, araştırmalar, düşünce yazıları, haberler, makaleler" />
+    
+    <!-- Platform Features -->
+    <meta name="features" content="Makale yayınlama, kategori bazlı içerik, galeri, video içerikler, sözlük, arama, responsive tasarım, admin paneli" />
+    <meta name="services" content="İçerik yayınlama, bilgi paylaşımı, eğitim materyali, haber kaynağı" />
+    
+    <!-- Technical Information -->
+    <meta name="generator" content="React + Vite + Node.js" />
+    <meta name="framework" content="React 18, Express.js" />
+    <meta name="database" content="AWS DynamoDB" />
+    <meta name="hosting" content="Vercel" />
+    
+    <!-- Business Information -->
+    <meta name="business-type" content="İçerik Platformu" />
+    <meta name="business-model" content="Ücretsiz içerik platformu" />
+    <meta name="revenue-model" content="Reklam gelirleri" />
+    <meta name="founding-year" content="2024" />
+    <meta name="country" content="Türkiye" />
+    <meta name="region" content="Avrupa" />
+    
+    <!-- Enhanced Local SEO Meta Tags -->
+    <meta name="geo.region" content="TR" />
+    <meta name="geo.placename" content="Türkiye" />
+    <meta name="geo.position" content="39.9334;32.8597" />
+    <meta name="ICBM" content="39.9334, 32.8597" />
+    <meta name="geo.country" content="TR" />
+    <meta name="geo.city" content="Ankara" />
+    <meta name="geo.state" content="Ankara" />
+    <meta name="geo.postalcode" content="06000" />
+    <meta name="geo.area" content="Anadolu" />
+    <meta name="geo.timezone" content="Europe/Istanbul" />
+    <meta name="geo.language" content="tr" />
+    <meta name="geo.currency" content="TRY" />
+    <meta name="geo.phone" content="+90" />
+    <meta name="geo.fax" content="+90" />
+    
+    <!-- Local Business Schema Information -->
+    <meta name="business:name" content="OpenWall" />
+    <meta name="business:type" content="İçerik Platformu" />
+    <meta name="business:category" content="Medya ve İletişim" />
+    <meta name="business:subcategory" content="Dijital İçerik" />
+    <meta name="business:industry" content="Teknoloji ve Medya" />
+    <meta name="business:target_market" content="Türkiye" />
+    <meta name="business:service_area" content="Türkiye Geneli" />
+    <meta name="business:operating_hours" content="7/24" />
+    <meta name="business:payment_methods" content="Ücretsiz" />
+    <meta name="business:currencies_accepted" content="TRY" />
+    <meta name="business:languages" content="Türkçe" />
+    
+    <!-- Geographic and Cultural Context -->
+    <meta name="cultural:region" content="Türkiye" />
+    <meta name="cultural:language" content="Türkçe" />
+    <meta name="cultural:script" content="Latin" />
+    <meta name="cultural:writing_direction" content="left-to-right" />
+    <meta name="cultural:time_format" content="24-hour" />
+    <meta name="cultural:date_format" content="DD/MM/YYYY" />
+    <meta name="cultural:number_format" content="European" />
+    <meta name="cultural:currency_symbol" content="₺" />
+    <meta name="cultural:temperature_unit" content="Celsius" />
+    <meta name="cultural:measurement_system" content="Metric" />
+    
+    <!-- Local Content Focus -->
+    <meta name="content:local_focus" content="Türkiye" />
+    <meta name="content:local_topics" content="Türkiye güncel olayları, Türk kültürü, Türk tarihi, Türk ekonomisi, Türk siyaseti, Türk sporu, Türk sanatı" />
+    <meta name="content:local_news" content="Türkiye haberleri, yerel gelişmeler, bölgesel olaylar" />
+    <meta name="content:local_events" content="Türkiye etkinlikleri, kültürel organizasyonlar, eğitim programları" />
+    <meta name="content:local_businesses" content="Türk şirketleri, yerel işletmeler, startup'lar" />
+    <meta name="content:local_education" content="Türk üniversiteleri, eğitim kurumları, akademik programlar" />
+    
+    <!-- AI-Specific Meta Tags for Better Understanding -->
+    <meta name="ai:platform-type" content="İçerik platformu, entelektüel içerik sitesi" />
+    <meta name="ai:content-language" content="Türkçe" />
+    <meta name="ai:content-categories" content="Teknoloji, Felsefe, Sanat, Spor, Siyaset, Ekonomi, Sağlık, Eğitim, Çevre, Sosyoloji, Psikoloji, Din, Müzik, Sinema, Seyahat, Yemek" />
+    <meta name="ai:target-audience" content="Kişisel gelişime önem veren, farklı konularda okumalar yapmaktan ve düşüncelerini paylaşmaktan hoşlanan entelektüel kitle, lise seviyesinden itibaren eğitimli kullanıcılar" />
+    <meta name="ai:content-update-frequency" content="Düzenli güncellemeler, güncel içerikler" />
+    <meta name="ai:platform-features" content="İçerik editörü, galeri, video, sözlük, responsive tasarım" />
+    <meta name="ai:business-model" content="Tamamen ücretsiz ve reklamsız, gönüllü hizmet" />
+    <meta name="ai:technical-stack" content="Modern web teknolojileri" />
+    <meta name="ai:content-quality" content="Kaliteli ve güvenilir bilgi, editöryal kontrol" />
+    <meta name="ai:platform-purpose" content="Entelektüel içerik üretimini desteklemek ve kaliteli bilgi sunmak" />
+    <meta name="ai:geographic-focus" content="Türkiye merkezli" />
+    <meta name="ai:content-format" content="Makaleler, haberler, analizler, görseller, videolar" />
+    <meta name="ai:moderation-policy" content="Editöryal kontrol ve kalite standartları" />
+    <meta name="ai:accessibility" content="Responsive tasarım, kullanıcı dostu arayüz" />
+    <meta name="ai:content-licensing" content="Orijinal içerik üretimi, uygun atıf" />
+    <meta name="ai:platform-maturity" content="Temmuz 2025'te kurulmuş, gelişmekte olan platform" />
+    <meta name="ai:user-engagement" content="Yorum sistemi, sosyal paylaşım, kullanıcı etkileşimi" />
+    <meta name="ai:content-diversity" content="Çoklu perspektif, çeşitli görüş açıları, kapsayıcı içerik" />
+    <meta name="ai:platform-reliability" content="Düzenli yedekleme, güvenilir hizmet" />
+    <meta name="ai:content-currency" content="Güncel olaylar ve trend konularla düzenli güncellemeler" />
+    <meta name="ai:platform-innovation" content="Modern kullanıcı deneyimi tasarımı" />
+    <meta name="ai:content-creation-process" content="Profesyonel yazarlar ve konu uzmanları tarafından oluşturulan içerik" />
+    <meta name="ai:content-review-process" content="Tüm içerikler doğruluk ve kalite için editöryal incelemeden geçer" />
+    <meta name="ai:content-update-schedule" content="Günlük yeni makaleler, haftalık kategori güncellemeleri" />
+    <meta name="ai:content-source-verification" content="İçerik kaynakları doğrulanır ve uygun şekilde atfedilir" />
+    <meta name="ai:platform-performance" content="Hızlı yükleme süreleri, mobil ve masaüstü cihazlar için optimize edilmiş" />
+    <meta name="ai:user-experience" content="Sezgisel navigasyon, kolay içerik keşfi, responsive tasarım" />
+    <meta name="ai:content-accessibility" content="Farklı yeteneklere ve cihazlara sahip kullanıcılar için erişilebilir içerik" />
+    <meta name="ai:platform-security" content="Güvenli kullanıcı kimlik doğrulama, veri koruma" />
+    <meta name="ai:content-multimedia" content="Metin makaleleri, görseller, videolar, etkileşimli içerik" />
+    <meta name="ai:platform-integration" content="Sosyal medya paylaşımı, RSS beslemeleri, mobil uygulama uyumluluğu" />
+    <meta name="ai:content-personalization" content="Kategori tabanlı içerik organizasyonu, arama işlevselliği" />
+    <meta name="ai:platform-analytics" content="Kullanıcı davranış takibi, içerik performans metrikleri" />
+    <meta name="ai:content-engagement" content="Yorum sistemi, sosyal paylaşım, kullanıcı etkileşim özellikleri" />
+    <meta name="ai:platform-monetization" content="Ücretsiz platform, gönüllü hizmet" />
+    <meta name="ai:content-licensing" content="Orijinal içerik oluşturma, uygun atıf, telif hakkı uyumluluğu" />
+    <meta name="ai:platform-compliance" content="Gizlilik politikası, kullanım şartları" />
+    <meta name="ai:content-diversity" content="Çoklu perspektif, çeşitli görüş açıları, kapsayıcı içerik" />
+    <meta name="ai:platform-reliability" content="Düzenli yedekleme, güvenilir hizmet" />
+    <meta name="ai:content-currency" content="Gerçek zamanlı güncellemeler, son dakika haberleri, trend konular" />
+    <meta name="ai:platform-scalability" content="Bulut tabanlı altyapı, otomatik ölçeklendirme" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://openwall.com.tr" />
+    <meta property="og:title" content="OpenWall - Entellektüel İçerikler ve Makaleler" />
+    <meta property="og:description" content="OpenWall, teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat ve yemek gibi çeşitli alanlarda kaliteli içerikler sunan kapsamlı bir platformdur." />
+    <meta property="og:image" content="https://openwall.com.tr/og-images/default/og-default.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="OpenWall - Entellektüel İçerikler" />
+    <meta property="og:site_name" content="OpenWall" />
+    <meta property="og:locale" content="tr_TR" />
+    
+    <!-- Enhanced Open Graph Tags for AI Understanding -->
+    <meta property="og:determiner" content="the" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:secure_url" content="https://openwall.com.tr/og-images/default/og-default.jpg" />
+    <meta property="og:updated_time" content="2024-01-15T00:00:00+03:00" />
+    <meta property="og:see_also" content="https://openwall.com.tr/articles" />
+    <meta property="og:see_also" content="https://openwall.com.tr/categories" />
+    <meta property="og:see_also" content="https://openwall.com.tr/highlights" />
+    
+    <!-- Open Graph Profile Information -->
+    <meta property="og:profile:first_name" content="OpenWall" />
+    <meta property="og:profile:last_name" content="Platform" />
+    <meta property="og:profile:username" content="openwall" />
+    
+    <!-- Open Graph Article Information -->
+    <meta property="article:published_time" content="2024-01-15T00:00:00+03:00" />
+    <meta property="article:modified_time" content="2024-01-15T00:00:00+03:00" />
+    <meta property="article:author" content="OpenWall" />
+    <meta property="article:section" content="İçerik Platformu" />
+    <meta property="article:tag" content="teknoloji" />
+    <meta property="article:tag" content="felsefe" />
+    <meta property="article:tag" content="sanat" />
+    <meta property="article:tag" content="spor" />
+    <meta property="article:tag" content="siyaset" />
+    <meta property="article:tag" content="ekonomi" />
+    <meta property="article:tag" content="sağlık" />
+    <meta property="article:tag" content="eğitim" />
+    <meta property="article:tag" content="çevre" />
+    <meta property="article:tag" content="sosyoloji" />
+    <meta property="article:tag" content="psikoloji" />
+    <meta property="article:tag" content="din" />
+    <meta property="article:tag" content="müzik" />
+    <meta property="article:tag" content="sinema" />
+    <meta property="article:tag" content="seyahat" />
+    <meta property="article:tag" content="yemek" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://openwall.com.tr" />
+    <meta property="twitter:title" content="OpenWall - Entellektüel İçerikler ve Makaleler" />
+    <meta property="twitter:description" content="OpenWall, teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat ve yemek gibi çeşitli alanlarda kaliteli içerikler sunan kapsamlı bir platformdur." />
+    <meta property="twitter:image" content="https://openwall.com.tr/og-images/default/og-default.jpg" />
+    <meta property="twitter:image:alt" content="OpenWall - Entellektüel İçerikler" />
+    
+    <!-- Enhanced Twitter Card Tags -->
+    <meta property="twitter:site" content="@openwall" />
+    <meta property="twitter:creator" content="@openwall" />
+    <meta property="twitter:app:country" content="TR" />
+    <meta property="twitter:app:name:iphone" content="OpenWall" />
+    <meta property="twitter:app:name:ipad" content="OpenWall" />
+    <meta property="twitter:app:name:googleplay" content="OpenWall" />
+    
+    <!-- Ek SEO Meta Etiketleri -->
+    <meta name="theme-color" content="#f97316" />
+    <meta name="msapplication-TileColor" content="#f97316" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="OpenWall" />
+    
+    <!-- Security Headers and Meta Tags -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()" />
+    <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin" />
+    <meta http-equiv="Cross-Origin-Embedder-Policy" content="require-corp" />
+    
+    <!-- Content Security Policy -->
+    <!-- 
+      DEVELOPMENT MODE: Allows localhost connections for local development
+      PRODUCTION MODE: Restricts to production domains only
+      
+      To switch to production, change the connect-src line to:
+      connect-src 'self' https://www.google-analytics.com https://openwall.s3.eu-north-1.amazonaws.com;
+      
+      Current: Development mode (localhost allowed)
+    -->
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://pagead2.googlesyndication.com https://www.google-analytics.com;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https: blob:;
+      media-src 'self' https:;
+      connect-src 'self' http://localhost:* https://localhost:* https://www.google-analytics.com https://openwall.s3.eu-north-1.amazonaws.com;
+      frame-src 'self' https://pagead2.googlesyndication.com;
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+      frame-ancestors 'none';
+      upgrade-insecure-requests;
+    " />
+    
+    <!-- Feature Policy -->
+    <meta http-equiv="Feature-Policy" content="
+      accelerometer 'none';
+      ambient-light-sensor 'none';
+      autoplay 'none';
+      battery 'none';
+      camera 'none';
+      display-capture 'none';
+      document-domain 'none';
+      encrypted-media 'none';
+      execution-while-not-rendered 'none';
+      execution-while-out-of-viewport 'none';
+      fullscreen 'self';
+      geolocation 'none';
+      gyroscope 'none';
+      magnetometer 'none';
+      microphone 'none';
+      midi 'none';
+      payment 'none';
+      picture-in-picture 'none';
+      publickey-credentials-get 'none';
+      screen-wake-lock 'none';
+      sync-xhr 'none';
+      usb 'none';
+      web-share 'none';
+      xr-spatial-tracking 'none';
+    " />
+    
+    <!-- Hreflang Tags -->
+    <link rel="alternate" hrefLang="tr" href="https://openwall.com.tr" />
+    <link rel="alternate" hrefLang="x-default" href="https://openwall.com.tr" />
+    
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://openwall.s3.eu-north-1.amazonaws.com" />
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="/src/main.jsx" as="script" />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" as="style" />
+    
+    <!-- Performance Optimization - Critical Resources -->
+    <link rel="preload" href="/src/index.css" as="style" />
+    <link rel="preload" href="/src/App.css" as="style" />
+    <link rel="preload" href="/src/dark-header-nav.css" as="style" />
+    <link rel="preload" href="/src/lora-font.css" as="style" />
+    
+    <!-- Critical Images Preload -->
+    <link rel="preload" href="/og-images/default/og-default.jpg" as="image" />
+    <link rel="preload" href="/site-logo.png" as="image" />
+    
+    <!-- DNS Prefetch -->
+    <link rel="dns-prefetch" href="//www.google-analytics.com" />
+    <link rel="dns-prefetch" href="//platform.twitter.com" />
+    <link rel="dns-prefetch" href="//www.facebook.com" />
+    
+    <!-- Resource Hints for Performance -->
+    <link rel="prefetch" href="/articles" />
+    <link rel="prefetch" href="/categories" />
+    <link rel="prefetch" href="/highlights" />
+    
+    <!-- Module Preload for JavaScript -->
+    <link rel="modulepreload" href="/src/main.jsx" />
+    
+    <!-- Preload Critical Fonts - Removed problematic URLs -->
+    <!-- Fonts will be loaded normally through Google Fonts CSS -->
+    
+    <!-- Enhanced Resource Preloading with Priority -->
+    <link rel="preload" href="/src/main.jsx" as="script" fetchpriority="high" />
+    <link rel="preload" href="/src/index.css" as="style" fetchpriority="high" />
+    
+    <!-- Preload Above-the-fold Images -->
+    <link rel="preload" href="/og-images/default/og-default.jpg" as="image" fetchpriority="high" />
+    <link rel="preload" href="/site-logo.png" as="image" fetchpriority="high" />
+    
+    <!-- Preload Critical Routes -->
+    <link rel="prefetch" href="/articles" fetchpriority="low" />
+    <link rel="prefetch" href="/categories" fetchpriority="low" />
+    <link rel="prefetch" href="/highlights" fetchpriority="low" />
+    
+    <!-- Preload External Resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://openwall.s3.eu-north-1.amazonaws.com" />
+    
+    <!-- Preload Analytics -->
+    <link rel="preconnect" href="https://www.google-analytics.com" />
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+    
+    <!-- Performance Monitoring - Core Web Vitals -->
+    <script>
+      // Core Web Vitals Monitoring
+      if ('PerformanceObserver' in window) {
+        // LCP (Largest Contentful Paint) Monitoring
+        new PerformanceObserver((entryList) => {
+          const entries = entryList.getEntries();
+          const lastEntry = entries[entries.length - 1];
+          const lcp = lastEntry.startTime;
+          
+          if (lcp < 2500) {
+            gtag('event', 'core_web_vitals', {
+              event_category: 'Web Vitals',
+              event_label: 'LCP',
+              value: Math.round(lcp),
+              non_interaction: true
+            });
+          }
+        }).observe({ entryTypes: ['largest-contentful-paint'] });
+        
+        // FID (First Input Delay) Monitoring
+        new PerformanceObserver((entryList) => {
+          const entries = entryList.getEntries();
+          entries.forEach((entry) => {
+            const fid = entry.processingStart - entry.startTime;
+            
+            if (fid < 100) {
+              gtag('event', 'core_web_vitals', {
+                event_category: 'Web Vitals',
+                event_label: 'FID',
+                value: Math.round(fid),
+                non_interaction: true
+              });
+            }
+          });
+        }).observe({ entryTypes: ['first-input'] });
+        
+        // CLS (Cumulative Layout Shift) Monitoring
+        new PerformanceObserver((entryList) => {
+          let clsValue = 0;
+          const entries = entryList.getEntries();
+          
+          entries.forEach((entry) => {
+            if (!entry.hadRecentInput) {
+              clsValue += entry.value;
+            }
+          });
+          
+          if (clsValue < 0.1) {
+            gtag('event', 'core_web_vitals', {
+              event_category: 'Web Vitals',
+              event_label: 'CLS',
+              value: Math.round(clsValue * 1000) / 1000,
+              non_interaction: true
+            });
+          }
+        }).observe({ entryTypes: ['layout-shift'] });
+      }
+      
+      // Performance Timing API
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          const perfData = performance.getEntriesByType('navigation')[0];
+          const loadTime = perfData.loadEventEnd - perfData.loadEventStart;
+          const domContentLoaded = perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart;
+          
+          gtag('event', 'performance_metrics', {
+            event_category: 'Performance',
+            event_label: 'Page Load',
+            value: Math.round(loadTime),
+            non_interaction: true
+          });
+          
+          gtag('event', 'performance_metrics', {
+            event_category: 'Performance',
+            event_label: 'DOM Ready',
+            value: Math.round(domContentLoaded),
+            non_interaction: true
+          });
+        }, 0);
+      });
+    </script>
+    
+    <!-- Advanced Performance Optimization -->
+    <script>
+      // Performance Optimization Script
+      document.addEventListener('DOMContentLoaded', function() {
+        // Lazy loading for images
+        if ('IntersectionObserver' in window) {
+          const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.classList.remove('lazy');
+                observer.unobserve(img);
+              }
+            });
+          });
+          
+          document.querySelectorAll('img[data-src]').forEach(img => {
+            imageObserver.observe(img);
+          });
+        }
+        
+        // Preload critical resources
+        const criticalResources = [
+          '/src/main.jsx',
+          '/src/index.css',
+          '/og-images/default/og-default.jpg'
+        ];
+        
+        criticalResources.forEach(resource => {
+          const link = document.createElement('link');
+          link.rel = 'preload';
+          link.href = resource;
+          link.as = resource.endsWith('.jsx') ? 'script' : 
+                    resource.endsWith('.css') ? 'style' : 'image';
+          document.head.appendChild(link);
+        });
+        
+        // Service Worker registration for caching
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+              .then(registration => {
+                console.log('SW registered: ', registration);
+              })
+              .catch(registrationError => {
+                console.log('SW registration failed: ', registrationError);
+              });
+          });
+        }
+        
+        // Performance budget monitoring
+        const performanceBudget = {
+          lcp: 2500,
+          fid: 100,
+          cls: 0.1,
+          ttf: 800
+        };
+        
+        // Monitor performance against budget
+        const checkPerformanceBudget = () => {
+          const perfData = performance.getEntriesByType('navigation')[0];
+          const ttfb = perfData.responseStart - perfData.requestStart;
+          
+          if (ttfb > performanceBudget.ttf) {
+            gtag('event', 'performance_budget_exceeded', {
+              event_category: 'Performance',
+              event_label: 'TTFB',
+              value: Math.round(ttfb)
+            });
+          }
+        };
+        
+        window.addEventListener('load', checkPerformanceBudget);
+      });
+      
+      // Resource hints optimization
+      const optimizeResourceHints = () => {
+        // Add resource hints for user navigation patterns
+        const userNavigationPatterns = [
+          '/articles',
+          '/categories',
+          '/highlights'
+        ];
+        
+        userNavigationPatterns.forEach(route => {
+          const link = document.createElement('link');
+          link.rel = 'prefetch';
+          link.href = route;
+          link.fetchpriority = 'low';
+          document.head.appendChild(link);
+        });
+      };
+      
+      // Run optimization after page load
+      window.addEventListener('load', optimizeResourceHints);
+      
+      // Cache Management Functions
+      const cacheManager = {
+        // Cache specific URLs
+        cacheUrls: async (urls) => {
+          if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage({
+              type: 'CACHE_URLS',
+              urls: urls
+            });
+          }
+        },
+        
+        // Preload and cache critical resources
+        preloadCriticalResources: async () => {
+          const criticalUrls = [
+            '/articles',
+            '/categories',
+            '/highlights',
+            '/gallery',
+            '/videos'
+          ];
+          
+          // Preload with high priority
+          criticalUrls.forEach(url => {
+            const link = document.createElement('link');
+            link.rel = 'prefetch';
+            link.href = url;
+            link.fetchpriority = 'high';
+            document.head.appendChild(link);
+          });
+          
+          // Cache in background
+          await cacheManager.cacheUrls(criticalUrls);
+        },
+        
+        // Cache user navigation patterns
+        cacheUserPatterns: async () => {
+          // Analyze user behavior and cache accordingly
+          const userPatterns = [
+            '/articles?category=technology',
+            '/articles?category=philosophy',
+            '/highlights?sort=trending'
+          ];
+          
+          await cacheManager.cacheUrls(userPatterns);
+        },
+        
+        // Warm up cache with common requests
+        warmCache: async () => {
+          const warmUrls = [
+            '/api/articles?limit=10',
+            '/api/categories',
+            '/api/highlights?limit=5'
+          ];
+          
+          // Prefetch API responses
+          warmUrls.forEach(url => {
+            const link = document.createElement('link');
+            link.rel = 'prefetch';
+            link.href = url;
+            document.head.appendChild(link);
+          });
+        }
+      };
+      
+      // Initialize cache management
+      window.addEventListener('load', async () => {
+        // Wait a bit for initial page load
+        setTimeout(async () => {
+          await cacheManager.preloadCriticalResources();
+          await cacheManager.warmCache();
+          
+          // Cache user patterns after user interaction
+          setTimeout(async () => {
+            await cacheManager.cacheUserPatterns();
+          }, 5000);
+        }, 1000);
+      });
+      
+      // Cache API responses for better performance
+      const apiCache = new Map();
+      const cacheApiResponse = async (url, response) => {
+        try {
+          const cacheData = {
+            data: response,
+            timestamp: Date.now(),
+            ttl: 300000 // 5 minutes
+          };
+          apiCache.set(url, cacheData);
+        } catch (error) {
+          console.log('API cache failed:', error);
+        }
+      };
+      
+      const getCachedApiResponse = (url) => {
+        const cached = apiCache.get(url);
+        if (cached && (Date.now() - cached.timestamp) < cached.ttl) {
+          return cached.data;
+        }
+        return null;
+      };
+      
+      // Expose cache functions globally
+      window.openwallCache = {
+        cacheUrls: cacheManager.cacheUrls,
+        preloadCritical: cacheManager.preloadCriticalResources,
+        warmCache: cacheManager.warmCache,
+        cacheApi: cacheApiResponse,
+        getCachedApi: getCachedApiResponse
+      };
+    </script>
+    
+    <!-- AI-Friendly CSS for Better Content Understanding -->
+    <style id="ai-friendly-styles">
+      /* AI-friendly content structure */
+      .ai-content-section { margin: 20px 0; }
+      .ai-content-title { font-weight: bold; margin-bottom: 10px; }
+      .ai-content-description { line-height: 1.6; }
+      .ai-category-list { list-style: none; padding: 0; }
+      .ai-category-item { margin: 10px 0; padding: 10px; border-left: 3px solid #f97316; }
+      .ai-feature-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+      .ai-feature-item { padding: 15px; border: 1px solid #e5e7eb; border-radius: 8px; }
+      
+      /* Hidden content for AI crawlers */
+      #ai-site-info {
+        position: absolute;
+        left: -9999px;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+      }
+      
+      /* Semantic content markers */
+      .content-marker { color: transparent; font-size: 1px; }
+      .ai-semantic-content { position: relative; }
+      
+      /* Enhanced accessibility for AI */
+      .ai-accessible-content { outline: 1px solid transparent; }
+      .ai-content-hierarchy { display: block; }
+    </style>
+    
+    <!-- Critical CSS for Performance -->
+    <style id="critical-css">
+      /* Critical rendering path CSS */
+      * { box-sizing: border-box; }
+      
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        line-height: 1.6;
+        color: #1f2937;
+        background-color: #ffffff;
+      }
+      
+      #root {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      /* Loading skeleton */
+      .loading-skeleton {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+      }
+      
+      @keyframes loading {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+      
+      /* Critical layout styles */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+      }
+      
+      .header {
+        background: #ffffff;
+        border-bottom: 1px solid #e5e7eb;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      
+      .main-content {
+        flex: 1;
+        padding: 2rem 0;
+      }
+      
+      .footer {
+        background: #1f2937;
+        color: #ffffff;
+        padding: 2rem 0;
+        margin-top: auto;
+      }
+      
+      /* Responsive grid */
+      .grid {
+        display: grid;
+        gap: 1.5rem;
+      }
+      
+      .grid-cols-1 { grid-template-columns: repeat(1, 1fr); }
+      .grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+      .grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+      
+      @media (min-width: 768px) {
+        .md\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+        .md\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+      }
+      
+      @media (min-width: 1024px) {
+        .lg\:grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+      }
+      
+      /* Critical button styles */
+      .btn {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        background: #f97316;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        transition: background-color 0.2s;
+      }
+      
+      .btn:hover {
+        background: #ea580c;
+      }
+      
+      /* Critical card styles */
+      .card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.2s;
+      }
+      
+      .card:hover {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+    
+    <!-- AI-Enhanced JavaScript for Content Understanding -->
+    <script id="ai-enhancement-script">
+      // AI Enhancement Script
+      document.addEventListener('DOMContentLoaded', function() {
+        // Inject AI-specific data attributes
+        const main = document.querySelector('main');
+        if (main) {
+          main.setAttribute('data-ai-content', 'entellektuel-icerik-platformu');
+          main.setAttribute('data-ai-heading-level', '1');
+          main.setAttribute('data-ai-language', 'tr');
+          main.setAttribute('data-ai-region', 'turkiye');
+          main.setAttribute('data-ai-country', 'TR');
+          
+          // Platform bilgileri JSON formatında
+          const platformInfo = {
+            name: 'OpenWall',
+            type: 'İçerik Platformu',
+            mission: 'Entelektüel içerik üretimini desteklemek ve kaliteli bilgi sunmak',
+            targetAudience: 'Kişisel gelişime önem veren entelektüel kitle',
+            foundingDate: '2025-07',
+            businessModel: 'Ücretsiz ve reklamsız, gönüllü hizmet',
+            contentFocus: 'Akademik ve genel bilgiye dayalı entelektüel içerik',
+            features: 'İçerik editörü, galeri, video, sözlük, responsive tasarım'
+          };
+          
+          main.setAttribute('data-ai-platform-info', JSON.stringify(platformInfo));
+          main.setAttribute('data-ai-last-update', new Date().toISOString());
+          main.setAttribute('data-ai-content-freshness', 'guncel');
+        }
+        
+        // Navigation için AI bilgileri
+        const nav = document.querySelector('nav');
+        if (nav) {
+          nav.setAttribute('data-ai-content', 'platform-navigasyon');
+          nav.setAttribute('data-ai-language', 'tr');
+        }
+        
+        // Footer için AI bilgileri
+        const footer = document.querySelector('footer');
+        if (footer) {
+          footer.setAttribute('data-ai-content', 'platform-bilgileri');
+          footer.setAttribute('data-ai-language', 'tr');
+        }
+        
+        // Başlıklar için AI bilgileri
+        const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        headings.forEach((heading, index) => {
+          heading.setAttribute('data-ai-heading-level', (index + 1).toString());
+          heading.setAttribute('data-ai-content', 'platform-icerik');
+          heading.setAttribute('data-ai-language', 'tr');
+        });
+        
+        // HTML root için AI bilgileri
+        document.documentElement.setAttribute('data-ai-platform', 'openwall');
+        document.documentElement.setAttribute('data-ai-language', 'tr');
+        document.documentElement.setAttribute('data-ai-region', 'turkiye');
+      });
+    </script>
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5253715298133137"
+     crossorigin="anonymous"></script>
+    
+    <!-- Schema.org Structured Data for AI Understanding -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "OpenWall Archive",
+      "alternateName": "OpenWall Archive Platform",
+      "url": "https://openwall.com.tr",
+      "description": "A comprehensive archive of intellectual content and articles covering technology, philosophy, art, sports, politics, economy, health, education, environment, sociology, psychology, religion, music, cinema, travel, and food.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "OpenWall Archive",
+        "alternateName": "OpenWall Archive",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://openwall.com.tr/logo.png"
+        },
+        "brand": "OpenWall Archive",
+        "description": "Entellektüel İçerikler ve Makaleler Arşivi"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://openwall.com.tr/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      },
+      "inLanguage": "tr",
+      "isAccessibleForFree": true,
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Entelektüel kitle, kişisel gelişim odaklı okuyucular, lise seviyesinden itibaren eğitimli kullanıcılar"
+      },
+      "about": "OpenWall Archive, okuyuculara çeşitli alanlarda kaliteli ve güvenilir bilgi sunarak entelektüel içerik üretimini desteklemeyi amaçlayan bir arşiv platformudur.",
+      "mainEntity": {
+        "@type": "ItemList",
+        "name": "Archive Kategorileri",
+        "description": "Teknoloji, Felsefe, Sanat, Spor, Siyaset, Ekonomi, Sağlık, Eğitim, Çevre, Sosyoloji, Psikoloji, Din, Müzik, Sinema, Seyahat, Yemek",
+        "numberOfItems": 16
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "TRY",
+        "availability": "https://schema.org/InStock"
+      },
+      "foundingDate": "2025-07",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "serviceType": "İçerik Arşivi",
+      "mission": "Entelektüel içerik üretimini desteklemek ve kaliteli bilgi sunmak",
+      "targetAudience": "Kişisel gelişime önem veren, farklı konularda okumalar yapmaktan ve düşüncelerini paylaşmaktan hoşlanan entelektüel kitle",
+      "contentFocus": "Akademik ve genel bilgiye dayalı entelektüel içerik",
+      "platformFeatures": "İçerik editörü, galeri, video, sözlük, responsive tasarım",
+      "businessModel": "Tamamen ücretsiz ve reklamsız, gönüllü hizmet",
+      "contentQuality": "Kaliteli ve güvenilir bilgi, editöryal kontrol",
+      "platformPurpose": "Okuyuculara çeşitli alanlarda kaliteli bilgi sunarak entelektüel içerik üretimini desteklemek"
+    }
+    </script>
+    
+    <!-- Local Business Schema.org Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "OpenWall Archive",
+      "alternateName": "OpenWall Archive Platform",
+      "description": "Türkiye merkezli entelektüel içerik arşivi",
+      "url": "https://openwall.com.tr",
+      "logo": "https://openwall.com.tr/logo.png",
+      "image": "https://openwall.com.tr/og-images/default/og-default.jpg",
+      "telephone": "+90",
+      "email": "info@openwall.com.tr",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "TR",
+        "addressRegion": "Ankara",
+        "addressLocality": "Ankara",
+        "postalCode": "06000",
+        "streetAddress": "Türkiye"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 39.9334,
+        "longitude": 32.8597
+      },
+      "openingHours": "Mo-Su 00:00-23:59",
+      "priceRange": "₺₺₺",
+      "paymentAccepted": "Ücretsiz",
+      "currenciesAccepted": "TRY",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "serviceArea": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Archive Kategorileri",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Teknoloji Makaleleri Arşivi",
+              "description": "Teknoloji alanında güncel makaleler arşivi"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Felsefe İçerikleri Arşivi",
+              "description": "Felsefi düşünce yazıları arşivi"
+            }
+          }
+        ]
+      },
+      "sameAs": [
+        "https://twitter.com/openwall",
+        "https://facebook.com/openwall",
+        "https://instagram.com/openwall"
+      ],
+      "foundingDate": "2025-07",
+      "foundingLocation": {
+        "@type": "Place",
+        "name": "Türkiye"
+      },
+      "parentOrganization": {
+        "@type": "Organization",
+        "name": "OpenWall Archive"
+      },
+      "subOrganization": [
+        {
+          "@type": "Organization",
+          "name": "OpenWall Teknoloji Arşivi",
+          "description": "Teknoloji içerik arşiv departmanı"
+        },
+        {
+          "@type": "Organization",
+          "name": "OpenWall Kültür Arşivi",
+          "description": "Kültür-sanat içerik arşiv departmanı"
+        }
+      ]
+    }
+    </script>
+    
+    <!-- Schema.org FAQPage -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "OpenWall nasıl bir site?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Openwall.com.tr, Türkiye merkezli, bağımsız bir içerik platformudur. Temmuz 2025 yılında bağımsız bir platform olarak kurulmuştur. Openwall, kişisel gelişimine önem veren, farklı konularda okumalar yapmaktan ve düşüncelerini paylaşmaktan hoşlanan entelektüel bir kitleye hitap etmeyi amaçlayan bir içerik platformu olarak öne çıkmaktadır."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "OpenWall.com.tr ne iş yapıyor?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "OpenWall, okuyuculara çeşitli alanlarda kaliteli ve güvenilir bilgi sunarak entelektüel içerik üretimini desteklemeyi amaçlayan bir platformdur. Tamamen ücretsiz ve reklamsız olarak hizmet vermekte ve bu işi gönüllü yapmaktadır."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "OpenWall hangi kategorilerde içerik sunuyor?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Platform, teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat ve yemek gibi çeşitli alanlarda içerik sunmaktadır. İçerik editörü, galeri, video ve sözlük gibi zengin özellikleri bünyesinde barındırır."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "OpenWall kimlere hitap ediyor?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Site, özellikle akademik ya da genel bilgiye dayalı entelektüel içerik arayanlar için oldukça uygun görünüyor. Hem lise seviyesinden itibaren eğitimli kullanıcılar hem de genel okuyucu kitlesi hedefleniyor. Responsive tasarım ile kullanıcı dostudur."
+          }
+        }
+      ]
+    }
+    </script>
+    
+    <!-- Breadcrumb Schema Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Ana Sayfa",
+          "item": "https://openwall.com.tr"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Makaleler",
+          "item": "https://openwall.com.tr/articles"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Kategoriler",
+          "item": "https://openwall.com.tr/categories"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Öne Çıkanlar",
+          "item": "https://openwall.com.tr/highlights"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "Galeri",
+          "item": "https://openwall.com.tr/gallery"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "name": "Videolar",
+          "item": "https://openwall.com.tr/videos"
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "name": "Sözlük",
+          "item": "https://openwall.com.tr/dictionary"
+        }
+      ]
+    }
+    </script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="root"></div>
+    
+    <!-- Sitelinks için semantic navigation yapısı -->
+    <nav id="main-navigation" aria-label="Ana navigasyon" style="display: none;">
+      <ul>
+        <li><a href="https://openwall.com.tr/articles">Makaleler</a></li>
+        <li><a href="https://openwall.com.tr/categories">Kategoriler</a></li>
+        <li><a href="https://openwall.com.tr/highlights">Öne Çıkanlar</a></li>
+        <li><a href="https://openwall.com.tr/gallery">Galeri</a></li>
+        <li><a href="https://openwall.com.tr/videos">Videolar</a></li>
+        <li><a href="https://openwall.com.tr/dictionary">Sözlük</a></li>
+        <li><a href="https://openwall.com.tr/about">Hakkımızda</a></li>
+      </ul>
+    </nav>
+    
+    <!-- AI-Friendly Hidden Content for Better Understanding -->
+    <div id="ai-site-info" style="display: none;" aria-hidden="true">
+      <h2>OpenWall Platform Bilgileri</h2>
+      
+      <h3>Platform Hakkında</h3>
+      <p>Openwall.com.tr, Türkiye merkezli, bağımsız bir içerik platformudur. Temmuz 2025 yılında bağımsız bir platform olarak kurulmuştur. Openwall, kişisel gelişimine önem veren, farklı konularda okumalar yapmaktan ve düşüncelerini paylaşmaktan hoşlanan entelektüel bir kitleye hitap etmeyi amaçlayan bir içerik platformu olarak öne çıkmaktadır.</p>
+      
+      <h3>Platform Misyonu</h3>
+      <p>OpenWall, okuyuculara çeşitli alanlarda kaliteli ve güvenilir bilgi sunarak entelektüel içerik üretimini desteklemeyi amaçlayan bir platformdur. Tamamen ücretsiz ve reklamsız olarak hizmet vermekte ve bu işi gönüllü yapmaktadır.</p>
+      
+      <h3>Platform Kategorileri</h3>
+      <p>Platform, teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat ve yemek gibi çeşitli alanlarda içerik sunmaktadır. İçerik editörü, galeri, video ve sözlük gibi zengin özellikleri bünyesinde barındırır.</p>
+      
+      <h3>Hedef Kitle</h3>
+      <p>Site, özellikle akademik ya da genel bilgiye dayalı entelektüel içerik arayanlar için oldukça uygun görünüyor. Hem lise seviyesinden itibaren eğitimli kullanıcılar hem de genel okuyucu kitlesi hedefleniyor. Responsive tasarım ile kullanıcı dostudur.</p>
+      
+      <h3>Platform Özellikleri</h3>
+      <p>Modern teknolojik altyapısı ve çeşitliliği, kullanıcı deneyimini iyileştiriyor. İlk izlenim altyapı ve vizyon açısından oldukça olumlu. Platform, entelektüel içerik üretimini desteklemek ve kaliteli bilgi sunmak amacıyla tasarlanmıştır.</p>
+      
+      <h3>İçerik Kalitesi</h3>
+      <p>Tüm içerikler doğruluk ve kalite için editöryal incelemeden geçer. Profesyonel yazarlar ve konu uzmanları tarafından oluşturulan içerik, güncel olaylar ve trend konularla düzenli olarak güncellenir. İçerik kaynakları doğrulanır ve uygun şekilde atfedilir.</p>
+    </div>
+    
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
