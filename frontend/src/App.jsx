@@ -12,7 +12,6 @@ import Footer from './components/layout/Footer';
 import './index.css';
 import './dark-header-nav.css'; // Tailwind ve genel stiller
 
-// Sayfaları lazy loading ile yükleyelim
 const HomePage = lazy(() => import('./pages/HomePage'));
 const ArticlesPage = lazy(() => import('./pages/ArticlesPage'));
 const ArticleDetailPage = lazy(() => import('./pages/ArticleDetailPage'));
