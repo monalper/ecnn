@@ -369,3 +369,63 @@ img[src*="reklam"] {
   position: relative !important;
   z-index: 1 !important;
 }
+
+/* Font family utilities */
+.font-serif {
+  font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+/* Article detail page specific styles */
+.article-initial-cap {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 4rem;
+  line-height: 1;
+  color: #9ca3af;
+  float: left;
+  margin-right: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .article-initial-cap {
+    font-size: 5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .article-initial-cap {
+    font-size: 6rem;
+  }
+}
+
+/* Prose improvements for article content */
+.prose {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.75;
+  color: #374151;
+}
+
+.prose p {
+  margin-bottom: 1.5rem;
+}
+
+.prose h2, .prose h3, .prose h4 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  color: #111827;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.prose h2 {
+  font-size: 1.875rem;
+}
+
+.prose h3 {
+  font-size: 1.5rem;
+}
+
+.prose h4 {
+  font-size: 1.25rem;
+}
