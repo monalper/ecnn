@@ -359,7 +359,7 @@ const ArticleDetailPage = () => {
       <Header scrollPercent={scrollPercent} />
 
       {/* Hero Section - Large Header Image */}
-      <div className="relative w-full h-[55vh] md:h-[75vh] lg:h-[85vh] min-h-[350px] md:min-h-[550px] lg:min-h-[650px] bg-black">
+      <div className="relative w-full h-[90vw] md:aspect-[4/3] md:h-[90vh] lg:h-[100vh] md:min-h-[650px] lg:min-h-[750px] bg-black">
         <img
           src={coverImage}
           alt={article.title}
@@ -367,11 +367,11 @@ const ArticleDetailPage = () => {
         />
         {/* Overlay with title */}
         <div className="absolute inset-0 bg-black/30"></div>
-        {/* Gradient overlay for better text readability */}
-        <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-black via-black/95 via-black/85 via-black/75 via-black/65 via-black/55 via-black/45 via-black/35 via-black/25 via-black/15 via-black/5 to-transparent"></div>
+        {/* Gradient overlay for better text readability - hidden on mobile */}
+        <div className="hidden md:block absolute bottom-0 left-0 right-0 h-96 bg-gradient-to-t from-black via-black/90 via-black/80 via-black/70 via-black/60 via-black/50 via-black/40 via-black/30 via-black/20 via-black/10 via-black/5 to-transparent"></div>
         <div className="absolute bottom-0 left-0 right-0 p-4 md:p-8 lg:p-12">
           <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-            <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-serif text-white font-light leading-tight max-w-4xl mb-4">
+            <h1 className="hidden md:block text-[72px] font-['EB_Garamond'] text-white font-medium leading-none max-w-4xl mb-4">
               {article.title}
             </h1>
             {article.description && (
@@ -384,79 +384,97 @@ const ArticleDetailPage = () => {
       </div>
           
       {/* Main Content - Responsive Layout */}
-      <div className="">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-6 md:py-8 lg:py-12">
+      <div className="px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto py-6 md:py-8 lg:py-12">
           {/* Mobile: Single Column, Desktop: Two Column */}
           <div className="block lg:grid lg:grid-cols-4 lg:gap-12">
             
             {/* Mobile: Top, Desktop: Left - Metadata Sidebar */}
             <div className="order-1 lg:order-1 mb-8 lg:mb-0">
               <div className="lg:sticky lg:top-28 lg:self-start">
-                {/* Author Information */}
-                {author && (
-                  <div className="pb-3 mb-4 lg:mb-0">
-                    <p className="text-sm md:text-base text-gray-700 leading-relaxed">
-                      Yazan, {author}.
-                    </p>
+                {/* Mobile: Title and meta card */}
+                <div className="block lg:hidden mb-6">
+                  <h1 className="text-[42px] md:text-4xl lg:text-5xl xl:text-6xl font-['EB_Garamond'] text-gray-900 dark:text-white font-medium leading-none max-w-4xl mb-4">
+                    {article.title}
+                  </h1>
+                  <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                    {author && (
+                      <div>Yazan, {author}.</div>
+                    )}
+                    {date && (
+                      <div>{date}.</div>
+                    )}
                   </div>
-                )}
-
-                {/* Editor Information */}
-                <div className="pb-3 mb-4 lg:mb-0">
-                  <p className="text-sm md:text-base text-gray-700">
-                     <span className="text-blue-600 underline cursor-pointer"></span>
-                  </p>
                 </div>
 
-                {/* Word Count */}
-                <div className="pb-3 mb-4 lg:mb-0">
-                  <p className="text-sm md:text-base text-gray-700">
-                    {article.content?.replace(/<[^>]+>/g, '').split(/\s+/).length || 0} kelime, {readingTime}
-                  </p>
-                  {date && (
-                    <p className="text-sm md:text-base text-gray-700">
-                      {date}
-                    </p>
+                {/* Desktop: Full metadata sidebar */}
+                <div className="hidden lg:block">
+                  {/* Author Information */}
+                  {author && (
+                    <div className="pb-3 mb-4 lg:mb-0">
+                      <p className="text-sm md:text-base text-gray-700 leading-relaxed">
+                        Yazan, {author}.
+                      </p>
+                    </div>
                   )}
-                  <p className="text-sm md:text-base text-gray-700">
-                    {article.viewCount || 0} görüntülenme
-                  </p>
-                </div>
 
-                {/* Categories */}
-                {article.categories && article.categories.length > 0 && (
+                  {/* Editor Information */}
                   <div className="pb-3 mb-4 lg:mb-0">
-                    <div className="text-sm md:text-base text-gray-700">
-                      {article.categories.join(', ')}
-                    </div>
+                    <p className="text-sm md:text-base text-gray-700">
+                       <span className="text-blue-600 underline cursor-pointer"></span>
+                    </p>
                   </div>
-                )}
 
-                {/* Tags */}
-                {article.tags && article.tags.length > 0 && (
-                  <div className="mb-4 lg:mb-0">
-                    <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-3">Etiketler</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {article.tags.map((tag, index) => (
-                        <div key={index} className="text-blue-600 underline cursor-pointer text-sm md:text-base">
-                          {tag}
-                        </div>
-                      ))}
-                    </div>
+                  {/* Word Count */}
+                  <div className="pb-3 mb-4 lg:mb-0">
+                    <p className="text-sm md:text-base text-gray-700">
+                      {article.content?.replace(/<[^>]+>/g, '').split(/\s+/).length || 0} kelime, {readingTime}
+                    </p>
+                    {date && (
+                      <p className="text-sm md:text-base text-gray-700">
+                        {date}
+                      </p>
+                    )}
+                    <p className="text-sm md:text-base text-gray-700">
+                      {article.viewCount || 0} görüntülenme
+                    </p>
                   </div>
-                )}
 
-                {/* Reading Progress */}
-                <div className="hidden lg:block mt-6 pt-4 border-t border-gray-200">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Okuma İlerlemesi</span>
-                    <span className="text-sm font-medium text-gray-900">{Math.round(scrollPercent)}%</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-                    <div 
-                      className="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-out"
-                      style={{ width: `${scrollPercent}%` }}
-                    ></div>
+                  {/* Categories */}
+                  {article.categories && article.categories.length > 0 && (
+                    <div className="pb-3 mb-4 lg:mb-0">
+                      <div className="text-sm md:text-base text-gray-700">
+                        {article.categories.join(', ')}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Tags */}
+                  {article.tags && article.tags.length > 0 && (
+                    <div className="mb-4 lg:mb-0">
+                      <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-3">Etiketler</h3>
+                      <div className="flex flex-wrap gap-2">
+                        {article.tags.map((tag, index) => (
+                          <div key={index} className="text-blue-600 underline cursor-pointer text-sm md:text-base">
+                            {tag}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Reading Progress */}
+                  <div className="mt-6 pt-4 border-t border-gray-200">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-600">Okuma İlerlemesi</span>
+                      <span className="text-sm font-medium text-gray-900">{Math.round(scrollPercent)}%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+                      <div 
+                        className="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-out"
+                        style={{ width: `${scrollPercent}%` }}
+                      ></div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -527,8 +545,8 @@ const ArticleDetailPage = () => {
 
       {/* Other Articles Section */}
         {articles.length > 0 && (
-        <section className="py-8 md:py-16">
-          <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+        <section className="py-8 md:py-16 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
             <h3 className="text-xl md:text-2xl font-inter font-semibold text-gray-900 mb-6 md:mb-8">Diğer Makaleler</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
               {articles.slice(0, 3).map(a => (
