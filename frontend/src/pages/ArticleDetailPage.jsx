@@ -409,6 +409,15 @@ const ArticleDetailPage = () => {
 
                 {/* Desktop: Full metadata sidebar */}
                 <div className="hidden lg:block">
+                  {/* Article Title - Only visible when hero title is not visible */}
+                  {scrollPercent > 1 && (
+                    <div className="pb-3 mb-4 lg:mb-0">
+                      <h1 className="text-xl font-inter font-bold text-gray-900 dark:text-white leading-tight">
+                        {article.title}
+                      </h1>
+                    </div>
+                  )}
+                  
                   {/* Author Information */}
                   {author && (
                     <div className="pb-3 mb-4 lg:mb-0">
