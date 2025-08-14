@@ -53,12 +53,35 @@ const ArticleDetailPage = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Yalnızca body scroll'u için (tüm sayfa)
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      let percent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      percent = Math.min(100, Math.max(0, percent));
-      setScrollPercent(percent);
+      // Makale içeriği için scroll yüzdesini hesapla
+      const articleContent = document.querySelector('.prose');
+      if (articleContent) {
+        const rect = articleContent.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        // Makale içeriği viewport'ta görünmeye başladığında
+        if (rect.top <= windowHeight) {
+          // Makale içeriğinin ne kadarının okunduğunu hesapla
+          const contentHeight = articleContent.scrollHeight;
+          const contentTop = articleContent.offsetTop;
+          const scrollTop = window.scrollY;
+          
+          // Makale içeriği başlangıcından itibaren scroll pozisyonu
+          const contentScrollTop = Math.max(0, scrollTop - contentTop);
+          const contentVisibleHeight = Math.min(contentHeight, windowHeight);
+          
+          // Yüzde hesapla (makale içeriği viewport'ta görünmeye başladığında %0, bittiğinde %100)
+          let percent = 0;
+          if (contentScrollTop > 0) {
+            percent = Math.min(100, (contentScrollTop / (contentHeight - contentVisibleHeight)) * 100);
+          }
+          
+          setScrollPercent(Math.max(0, Math.min(100, percent)));
+        } else {
+          // Makale içeriği henüz görünmüyorsa %0
+          setScrollPercent(0);
+        }
+      }
     };
     window.addEventListener('scroll', handleScroll);
     handleScroll(); // İlk yüklemede de hesapla
@@ -199,19 +222,19 @@ const ArticleDetailPage = () => {
     return [
       {
         name: 'Standart',
-        text: `📰 ${article.title}\n\n${article.description ? article.description.substring(0, 100) + '...\n\n' : ''}👤 ${author}\n⏱️ ${readingTime}\n\n#OpenWall #${category} #makale\n\n${baseUrl}`
+        text: `📰 ${article.title}\n\n${article.description ? article.description.substring(0, 100) + '...\n\n' : ''}👤 ${author}\n⏱️ ${readingTime}\n\n#openwall #${category} #makale\n\n${baseUrl}`
       },
       {
         name: 'Kısa ve Öz',
-        text: `📰 ${article.title}\n\n${article.description ? article.description.substring(0, 80) + '...\n\n' : ''}#OpenWall #${category}\n\n${baseUrl}`
+        text: `📰 ${article.title}\n\n${article.description ? article.description.substring(0, 80) + '...\n\n' : ''}#openwall #${category}\n\n${baseUrl}`
       },
       {
         name: 'Soru ile',
-        text: `🤔 ${article.title} hakkında ne düşünüyorsunuz?\n\n${article.description ? article.description.substring(0, 90) + '...\n\n' : ''}👤 ${author}\n\n#OpenWall #${category} #tartışma\n\n${baseUrl}`
+        text: `🤔 ${article.title} hakkında ne düşünüyorsunuz?\n\n${article.description ? article.description.substring(0, 90) + '...\n\n' : ''}👤 ${author}\n\n#openwall #${category} #tartışma\n\n${baseUrl}`
       },
       {
         name: 'Öneri',
-        text: `💡 Bu makaleyi mutlaka okumalısınız!\n\n📰 ${article.title}\n\n${article.description ? article.description.substring(0, 80) + '...\n\n' : ''}👤 ${author}\n\n#OpenWall #${category} #öneri\n\n${baseUrl}`
+        text: `💡 Bu makaleyi mutlaka okumalısınız!\n\n📰 ${article.title}\n\n${article.description ? article.description.substring(0, 80) + '...\n\n' : ''}👤 ${author}\n\n#openwall #${category} #öneri\n\n${baseUrl}`
       }
     ];
   };
@@ -287,11 +310,11 @@ const ArticleDetailPage = () => {
               "image": pageImage,
               "author": {
                 "@type": "Person",
-                "name": author || "OpenWall"
+                "name": author || "openwall"
               },
               "publisher": {
                 "@type": "Organization",
-                "name": "OpenWall",
+                "name": "openwall",
                 "logo": {
                   "@type": "ImageObject",
                   "url": "https://openwall.com.tr/logo.png"
@@ -335,307 +358,186 @@ const ArticleDetailPage = () => {
       
       <Header scrollPercent={scrollPercent} />
 
-      <div className="relative flex flex-row justify-center w-full pt-8">
-        {/* Sol reklam (sadece masaüstü) */}
-        <div className="hidden lg:block sticky top-24 self-start mr-6 z-20" style={{ width: 160, height: 600 }}>
-        </div>
-        {/* Makale ana gövdesi */}
-        <div className="max-w-2xl w-full mx-auto">
-          
-          {/* Breadcrumb Navigation */}
-          <Breadcrumb 
-            items={[
-              { name: 'Ana Sayfa', url: '/' },
-              { name: 'Makaleler', url: '/articles' },
-              { name: article.title, url: `/articles/${article.slug}` }
-            ]}
-          />
-
-        <Helmet>
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5253715298133137" crossOrigin="anonymous"></script>
-            
-            {/* Ek SEO meta tag'leri */}
-            <meta name="article:content_tier" content="premium" />
-            <meta name="article:content_rating" content="general" />
-            <meta name="article:content_language" content="tr-TR" />
-            <meta name="article:content_region" content="TR" />
-            <meta name="article:content_category" content="entellektuel-icerik" />
-            <meta name="article:content_type" content="makale" />
-            <meta name="article:content_format" content="html" />
-            <meta name="article:content_length" content={`${article.content?.replace(/<[^>]+>/g, '').split(/\s+/).length || 0} kelime`} />
-            <meta name="article:reading_time" content={readingTime} />
-            <meta name="article:difficulty_level" content="orta" />
-            <meta name="article:target_audience" content="entellektuel-kitle" />
-            
-            {/* Makale içeriği için ek meta bilgiler */}
-            {article.tags && article.tags.map((tag, index) => (
-              <meta key={index} name="article:tag" content={tag} />
-            ))}
-            {article.categories && article.categories.map((category, index) => (
-              <meta key={index} name="article:category" content={category} />
-            ))}
-            {article.references && article.references.length > 0 && (
-              <meta name="article:references" content={article.references.join(', ')} />
+      {/* Hero Section - Large Header Image */}
+      <div className="relative w-full h-[55vh] md:h-[75vh] lg:h-[85vh] min-h-[350px] md:min-h-[550px] lg:min-h-[650px] bg-black">
+        <img
+          src={coverImage}
+          alt={article.title}
+          className="w-full h-full object-cover object-center opacity-90"
+        />
+        {/* Overlay with title */}
+        <div className="absolute inset-0 bg-black/30"></div>
+        {/* Gradient overlay for better text readability */}
+        <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-black via-black/95 via-black/85 via-black/75 via-black/65 via-black/55 via-black/45 via-black/35 via-black/25 via-black/15 via-black/5 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 right-0 p-4 md:p-8 lg:p-12">
+          <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-serif text-white font-light leading-tight max-w-4xl mb-4">
+              {article.title}
+            </h1>
+            {article.description && (
+              <p className="hidden md:block text-base md:text-lg lg:text-xl text-white/90 font-inter leading-relaxed max-w-3xl">
+                {article.description}
+              </p>
             )}
-        </Helmet>
-        {/* Kapak görseli */}
-        <div className="w-full aspect-[16/9] bg-dark-secondary flex items-center justify-center">
-          <img
-            src={coverImage}
-            alt="cover"
-            className="w-full h-full object-cover object-center"
-            style={{ display: 'block' }}
-          />
-        </div>
-        {/* Image source sağ alt */}
-        {imageSource && (
-          <div className="text-xs text-[#7b7b7b] text-right mt-1 mb-2">Image Source: {imageSource}</div>
-        )}
-        {/* Yazar, tarih, okuma süresi */}
-        <div className="flex flex-wrap gap-x-6 gap-y-2 text-[13px] text-slate-700 dark:text-slate-300 mt-3 mb-2">
-          {author && <span>Yazar: <span className="font-semibold">{author}</span></span>}
-          {date && <span>Tarih: {date}</span>}
-          {article.categories && article.categories.length > 0 && (
-            <span>Kategoriler: {article.categories.join(', ')}</span>
-          )}
-          <span>Okuma Süresi: {readingTime}</span>
-          <span className="flex items-center gap-1">
-            <FaEye className="text-slate-500" />
-            {article.viewCount || 0} görüntülenme
-          </span>
-        </div>
-        {/* Başlık */}
-        <h1
-          className="font-bold text-slate-900 dark:text-slate-100 mt-4 mb-6 leading-tight break-words text-left"
-          style={{ fontFamily: 'Inter, sans-serif', fontSize: '29px', fontWeight: 700, lineHeight: 1.15, textAlign: 'left' }}
-        >
-          {article.title}
-        </h1>
-        {/* İçerik */}
-        <div
-          className="prose prose-slate max-w-none mb-10 break-words text-left md:text-justify"
-          style={{ fontFamily: 'Inter, sans-serif', fontSize: '17px', fontWeight: 400, lineHeight: 1.7, textAlign: window.innerWidth >= 768 ? 'justify' : 'left' }}
-        >
-          {/* Makale içeriği için ek SEO bilgileri */}
-          <div itemScope itemType="https://schema.org/Article" style={{ display: 'none' }}>
-            <meta itemProp="headline" content={article.title} />
-            <meta itemProp="description" content={article.description || article.content?.substring(0, 160)} />
-            <meta itemProp="image" content={pageImage} />
-            <meta itemProp="author" content={author} />
-            <meta itemProp="datePublished" content={article.createdAt} />
-            <meta itemProp="dateModified" content={article.updatedAt} />
-            <meta itemProp="articleSection" content={article.categories?.[0] || "General"} />
-            <meta itemProp="keywords" content={article.tags?.join(', ')} />
-            <meta itemProp="wordCount" content={article.content?.replace(/<[^>]+>/g, '').split(/\s+/).length} />
-            <meta itemProp="timeRequired" content={readingTime} />
-            <meta itemProp="inLanguage" content="tr-TR" />
-            <meta itemProp="isAccessibleForFree" content="true" />
           </div>
+        </div>
+      </div>
           
-          <div dangerouslySetInnerHTML={{ __html: contentWithSources }} />
-        </div>
-        {/* References */}
-        {article.references && article.references.length > 0 && (
-          <section className="mt-10 mb-12">
-            <h2 className="flex items-center gap-2 text-lg font-bold mb-3 text-slate-900 dark:text-slate-100">
-              <span className="text-yellow-400 text-xl">📑</span> References
-            </h2>
-            <ol className="list-decimal pl-6 space-y-1 text-[#7b7b7b] text-[15px]">
-              {article.references.map((ref, i) => (
-                <li key={i}>{ref}</li>
-              ))}
-            </ol>
-          </section>
-        )}
-        
-        {/* Ek SEO bilgileri */}
-        <section className="mt-8 mb-6 text-sm text-slate-600 dark:text-slate-400">
-          <div className="flex flex-wrap gap-4">
-            {article.tags && article.tags.map((tag, index) => (
-              <span key={index} className="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-full text-xs">
-                #{tag}
-              </span>
-            ))}
-          </div>
-          <div className="mt-4 text-xs">
-            <p>Bu makale {article.content?.replace(/<[^>]+>/g, '').split(/\s+/).length || 0} kelime içermektedir ve yaklaşık {readingTime} okuma süresi vardır.</p>
-            <p>Son güncelleme: {new Date(article.updatedAt).toLocaleDateString('tr-TR')}</p>
-          </div>
-        </section>
-        {/* Paylaşım Önizleme Kartı - makalenin sonunda, genişliği içerik ile aynı */}
-        <section className="flex flex-col items-center justify-center my-8 sm:my-12 md:my-16">
-          <div className="bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-dark-primary dark:via-dark-secondary dark:to-dark-primary rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-10 max-w-4xl w-full border-4 border-dashed border-slate-300 dark:border-slate-600 mx-auto relative overflow-hidden">
-            {/* Background decoration */}
-            <div className="absolute top-0 right-0 w-20 h-20 sm:w-32 sm:h-32 md:w-40 md:h-40 bg-gradient-to-bl from-brand-orange/10 to-transparent rounded-full -translate-y-10 sm:-translate-y-16 md:-translate-y-20 translate-x-10 sm:translate-x-16 md:translate-x-20"></div>
-            <div className="absolute bottom-0 left-0 w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 bg-gradient-to-tr from-purple-500/10 to-transparent rounded-full translate-y-8 sm:translate-y-12 md:translate-y-16 -translate-x-8 sm:-translate-x-12 md:-translate-x-16"></div>
-            <div className="absolute top-1/2 left-1/2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-gradient-to-r from-blue-500/5 to-cyan-500/5 rounded-full -translate-x-8 sm:-translate-x-10 md:-translate-x-12 -translate-y-8 sm:-translate-y-10 md:-translate-y-12"></div>
+      {/* Main Content - Responsive Layout */}
+      <div className="">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-6 md:py-8 lg:py-12">
+          {/* Mobile: Single Column, Desktop: Two Column */}
+          <div className="block lg:grid lg:grid-cols-4 lg:gap-12">
             
-            {/* Header */}
-            <div className="text-center mb-6 sm:mb-8 relative z-10">
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-orange-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-sm font-semibold mb-4 sm:mb-6 shadow-lg">
-                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
-                </svg>
-                Bu Makaleyi Paylaşın
+            {/* Mobile: Top, Desktop: Left - Metadata Sidebar */}
+            <div className="order-1 lg:order-1 mb-8 lg:mb-0">
+              <div className="lg:sticky lg:top-28 lg:self-start">
+                {/* Author Information */}
+                {author && (
+                  <div className="pb-3 mb-4 lg:mb-0">
+                    <p className="text-sm md:text-base text-gray-700 leading-relaxed">
+                      Yazan, {author}.
+                    </p>
+                  </div>
+                )}
+
+                {/* Editor Information */}
+                <div className="pb-3 mb-4 lg:mb-0">
+                  <p className="text-sm md:text-base text-gray-700">
+                     <span className="text-blue-600 underline cursor-pointer"></span>
+                  </p>
+                </div>
+
+                {/* Word Count */}
+                <div className="pb-3 mb-4 lg:mb-0">
+                  <p className="text-sm md:text-base text-gray-700">
+                    {article.content?.replace(/<[^>]+>/g, '').split(/\s+/).length || 0} kelime, {readingTime}
+                  </p>
+                  {date && (
+                    <p className="text-sm md:text-base text-gray-700">
+                      {date}
+                    </p>
+                  )}
+                  <p className="text-sm md:text-base text-gray-700">
+                    {article.viewCount || 0} görüntülenme
+                  </p>
+                </div>
+
+                {/* Categories */}
+                {article.categories && article.categories.length > 0 && (
+                  <div className="pb-3 mb-4 lg:mb-0">
+                    <div className="text-sm md:text-base text-gray-700">
+                      {article.categories.join(', ')}
+                    </div>
+                  </div>
+                )}
+
+                {/* Tags */}
+                {article.tags && article.tags.length > 0 && (
+                  <div className="mb-4 lg:mb-0">
+                    <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-3">Etiketler</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {article.tags.map((tag, index) => (
+                        <div key={index} className="text-blue-600 underline cursor-pointer text-sm md:text-base">
+                          {tag}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Reading Progress */}
+                <div className="hidden lg:block mt-6 pt-4 border-t border-gray-200">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600">Okuma İlerlemesi</span>
+                    <span className="text-sm font-medium text-gray-900">{Math.round(scrollPercent)}%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+                    <div 
+                      className="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-out"
+                      style={{ width: `${scrollPercent}%` }}
+                    ></div>
+                  </div>
+                </div>
               </div>
-              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2 sm:mb-3">Bu Makaleyi Beğendiniz mi?</h3>
-              <p className="text-sm sm:text-base md:text-lg text-slate-600 dark:text-slate-400">Arkadaşlarınızla paylaşarak bize destek olun!</p>
             </div>
 
-            {/* Preview Card */}
-            <div id="share-preview-card" className="bg-white dark:bg-slate-800 rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 mb-6 sm:mb-8 border border-slate-200/50 dark:border-slate-700/50 relative z-10 hover:shadow-2xl transition-all duration-300">
-              <div className="flex flex-col md:flex-row gap-4 sm:gap-6">
-                {/* Image */}
-                <div className="w-full md:w-48 h-24 sm:h-28 md:h-32 bg-dark-secondary rounded-lg sm:rounded-xl overflow-hidden flex-shrink-0 shadow-lg">
-                  <img
-                    src={coverImage}
-                    alt="cover preview"
-                    className="w-full h-full object-cover object-center"
-                    style={{ display: 'block' }}
+            {/* Mobile: Bottom, Desktop: Right - Main Article Content */}
+            <div className="order-2 lg:col-span-3">
+              {/* Article Content with Initial Cap */}
+              <div className="prose prose-sm md:prose-base lg:prose-lg max-w-none lg:-mt-8">
+                {/* Initial Cap for first paragraph */}
+                <div className="relative mb-6 md:mb-8">
+                  <div className="float-left mr-2 md:mr-3 mb-0">
+                    <span 
+                      className="article-initial-cap text-4xl md:text-5xl lg:text-8xl xl:text-9xl leading-none"
+                      style={{ 
+                        lineHeight: '0.8',
+                        verticalAlign: 'top',
+                        display: 'block'
+                      }}
+                    >
+                      {(article.content?.replace(/<[^>]+>/g, '').trim().charAt(0) || 'A').toUpperCase()}
+                    </span>
+                  </div>
+                  <div 
+                    className="text-lg md:text-xl lg:text-[22px] leading-tight text-gray-800"
+                    dangerouslySetInnerHTML={{ __html: (() => {
+                      if (!article.content) return '';
+                      
+                      // HTML içeriğini parse et
+                      const parser = new DOMParser();
+                      const doc = parser.parseFromString(article.content, 'text/html');
+                      
+                      // İlk text node'u bul ve ilk karakterini çıkar
+                      const walker = document.createTreeWalker(
+                        doc.body,
+                        NodeFilter.SHOW_TEXT,
+                        null,
+                        false
+                      );
+                      
+                      let firstTextNode = walker.nextNode();
+                      if (firstTextNode && firstTextNode.textContent.trim()) {
+                        firstTextNode.textContent = firstTextNode.textContent.replace(/^./, '');
+                      }
+                      
+                      // Son olarak image sources ekle
+                      return injectImageSources(doc.body.innerHTML, article.contentImages);
+                    })() }}
                   />
                 </div>
-                {/* Content */}
-                <div className="flex-1 flex flex-col justify-center">
-                  <h2 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 text-slate-900 dark:text-slate-100 line-clamp-2 leading-tight">{article.title}</h2>
-                  <div className="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-2 sm:mb-3">
-                    <span className="flex items-center gap-1 sm:gap-2">
-                      <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                      </svg>
-                      {author}
-                    </span>
-                    <span className="flex items-center gap-1 sm:gap-2">
-                      <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-                      </svg>
-                      {readingTime}
-                    </span>
-                  </div>
-                  <div className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 line-clamp-2 leading-relaxed">
-                    {article.description || article.content?.substring(0, 120) + '...'}
-                  </div>
-                </div>
               </div>
-            </div>
 
-            {/* Social Media Buttons */}
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-2 sm:gap-3 md:gap-4 relative z-10">
-              {/* X (Twitter) */}
-              <a
-                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title + ' ' + (shortUrl || (process.env.NODE_ENV === 'production' ? `https://openwall.com.tr/articles/${article.slug}` : window.location.href)))}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="X'te paylaş"
-                className="group flex flex-col items-center gap-2 sm:gap-3 p-3 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl"
-              >
-                <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
-                  <SiX size={20} className="sm:text-xl md:text-2xl text-white" />
-                </div>
-              </a>
-              
-              {/* Facebook */}
-              <a
-                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shortUrl || (process.env.NODE_ENV === 'production' ? `https://openwall.com.tr/articles/${article.slug}` : window.location.href))}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Facebook'ta paylaş"
-                className="group flex flex-col items-center gap-2 sm:gap-3 p-3 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl"
-              >
-                <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
-                  <FaFacebookF size={20} className="sm:text-xl md:text-2xl text-white" />
-                </div>
-              </a>
-              
-              {/* LinkedIn */}
-              <a
-                href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(shortUrl || (process.env.NODE_ENV === 'production' ? `https://openwall.com.tr/articles/${article.slug}` : window.location.href))}&title=${encodeURIComponent(article.title)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn'de paylaş"
-                className="group flex flex-col items-center gap-2 sm:gap-3 p-3 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl"
-              >
-                <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
-                  <FaLinkedinIn size={20} className="sm:text-xl md:text-2xl text-white" />
-                </div>
-              </a>
-              
-              {/* WhatsApp */}
-              <a
-                href={`https://wa.me/?text=${encodeURIComponent(article.title + ' ' + (shortUrl || (process.env.NODE_ENV === 'production' ? `https://openwall.com.tr/articles/${article.slug}` : window.location.href)))}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="WhatsApp'ta paylaş"
-                className="group flex flex-col items-center gap-2 sm:gap-3 p-3 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl"
-              >
-                <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
-                  <FaWhatsapp size={20} className="sm:text-xl md:text-2xl text-white" />
-                </div>
-              </a>
-              
-              {/* Telegram */}
-              <a
-                href={`https://t.me/share/url?url=${encodeURIComponent(shortUrl || (process.env.NODE_ENV === 'production' ? `https://openwall.com.tr/articles/${article.slug}` : window.location.href))}&text=${encodeURIComponent(article.title)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Telegram'da paylaş"
-                className="group flex flex-col items-center gap-2 sm:gap-3 p-3 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl"
-              >
-                <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
-                  <FaTelegramPlane size={20} className="sm:text-xl md:text-2xl text-white" />
-                </div>
-              </a>
-              
-              {/* Reddit */}
-              <a
-                href={`https://www.reddit.com/submit?url=${encodeURIComponent(shortUrl || (process.env.NODE_ENV === 'production' ? `https://openwall.com.tr/articles/${article.slug}` : window.location.href))}&title=${encodeURIComponent(article.title)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Reddit'te paylaş"
-                className="group flex flex-col items-center gap-2 sm:gap-3 p-3 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl"
-              >
-                <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
-                  <FaRedditAlien size={20} className="sm:text-xl md:text-2xl text-white" />
-                </div>
-              </a>
-              
-              {/* Copy Link */}
-              <button
-                onClick={() => {
-                  const linkToCopy = shortUrl || (process.env.NODE_ENV === 'production' ? `https://openwall.com.tr/articles/${article.slug}` : window.location.href);
-                  navigator.clipboard.writeText(linkToCopy);
-                  // Show a better notification
-                  const notification = document.createElement('div');
-                  notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-xl shadow-2xl z-50 font-semibold';
-                  notification.textContent = '✅ Bağlantı kopyalandı!';
-                  document.body.appendChild(notification);
-                  setTimeout(() => notification.remove(), 3000);
-                }}
-                aria-label="Bağlantıyı kopyala"
-                className="group flex flex-col items-center gap-2 sm:gap-3 p-3 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl"
-              >
-                <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
-                  <FaLink size={20} className="sm:text-xl md:text-2xl text-white" />
-                </div>
-              </button>
+              {/* References */}
+              {article.references && article.references.length > 0 && (
+                <section className="mt-8 md:mt-12 pt-6 md:pt-8 border-t border-gray-200">
+                  <h2 className="text-xl md:text-2xl font-serif font-semibold text-gray-900 mb-4 md:mb-6">Kaynaklar</h2>
+                  <ol className="list-decimal pl-4 md:pl-6 space-y-2 text-gray-700 text-sm md:text-base">
+                    {article.references.map((ref, i) => (
+                      <li key={i} className="leading-relaxed">{ref}</li>
+                    ))}
+                  </ol>
+                </section>
+              )}
             </div>
           </div>
-        </section>
-        {/* Other Articles */}
+        </div>
+      </div>
+
+      {/* Other Articles Section */}
         {articles.length > 0 && (
-          <section className="max-w-5xl mx-auto mt-16">
-            <h3 className="text-lg font-bold mb-6 text-[#181818] dark:text-slate-100">Other Articles</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <section className="py-8 md:py-16">
+          <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+            <h3 className="text-xl md:text-2xl font-inter font-semibold text-gray-900 mb-6 md:mb-8">Diğer Makaleler</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
               {articles.slice(0, 3).map(a => (
                 <ArticleCard key={a.slug} article={a} />
               ))}
             </div>
+            </div>
           </section>
         )}
-        </div>
-        {/* Sağ reklam (sadece masaüstü) */}
-        <div className="hidden lg:block sticky top-24 self-start ml-6 z-20" style={{ width: 160, height: 600 }}>
-        </div>
-      </div>
 
     </>
   );
