@@ -1,6 +1,6 @@
 // ECNN - Kopya/frontend/src/App.jsx
 import React, { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, Outlet, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet, Link, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import ConditionalHeaderFooter from './components/layout/ConditionalHeaderFooter';
@@ -71,11 +71,21 @@ const PublicRoute = ({ children }) => {
 };
 
 function AppContent() {
+  const location = useLocation();
+  
+  // Check if current route is an article detail page
+  const isArticleDetailPage = location.pathname.match(/^\/articles\/[^\/]+$/);
+  
+  // Conditional classes for main element
+  const mainClasses = isArticleDetailPage 
+    ? "flex-grow transition-colors" // No padding at all for article detail
+    : "flex-grow px-4 sm:px-6 lg:px-8 py-8 pt-24 md:pt-28 transition-colors"; // Full padding for other pages
+
   return (
     <div className="flex flex-col min-h-screen font-sans text-slate-800 dark:text-slate-200 transition-colors">
       <ConditionalHeaderFooter />
       <ThemeToggleButton />
-      <main className="flex-grow px-4 sm:px-6 lg:px-8 py-8 pt-24 md:pt-28 transition-colors">
+      <main className={mainClasses}>
         <Suspense fallback={<div className="text-center py-20 text-lg font-semibold">Sayfa Yükleniyor...</div>}>
           <Routes>
             {/* Public Routes */}
