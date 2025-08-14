@@ -380,10 +380,26 @@ img[src*="reklam"] {
   font-family: 'Georgia', 'Times New Roman', serif;
   font-size: 4rem;
   line-height: 1;
-  color: #9ca3af;
+  color: #111827;
   float: left;
   margin-right: 1rem;
   margin-bottom: 0.5rem;
+}
+
+/* Dark theme initial letter color */
+html.dark .article-initial-cap {
+  color: #ffffff;
+}
+
+@media (max-width: 767px) {
+  .article-initial-cap {
+    margin-top: 0.5rem;
+    margin-left: 0.5rem;
+    margin-right: 0.25rem;
+    margin-bottom: 0.001 rem;
+    font-size: 3.5rem;
+    line-height: 0.7;
+  }
 }
 
 @media (min-width: 768px) {
