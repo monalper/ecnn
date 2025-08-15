@@ -67,26 +67,10 @@ const Footer = () => (
               </li>
               <li>
                 <a
-                  href="/gallery"
-                  className="text-slate-600 dark:text-slate-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors duration-200 text-sm"
-                >
-                  Görseller
-                </a>
-              </li>
-              <li>
-                <a
                   href="/videos"
                   className="text-slate-600 dark:text-slate-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors duration-200 text-sm"
                 >
                   Videolar
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/about"
-                  className="text-slate-600 dark:text-slate-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors duration-200 text-sm"
-                >
-                  Hakkımızda
                 </a>
               </li>
             </ul>
@@ -99,10 +83,10 @@ const Footer = () => (
             <ul className="space-y-2">
               <li>
                 <a
-                  href="mailto:info@monologed.com"
+                  href="/about"
                   className="text-slate-600 dark:text-slate-400 hover:text-brand-orange dark:hover:text-brand-orange transition-colors duration-200 text-sm"
                 >
-                  info@monologed.com
+                  Hakkımızda
                 </a>
               </li>
               <li>
