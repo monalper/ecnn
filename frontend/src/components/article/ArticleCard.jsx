@@ -37,7 +37,7 @@ const ArticleCard = ({ article }) => {
       aria-label={`Makaleyi oku: ${article.title}`}
       style={{ boxShadow: 'none' }}
     >
-      <div className="w-full aspect-[5/4] bg-dark-secondary relative overflow-hidden">
+      <div className="w-full aspect-[16/9] sm:aspect-[16/9] bg-dark-secondary relative overflow-hidden">
         <img
           src={article.coverImage || placeholderImage}
           alt={`Kapak görseli: ${article.title}`}
@@ -49,20 +49,20 @@ const ArticleCard = ({ article }) => {
       </div>
       
       <div className="px-0 pt-3 sm:pt-4 pb-1 text-left">
-        <h3 className="text-sm md:text-[20px] font-semibold md:font-bold text-slate-900 dark:text-white leading-tight mb-2">
+        <h3 className="text-[22px] sm:text-[22px] font-semibold md:font-bold text-slate-900 dark:text-white leading-tight mb-2">
           {article.title}
         </h3>
-        <p className="text-[10px] sm:text-xs md:text-sm lg:text-[15px] text-[#7b7b7b] dark:text-slate-400 line-clamp-2 leading-normal font-bold mb-2 sm:mb-3">{displayDescription}</p>
+        <p className="text-[16px] sm:text-[16px] md:text-[16px] lg:text-[16px] text-[#7b7b7b] dark:text-slate-400 line-clamp-2 leading-normal font-medium mb-2 sm:mb-3">{displayDescription}</p>
         
         {/* Time ago and view count */}
-        <div className="flex items-center gap-1 sm:gap-2 md:gap-4 text-[10px] sm:text-xs md:text-[13px] text-[#7b7b7b] dark:text-slate-400">
+        <div className="flex items-center gap-1 sm:gap-2 md:gap-4 text-[14px] sm:text-xs md:text-[13px] text-[#7b7b7b] dark:text-slate-400">
           {article.createdAt && (
-            <div className="font-bold truncate">
+            <div className="font-medium truncate">
               {getTimeAgo(article.createdAt)}
             </div>
           )}
           {article.createdAt && <span className="text-slate-500 flex-shrink-0">•</span>}
-          <span className="font-bold truncate">
+          <span className="font-medium truncate">
             {article.viewCount || 0} görüntülenme
           </span>
         </div>
