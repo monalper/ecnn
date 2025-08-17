@@ -166,11 +166,11 @@ html.dark .prose h1, html.dark .prose h2, html.dark .prose h3, html.dark .prose 
   font-family: theme('fontFamily.serif'); /* Makale içeriği için serif font */
 }
 .prose a {
-  color: theme('colors.blue.600');
+  color: theme('colors.red.600');
   text-decoration: none;
 }
 html.dark .prose a {
-  color: theme('colors.blue.400');
+  color: theme('colors.red.400');
 }
 
 .prose a:hover {
@@ -245,7 +245,7 @@ html.dark ::-webkit-scrollbar {
 }
 html.dark ::-webkit-scrollbar-track {
   background: #0F0F0F; /* Updated dark theme primary color */
-  border-radius: 0;
+  border-left: 1px solid #f5f5f7; /* Same as header border */
 }
 html.dark ::-webkit-scrollbar-thumb {
   background: #f5f5f7; /* Updated to dark-secondary color */
@@ -257,7 +257,6 @@ html.dark ::-webkit-scrollbar-thumb:hover {
 
 html.dark ::-webkit-scrollbar-track {
   background-color: #0F0F0F; /* Updated dark theme primary color */
-  border-left: 1px solid #f5f5f7; /* Updated to dark-secondary color */
 }
 
 html.light ::-webkit-scrollbar {
@@ -265,8 +264,8 @@ html.light ::-webkit-scrollbar {
   height: 10px;
 }
 html.light ::-webkit-scrollbar-track {
-  background: #f5f5f7;
-  border-radius: 0;
+  background-color: #f5f5f7;
+  border-left: 1px solid #e5e7eb; /* Same as header border */
 }
 html.light ::-webkit-scrollbar-thumb {
   background: #c0c0c0;
@@ -277,8 +276,7 @@ html.light ::-webkit-scrollbar-thumb:hover {
 }
 
 html.light ::-webkit-scrollbar-track {
-  background-color: #f5f5f7;
-  border-left: 1px solid #d1d5db; /* slate-300 gibi bir gri */
+  background-color: #F8F9FA;
 }
 
 /* 404 Page Animations */
@@ -373,6 +371,21 @@ img[src*="reklam"] {
 /* Font family utilities */
 .font-serif {
   font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.font-garamond {
+  font-family: 'EB Garamond', serif;
+}
+
+/* Glass morphism header styles */
+.header-glass {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+}
+
+html.dark .header-glass {
+  background: rgba(0, 0, 0, 0.4);
 }
 
 /* Article detail page specific styles */
