@@ -24,6 +24,7 @@ export default {
         serif: ['Lora', 'serif'], // Makale içeriği için serif font
         mono: ['JetBrains Mono', 'monospace'], // Header nav için
         logo: ['Inter', 'sans-serif'], // Logo için (Inter, kalın)
+        garamond: ['EB Garamond', 'serif'], // EB Garamond font için
       },
       letterSpacing: {
         'tighter': '-.05em',
