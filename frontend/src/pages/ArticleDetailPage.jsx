@@ -371,7 +371,7 @@ const ArticleDetailPage = () => {
         <div className="hidden md:block absolute bottom-0 left-0 right-0 h-96 bg-gradient-to-t from-black via-black/90 via-black/80 via-black/70 via-black/60 via-black/50 via-black/40 via-black/30 via-black/20 via-black/10 via-black/5 to-transparent"></div>
         <div className="absolute bottom-0 left-0 right-0 p-4 md:p-8 lg:p-12">
           <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-            <h1 className="hidden md:block text-[72px] font-['EB_Garamond'] text-white font-medium leading-none max-w-4xl mb-4">
+            <h1 className="hidden md:block text-[72px] font-garamond text-white font-medium leading-none max-w-4xl mb-4">
               {article.title}
             </h1>
             {article.description && (
@@ -394,7 +394,7 @@ const ArticleDetailPage = () => {
               <div className="lg:sticky lg:top-28 lg:self-start">
                 {/* Mobile: Title and meta card */}
                 <div className="block lg:hidden mb-6">
-                  <h1 className="text-[42px] md:text-4xl lg:text-5xl xl:text-6xl font-['EB_Garamond'] text-gray-900 dark:text-white font-medium leading-none max-w-4xl mb-4">
+                  <h1 className="text-[42px] md:text-4xl lg:text-5xl xl:text-6xl font-garamond text-gray-900 dark:text-white font-medium leading-none max-w-4xl mb-4">
                     {article.title}
                   </h1>
                   <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
@@ -480,7 +480,7 @@ const ArticleDetailPage = () => {
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
                       <div 
-                        className="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-out"
+                        className="bg-red-600 h-2 rounded-full transition-all duration-300 ease-out"
                         style={{ width: `${scrollPercent}%` }}
                       ></div>
                     </div>
