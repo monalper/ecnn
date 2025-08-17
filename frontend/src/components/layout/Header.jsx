@@ -19,7 +19,7 @@ const Header = ({ scrollPercent, customTitle }) => {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <header className="bg-site-background dark:bg-dark-primary border-b border-slate-200 dark:border-white/20 fixed top-0 left-0 right-0 z-50 h-16 md:h-20 transition-colors">
+    <header className="bg-site-background dark:bg-dark-primary border-b border-gray-200 dark:border-white/10 fixed top-0 left-0 right-0 z-50 h-12 md:h-16 transition-all duration-300">
       {/* Sitelinks için semantic navigation - Google için görünür ama kullanıcı için gizli */}
       <nav aria-label="Ana site navigasyonu" className="sr-only">
         <ul>
@@ -62,7 +62,7 @@ const Header = ({ scrollPercent, customTitle }) => {
       </div>
       {/* Mobile Menu Dropdown */}
       {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b border-slate-200 shadow-lg">
+        <div className="md:hidden absolute top-full left-0 right-0 bg-white dark:bg-dark-primary shadow-lg">
           <nav className="px-4 py-3 flex flex-col space-y-3">
             <Link 
               to="/" 
