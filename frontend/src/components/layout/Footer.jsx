@@ -17,7 +17,7 @@ const Footer = () => {
           <div className="flex justify-center mb-16 lg:mb-20">
             <div className="text-center">
               <img 
-                src={isDark ? "/footerlogo.svg" : "/footerlogo2.svg"}
+                src={isDark ? "/footerlogo.png" : "/footerlogo2.png"}
                 alt="Openwall & Articles" 
                 className="h-20 sm:h-24 lg:h-28 mb-4 transition-transform hover:scale-105"
               />
