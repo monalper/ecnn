@@ -27,6 +27,14 @@
       "dest": "/reklam.png"
     },
     {
+      "src": "/footerlogo.png",
+      "dest": "/footerlogo.png"
+    },
+    {
+      "src": "/footerlogo2.png",
+      "dest": "/footerlogo2.png"
+    },
+    {
       "src": "/test-reklam.html",
       "dest": "/test-reklam.html"
     },
