@@ -10,7 +10,7 @@ const Footer = () => {
   return (
     <footer className="relative mt-16">
       {/* Main footer with theme-aware background and rounded top corners */}
-      <div className={`${isDark ? 'bg-gradient-to-br from-[#2E2E2E] to-[#1A1A1A]' : 'bg-gradient-to-br from-gray-50 to-gray-100'} rounded-t-[40px] px-6 sm:px-8 lg:px-8 xl:px-12 2xl:px-16 py-16 lg:py-20 xl:py-24`}>
+      <div className={`${isDark ? 'bg-[#0F0F0F]' : 'bg-gradient-to-br from-gray-50 to-gray-100'} rounded-t-[40px] px-6 sm:px-8 lg:px-8 xl:px-12 2xl:px-16 py-16 lg:py-20 xl:py-24`}>
         <div className="w-full mx-auto max-w-7xl">
           
           {/* Logo Section with enhanced styling */}
