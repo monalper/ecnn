@@ -10,6 +10,7 @@ const Header = ({ scrollPercent, customTitle }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleLogout = async () => {
     await logout();
@@ -19,7 +20,11 @@ const Header = ({ scrollPercent, customTitle }) => {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <header className="bg-site-background dark:bg-dark-primary border-b border-gray-200 dark:border-white/10 fixed top-0 left-0 right-0 z-50 h-12 md:h-16 transition-all duration-300">
+    <header 
+      className="bg-site-background dark:bg-dark-primary border-b border-gray-200 dark:border-white/10 fixed top-0 left-0 right-0 z-50 h-12 md:h-16 transition-all duration-300"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       {/* Sitelinks için semantic navigation - Google için görünür ama kullanıcı için gizli */}
       <nav aria-label="Ana site navigasyonu" className="sr-only">
         <ul>
@@ -34,8 +39,62 @@ const Header = ({ scrollPercent, customTitle }) => {
       </nav>
       
       <div className="px-4 sm:px-6 lg:px-8 flex items-center justify-between h-full relative">
-        <div className="flex-1 hidden md:block" />
-        <Link to="/" className="header-site-title text-xl md:text-2xl font-bold font-logo text-text-heading tracking-tight flex items-center gap-1 absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2" style={{whiteSpace: 'nowrap'}}>
+        {/* Navigation Links - Hidden by default, visible on hover in center */}
+        <div className={`absolute inset-0 hidden md:flex items-center justify-center transition-all duration-300 z-10 ${
+          isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
+        }`}>
+          <nav className="flex items-center space-x-6">
+            <Link 
+              to="/" 
+              className={`header-nav-link text-sm tracking-wide text-text-muted hover:text-text-main transition-colors ${
+                location.pathname === '/' ? 'font-bold' : 'font-normal'
+              }`}
+            >
+              Ana Sayfa
+            </Link>
+            <Link 
+              to="/articles" 
+              className={`header-nav-link text-sm tracking-wide text-text-muted hover:text-text-main transition-colors ${
+                location.pathname === '/articles' ? 'font-bold' : 'font-normal'
+              }`}
+            >
+              Makaleler
+            </Link>
+            <Link 
+              to="/videos" 
+              className={`header-nav-link text-sm tracking-wide text-text-muted hover:text-text-main transition-colors ${
+                location.pathname === '/videos' ? 'font-bold' : 'font-normal'
+              }`}
+            >
+              Videolar
+            </Link>
+            <Link 
+              to="/dictionary" 
+              className={`header-nav-link text-sm tracking-wide text-text-muted hover:text-text-main transition-colors ${
+                location.pathname === '/dictionary' ? 'font-bold' : 'font-normal'
+              }`}
+            >
+              Sözlük
+            </Link>
+            <Link 
+              to="/about" 
+              className={`header-nav-link text-sm tracking-wide text-text-muted hover:text-text-main transition-colors ${
+                location.pathname === '/about' ? 'font-bold' : 'font-normal'
+              }`}
+            >
+              Hakkımızda
+            </Link>
+          </nav>
+        </div>
+
+        {/* Logo - Slides to left on hover */}
+        <Link 
+          to="/" 
+          className={`header-site-title text-xl md:text-2xl font-bold font-logo text-text-heading tracking-tight flex items-center gap-1 absolute top-1/2 -translate-y-1/2 transition-all duration-300 z-30 ${
+            isHovered ? 'left-8 -translate-x-0' : 'left-1/2 -translate-x-1/2'
+          }`} 
+          style={{whiteSpace: 'nowrap'}}
+        >
           {customTitle === 'dictionary' ? (
             <span>
               <span>Openwall </span>
@@ -54,16 +113,26 @@ const Header = ({ scrollPercent, customTitle }) => {
             </>
           )}
         </Link>
+
         <div className="flex-1 hidden md:block" />
+        
         {/* Completion Percentage and Theme Toggle */}
         <div className="flex items-center gap-4 absolute right-8 top-1/2 -translate-y-1/2">
           {/* Theme toggle and other controls can be added here if needed */}
         </div>
       </div>
+      
       {/* Mobile Menu Dropdown */}
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-white dark:bg-dark-primary shadow-lg">
           <nav className="px-4 py-3 flex flex-col space-y-3">
+            <Link 
+              to="/" 
+              className="header-nav-link text-sm font-bold tracking-extrawidest uppercase text-text-muted hover:text-text-main transition-colors"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              ANA SAYFA
+            </Link>
             <Link 
               to="/" 
               className="header-nav-link text-sm font-bold tracking-extrawidest uppercase text-text-muted hover:text-text-main transition-colors"
