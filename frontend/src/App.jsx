@@ -1,6 +1,6 @@
 // ECNN - Kopya/frontend/src/App.jsx
 import React, { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, Outlet, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import ConditionalHeaderFooter from './components/layout/ConditionalHeaderFooter';
@@ -9,6 +9,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import AdminLayout from './components/layout/AdminLayout';
 import AdminPasswordProtection from './components/auth/AdminPasswordProtection';
 import Footer from './components/layout/Footer';
+import NotFoundPage from './components/NotFoundPage';
 import './index.css';
 import './dark-header-nav.css'; // Tailwind ve genel stiller
 
@@ -144,26 +145,7 @@ function AppContent() {
               } />
             </Route>
 
-            <Route path="*" element={
-              <div className="min-h-[60vh] flex items-center justify-center">
-                <div className="text-center">
-                  <h1 className="text-6xl font-bold text-gray-400 dark:text-gray-600 mb-4">
-                    <span className="animate-letter-reveal letter-1">4</span>
-                    <span className="animate-letter-reveal letter-2">0</span>
-                    <span className="animate-letter-reveal letter-3">4</span>
-                  </h1>
-                  <p className="text-gray-600 dark:text-gray-400 mb-6 animate-text-reveal">
-                    Sayfa bulunamadı
-                  </p>
-                  <Link 
-                    to="/" 
-                    className="text-brand-orange hover:text-orange-600 font-medium transition-all duration-300 hover:scale-110 inline-block animate-link-reveal"
-                  >
-                    Anasayfaya dön
-                  </Link>
-                </div>
-              </div>
-            } />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>
       </main>
