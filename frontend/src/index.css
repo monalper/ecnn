@@ -515,7 +515,7 @@ html.dark .article-initial-cap {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-image: url('/uzay.png');
+  background-image: url('https://cdn.sci.news/images/enlarge12/image_13391_1e-IC-2163-NGC-2207.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -648,7 +648,7 @@ html.dark .article-initial-cap {
 }
 
 .nasa-link:hover {
-  color: #ffd93d;
+  color: #ffc2c2;
 }
 
 .logo-text {
