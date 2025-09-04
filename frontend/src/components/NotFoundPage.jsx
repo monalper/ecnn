@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const NotFoundPage = () => {
-  const [countdown, setCountdown] = useState(5);
+  const [countdown, setCountdown] = useState(10);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const NotFoundPage = () => {
             <span style={{marginLeft: '0.15em'}}>Openwall</span>
           </h2>
           <p className="photo-credit">
-            Fotoğraf Kaynağı : <a href="https://www.nasa.gov" target="_blank" rel="noopener noreferrer" className="nasa-link">M64 Black Eye Galaxy, NASA</a>
+            Fotoğraf Kaynağı : <a href="https://science.nasa.gov/missions/webb/blood-soaked-eyes-nasas-webb-hubble-examine-galaxy-pair/" target="_blank" rel="noopener noreferrer" className="nasa-link">IC 2163-NGC 2207 pair, NASA</a>
           </p>
           <p className="countdown-text">
             <span className="countdown-number">{countdown}</span> saniye sonra ana sayfaya yönlendiriliyorsunuz...
