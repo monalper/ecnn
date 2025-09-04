@@ -667,149 +667,184 @@ html.dark .article-initial-cap {
 /* Responsive Design */
 @media (max-width: 768px) {
   .not-found-container {
-    padding-left: 4%;
-    padding-right: 4%;
+    padding-left: 3%;
+    padding-right: 3%;
     justify-content: center;
     text-align: center;
   }
   
   .not-found-container::before {
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3));
   }
   
   .not-found-content {
-    max-width: 90%;
+    max-width: 95%;
+    padding: 0 1rem;
   }
   
   .not-found-title {
-    font-size: 5rem;
+    font-size: 4.5rem;
     justify-content: center;
+    margin-bottom: 1.5rem;
   }
   
   .not-found-message {
-    font-size: 1.1rem;
-    margin-bottom: 1.5rem;
-    max-width: 280px;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    max-width: 260px;
     margin-left: auto;
     margin-right: auto;
+    line-height: 1.5;
   }
   
   .not-found-link {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
   
   .countdown-text {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
   }
   
   .not-found-logo {
-    bottom: 2rem;
+    bottom: 1.5rem;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
+    width: 90%;
   }
   
   .logo-container {
     align-items: center;
+    gap: 0.3rem;
   }
   
   .photo-credit {
-    font-size: 0.6rem;
+    font-size: 0.55rem;
+    line-height: 1.3;
   }
   
   .logo-text {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 }
 
 @media (max-width: 480px) {
   .not-found-container {
-    padding-left: 5%;
-    padding-right: 5%;
+    padding-left: 4%;
+    padding-right: 4%;
   }
   
   .not-found-container::before {
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6));
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4));
   }
   
-  .not-found-title {
-    font-size: 3.5rem;
-    gap: 0.3rem;
-  }
-  
-  .not-found-message {
-    font-size: 0.95rem;
-    margin-bottom: 1.2rem;
-    line-height: 1.3;
-    max-width: 250px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  .not-found-link {
-    font-size: 0.9rem;
-  }
-  
-  .countdown-text {
-    font-size: 0.75rem;
-  }
-  
-  .not-found-logo {
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-  }
-  
-  .logo-container {
-    align-items: center;
-  }
-  
-  .photo-credit {
-    font-size: 0.55rem;
-  }
-  
-  .logo-text {
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 360px) {
-  .not-found-container::before {
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6));
+  .not-found-content {
+    max-width: 98%;
+    padding: 0 0.5rem;
   }
   
   .not-found-title {
     font-size: 3rem;
+    gap: 0.2rem;
+    margin-bottom: 1rem;
   }
   
   .not-found-message {
     font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
     max-width: 220px;
     margin-left: auto;
     margin-right: auto;
   }
   
+  .not-found-link {
+    font-size: 0.85rem;
+  }
+  
   .countdown-text {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
+    margin-top: 0.3rem;
   }
   
   .not-found-logo {
-    bottom: 2rem;
+    bottom: 1rem;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
+    width: 95%;
   }
   
   .logo-container {
     align-items: center;
+    gap: 0.2rem;
   }
   
   .photo-credit {
     font-size: 0.5rem;
+    line-height: 1.2;
   }
   
   .logo-text {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .not-found-container {
+    padding-left: 3%;
+    padding-right: 3%;
+  }
+  
+  .not-found-container::before {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+  }
+  
+  .not-found-content {
+    max-width: 100%;
+    padding: 0 0.25rem;
+  }
+  
+  .not-found-title {
+    font-size: 2.5rem;
+    gap: 0.1rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .not-found-message {
+    font-size: 0.8rem;
+    margin-bottom: 1.2rem;
+    line-height: 1.3;
+    max-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .countdown-text {
+    font-size: 0.65rem;
+    margin-top: 0.2rem;
+  }
+  
+  .not-found-logo {
+    bottom: 0.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    width: 98%;
+  }
+  
+  .logo-container {
+    align-items: center;
+    gap: 0.15rem;
+  }
+  
+  .photo-credit {
+    font-size: 0.45rem;
+    line-height: 1.1;
+  }
+  
+  .logo-text {
+    font-size: 0.85rem;
   }
 }
