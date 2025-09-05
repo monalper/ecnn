@@ -10,8 +10,6 @@
 [![AWS](https://img.shields.io/badge/AWS-DynamoDB-FF9900?style=for-the-badge&logo=amazon-aws)](https://aws.amazon.com/)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-*entelektüe
-
 [Canlı Demo](https://openwall.com.tr) • [Dokümantasyon](#dokümantasyon) • [Kurulum](#kurulum) • [Katkıda Bulun](#katkıda-bulun)
 
 </div>
@@ -194,32 +192,32 @@ npm run create-videos-table
 ## Proje Yapısı
 
 ```
-OpenWall
-├── frontend/                 # React frontend uygulaması
-│   ├── src/
-│   │   ├── components/       # React bileşenleri
-│   │   │   ├── article/      # Makale bileşenleri
-│   │   │   ├── auth/         # Kimlik doğrulama
-│   │   │   ├── layout/       # Layout bileşenleri
-│   │   │   ├── seo/          # SEO bileşenleri
-│   │   │   └── video/        # Video bileşenleri
-│   │   ├── contexts/         # React context'leri
-│   │   ├── hooks/            # Custom hooks
-│   │   ├── pages/            # Sayfa bileşenleri
-│   │   ├── services/         # API servisleri
-│   │   └── extensions/       # Editor eklentileri
-│   ├── public/               # Statik dosyalar
-│   └── package.json
-├── backend/                  # Node.js backend uygulaması
-│   ├── src/
-│   │   ├── config/           # Konfigürasyon dosyaları
-│   │   ├── controllers/      # API controller'ları
-│   │   ├── middlewares/      # Express middleware'leri
-│   │   ├── models/           # Veritabanı modelleri
-│   │   ├── routes/           # API route'ları
-│   │   └── utils/            # Yardımcı fonksiyonlar
-│   └── package.json
-└── README.md
+📦 OpenWall
+├── 📁 frontend/                 # React frontend uygulaması
+│   ├── 📁 src/
+│   │   ├── 📁 components/       # React bileşenleri
+│   │   │   ├── 📁 article/      # Makale bileşenleri
+│   │   │   ├── 📁 auth/         # Kimlik doğrulama
+│   │   │   ├── 📁 layout/       # Layout bileşenleri
+│   │   │   ├── 📁 seo/          # SEO bileşenleri
+│   │   │   └── 📁 video/        # Video bileşenleri
+│   │   ├── 📁 contexts/         # React context'leri
+│   │   ├── 📁 hooks/            # Custom hooks
+│   │   ├── 📁 pages/            # Sayfa bileşenleri
+│   │   ├── 📁 services/         # API servisleri
+│   │   └── 📁 extensions/       # Editor eklentileri
+│   ├── 📁 public/               # Statik dosyalar
+│   └── 📄 package.json
+├── 📁 backend/                  # Node.js backend uygulaması
+│   ├── 📁 src/
+│   │   ├── 📁 config/           # Konfigürasyon dosyaları
+│   │   ├── 📁 controllers/      # API controller'ları
+│   │   ├── 📁 middlewares/      # Express middleware'leri
+│   │   ├── 📁 models/           # Veritabanı modelleri
+│   │   ├── 📁 routes/           # API route'ları
+│   │   └── 📁 utils/            # Yardımcı fonksiyonlar
+│   └── 📄 package.json
+└── 📄 README.md
 ```
 
 ---
