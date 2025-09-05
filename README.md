@@ -3,10 +3,8 @@
 # The Openwall
 
 [![My Skills](https://skillicons.dev/icons?i=js,html,css,ts)](https://skillicons.dev)
-
 [![My Skills](https://skillicons.dev/icons?i=nodejs)](https://skillicons.dev)
 [![My Skills](https://skillicons.dev/icons?i=aws,gcp,react)](https://skillicons.dev)
-
 [![My Skills](https://skillicons.dev/icons?i=ps,xd)](https://skillicons.dev)
 
 [Canlı Demo](https://openwall.com.tr) • [Dokümantasyon](#dokümantasyon) • [Kurulum](#kurulum) • [Katkıda Bulun](#katkıda-bulun)
@@ -392,6 +390,5 @@ Bu proje [MIT](LICENSE) lisansı altında lisanslanmıştır.
 **Bu projeyi beğendiyseniz yıldız vermeyi unutmayın!**
 
 Made with ❤️ by [Alper](https://github.com/monalper)
-[![forthebadge](https://forthebadge.com/images/featured/featured-built-with-love.svg)](https://forthebadge.com)
 
 </div>
