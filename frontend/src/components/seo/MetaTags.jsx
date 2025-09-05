@@ -108,6 +108,14 @@ const MetaTags = ({
       <link rel="dns-prefetch" href="//www.google-analytics.com" />
       <link rel="dns-prefetch" href="//platform.twitter.com" />
       <link rel="dns-prefetch" href="//www.facebook.com" />
+      
+      {/* Preload kritik kaynaklar */}
+      <link rel="preload" href="/assets/hero.mp4" as="video" type="video/mp4" />
+      <link rel="preload" href="/site-logo.png" as="image" />
+      
+      {/* Resource hints */}
+      <link rel="prefetch" href="/articles" />
+      <link rel="prefetch" href="/categories" />
     </Helmet>
   );
 };
