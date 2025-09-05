@@ -14,22 +14,6 @@
 
 ---
 
-## İçindekiler
-
-- [Proje Hakkında](#proje-hakkında)
-- [Özellikler](#özellikler)
-- [Teknoloji Stack](#teknoloji-stack)
-- [Hızlı Başlangıç](#hızlı-başlangıç)
-- [Proje Yapısı](#proje-yapısı)
-- [Konfigürasyon](#konfigürasyon)
-- [API Dokümantasyonu](#api-dokümantasyonu)
-- [Ekran Görüntüleri](#ekran-görüntüleri)
-- [Deployment](#deployment)
-- [Katkıda Bulun](#katkıda-bulun)
-- [Lisans](#lisans)
-
----
-
 ## Proje Hakkında
 
 **OpenWall**, Türkiye'de entelektüel içerik arayan okuyucular için tasarlanmış, 16 farklı kategoride kaliteli içerikler sunan modern bir web platformudur. Platform, akademisyenler, öğrenciler, profesyoneller ve genel okuyucu kitlesine hitap eden kapsamlı bir içerik deneyimi sunar.
