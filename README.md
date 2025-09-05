@@ -422,20 +422,23 @@ Katkılarınızı bekliyoruz! Lütfen aşağıdaki adımları takip edin:
 
 ## ⚖️ Lisans & Teşekkürler
 
-
 Bu proje **MIT Lisansı** altında lisanslanmıştır.  
 Özgürce kullanabilirsiniz.
 
+---
+
+### Destek Olun
 
 Bu projeyi beğendiyseniz bir **⭐ Yıldızlayabilirsiniz.**
 
-
 by <a href="https://github.com/monalper"><b>WrittenbyAlper</b></a>
 
+---
 
-[![GitHub stars](https://img.shields.io/github/stars/monalper/ecnn?style=flat&logo=github)](https://github.com/monalper/ecnn/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/monalper/ecnn?style=flat&logo=github)](https://github.com/monalper/ecnn/fork)
+### GitHub Bilgileri
+
+[![GitHub stars](https://img.shields.io/github/stars/monalper/ecnn?style=flat&logo=github)](https://github.com/monalper/ecnn/stargazers)  
+[![GitHub forks](https://img.shields.io/github/forks/monalper/ecnn?style=flat&logo=github)](https://github.com/monalper/ecnn/fork)  
 [![GitHub issues](https://img.shields.io/github/issues/monalper/ecnn?style=flat&logo=github)](https://github.com/monalper/ecnn/issues)
-
 
 
