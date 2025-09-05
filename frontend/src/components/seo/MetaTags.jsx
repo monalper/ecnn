@@ -15,10 +15,11 @@ const MetaTags = ({
   tags = [],
   readingTime,
   wordCount,
-  isHighlight = false
+  isHighlight = false,
+  isHomepage = false
 }) => {
   const siteName = 'The Openwall';
-  const fullTitle = title ? `${title} | ${siteName}` : siteName;
+  const fullTitle = isHomepage ? title : (title ? `${title} | ${siteName}` : siteName);
   const defaultDescription = 'OpenWall, çeşitli alanlarda yazılmış makaleleri okuyun.';
   const defaultImage = 'https://openwall.com.tr/og-images/default/og-default.jpg'; // Güncellenmiş OG image yolu
   const currentUrl = url || window.location.href;

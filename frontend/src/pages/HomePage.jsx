@@ -100,6 +100,7 @@ const HomePage = () => {
         description={getDynamicDescription()}
         keywords="teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat, yemek, makale, haber, içerik, blog, entellektüel, düşünce, analiz, araştırma"
         type="website"
+        isHomepage={true}
       />
       <SchemaMarkup type="WebSite" />
       <SchemaMarkup type="Organization" />
