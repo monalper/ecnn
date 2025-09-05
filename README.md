@@ -392,5 +392,6 @@ Bu proje [MIT](LICENSE) lisansı altında lisanslanmıştır.
 **Bu projeyi beğendiyseniz yıldız vermeyi unutmayın!**
 
 Made with ❤️ by [Alper](https://github.com/monalper)
+[![forthebadge](https://forthebadge.com/images/featured/featured-built-with-love.svg)](https://forthebadge.com)
 
 </div>
