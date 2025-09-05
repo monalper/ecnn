@@ -430,7 +430,6 @@ Bu proje **MIT Lisansı** altında lisanslanmıştır.
 ### Destek Olun
 
 Bu projeyi beğendiyseniz bir **⭐ Yıldızlayabilirsiniz.**
-
 by <a href="https://github.com/monalper"><b>WrittenbyAlper</b></a>
 
 ---
