@@ -11,6 +11,10 @@
   ],
   "routes": [
     {
+      "src": "/sitemap.xml",
+      "dest": "https://openwall-backend.vercel.app/api/sitemap"
+    },
+    {
       "src": "/favicon.ico",
       "dest": "/favicon.ico"
     },
