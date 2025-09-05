@@ -286,12 +286,12 @@ DELETE /api/dictionary/:id        # Terimi sil (Admin)
 
 ---
 
-## Ekran Görüntüleri
+## Logolar
 
 <div align="center">
 
 ### Ana Sayfa
-![Ana Sayfa](https://via.placeholder.com/800x400/1e40af/ffffff?text=Ana+Sayfa+Preview)
+![Ana Sayfa](https://www.openwall.com.tr/footerlogo.png)
 
 ### Responsive Tasarım
 ![Mobil Görünüm](https://via.placeholder.com/400x800/7c3aed/ffffff?text=Mobil+View)
@@ -387,7 +387,7 @@ Bu proje [MIT](LICENSE) lisansı altında lisanslanmıştır.
 
 <div align="center">
 
-[https://cdn.jsdelivr.net/gh/Readme-Workflows/Readme-Icons@main/icons/octicons/StarredRepositoryYellow.svg] **Bu projeyi beğendiyseniz yıldız vermeyi unutmayın!**
+**Bu projeyi beğendiyseniz yıldız vermeyi unutmayın!**
 
 Made with ❤️ by [Alper](https://github.com/monalper)
 
