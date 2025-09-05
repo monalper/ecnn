@@ -286,7 +286,7 @@ DELETE /api/dictionary/:id        # Terimi sil (Admin)
 
 ---
 
-## Logolar
+## Openwall & Articles.
 
 <div align="center">
 
@@ -294,13 +294,7 @@ DELETE /api/dictionary/:id        # Terimi sil (Admin)
 ![Ana Sayfa](https://www.openwall.com.tr/footerlogo.png)
 
 ### Responsive Tasarım
-![Mobil Görünüm](https://via.placeholder.com/400x800/7c3aed/ffffff?text=Mobil+View)
-
-### Admin Paneli
-![Admin Panel](https://via.placeholder.com/800x400/059669/ffffff?text=Admin+Panel)
-
-### Video Player
-![Video Player](https://via.placeholder.com/800x400/dc2626/ffffff?text=Video+Player)
+![Mobil Görünüm](https://www.openwall.com.tr/reklam.png)
 
 </div>
 
