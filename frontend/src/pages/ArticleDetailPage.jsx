@@ -441,7 +441,7 @@ const ArticleDetailPage = () => {
                   {/* Word Count */}
                   <div className="pb-3 mb-4 lg:mb-0">
                     <p className="text-sm md:text-base text-gray-700">
-                      {article.content?.replace(/<[^>]+>/g, '').split(/\s+/).length || 0} kelime, {readingTime}
+                      {article.content?.replace(/<[^>]+>/g, '').split(/\s+/).length || 0} <span className="opacity-60">kelime</span>, {readingTime.replace(' dakika', '')} <span className="opacity-60">dakika</span>
                     </p>
                     {date && (
                       <p className="text-sm md:text-base text-gray-700">
@@ -449,15 +449,15 @@ const ArticleDetailPage = () => {
                       </p>
                     )}
                     <p className="text-sm md:text-base text-gray-700">
-                      {article.viewCount || 0} görüntülenme
+                      {article.viewCount || 0} <span className="opacity-60">görüntülenme</span>
                     </p>
                   </div>
 
                   {/* Categories */}
                   {article.categories && article.categories.length > 0 && (
                     <div className="pb-3 mb-4 lg:mb-0">
-                      <div className="text-sm md:text-base text-gray-700">
-                        {article.categories.join(', ')}
+                      <div className="text-sm md:text-base text-black dark:text-white opacity-40">
+                        {article.categories.map(category => `#${category}`).join(' ')}
                       </div>
                     </div>
                   )}
@@ -482,9 +482,9 @@ const ArticleDetailPage = () => {
                       <span className="text-sm text-gray-600">Okuma İlerlemesi</span>
                       <span className="text-sm font-medium text-gray-900">{Math.round(scrollPercent)}%</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
                       <div 
-                        className="bg-red-600 h-2 rounded-full transition-all duration-300 ease-out"
+                        className="bg-red-600 dark:bg-red-500 h-2 rounded-full transition-all duration-300 ease-out"
                         style={{ width: `${scrollPercent}%` }}
                       ></div>
                     </div>

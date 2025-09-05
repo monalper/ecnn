@@ -1,5 +1,41 @@
 /* Mobile-specific footer optimizations - Only affects mobile breakpoints */
 
+/* Social icons mobile horizontal layout */
+@media (max-width: 768px) {
+  .social-icons-container {
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    gap: 1rem !important;
+  }
+  
+  .footer-copyright-section-mobile .flex .flex .flex {
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    gap: 1rem !important;
+  }
+}
+
+/* Mobile layout - revert to original centered design */
+@media (max-width: 768px) {
+  .footer-mobile-optimized .flex.items-end {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0 !important;
+  }
+  
+  .footer-mobile-optimized .flex-shrink-0 {
+    order: 1 !important;
+    margin-bottom: 1.5rem !important;
+  }
+  
+  .footer-mobile-optimized .footer-nav-mobile {
+    order: 2 !important;
+    margin-bottom: 1.5rem !important;
+  }
+}
+
 /* Extra small devices (phones, 360px and down) */
 @media (max-width: 360px) {
   .footer-mobile-optimized {
@@ -7,11 +43,14 @@
     padding-right: 0.75rem !important;
     padding-top: 2rem !important;
     padding-bottom: 2rem !important;
-    border-radius: 1rem 1rem 0 0 !important;
+    border-radius: 0 !important;
   }
   
   .footer-logo-mobile {
     height: 3.5rem !important;
+    width: auto !important;
+    max-width: 100% !important;
+    object-fit: contain !important;
     margin-bottom: 0.75rem !important;
   }
   
@@ -57,7 +96,7 @@
 /* Small devices (phones, 480px and down) */
 @media (max-width: 480px) {
   .footer-mobile-optimized {
-    border-radius: 1rem 1rem 0 0 !important;
+    border-radius: 0 !important;
     padding-left: 1rem !important;
     padding-right: 1rem !important;
     padding-top: 2.5rem !important;
@@ -66,6 +105,9 @@
   
   .footer-logo-mobile {
     height: 4rem !important;
+    width: auto !important;
+    max-width: 100% !important;
+    object-fit: contain !important;
     margin-bottom: 1rem !important;
   }
   
@@ -111,11 +153,14 @@
     padding-right: 1.5rem !important;
     padding-top: 3rem !important;
     padding-bottom: 3rem !important;
-    border-radius: 1.5rem 1.5rem 0 0 !important;
+    border-radius: 0 !important;
   }
   
   .footer-logo-mobile {
     height: 5rem !important;
+    width: auto !important;
+    max-width: 100% !important;
+    object-fit: contain !important;
     margin-bottom: 1.5rem !important;
   }
   
@@ -187,6 +232,18 @@
   .footer-copyright-section-mobile .flex .flex span {
     display: none !important;
   }
+  
+  /* Social icons mobile layout */
+  .footer-copyright-section-mobile .flex .flex .flex {
+    justify-content: center !important;
+    margin-top: 0.5rem !important;
+  }
+  
+  /* Ensure social icons stay horizontal on mobile */
+  .footer-copyright-section-mobile .flex .flex .flex {
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+  }
 }
 
 /* Better spacing for very small screens */
@@ -230,6 +287,9 @@
   
   .footer-logo-mobile {
     height: 3rem !important;
+    width: auto !important;
+    max-width: 100% !important;
+    object-fit: contain !important;
     margin-bottom: 0.75rem !important;
   }
   

@@ -304,9 +304,6 @@ const VideoDetailPage = () => {
           {/* Sidebar - Related Videos */}
           <div className="lg:w-96 lg:flex-[1] mt-6 lg:mt-0">
             <div className="px-4 lg:px-0">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                İlgili Videolar
-              </h3>
               <div className="space-y-4">
                 {relatedVideos.map((relatedVideo) => (
                   <VideoCard

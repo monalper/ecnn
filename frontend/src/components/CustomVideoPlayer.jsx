@@ -1104,7 +1104,7 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
 
       {/* Buffering indicator */}
       {buffering && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm z-15">
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 z-15">
           <div className="relative">
             <div className="animate-spin rounded-full h-16 w-16 border-4 border-white border-opacity-20"></div>
             <div className="animate-spin rounded-full h-16 w-16 border-4 border-transparent border-t-brand-orange absolute top-0 left-0"></div>
@@ -1284,7 +1284,7 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
               
               {/* Unified Settings Menu */}
               {showSettingsMenu && (
-                <div className="absolute bottom-full right-0 mb-3 bg-black/95 backdrop-blur-sm rounded-xl p-3 min-w-56 border border-white/20 shadow-2xl z-20">
+                <div className="absolute bottom-full right-0 mb-3 bg-black/95 rounded-xl p-3 min-w-56 border border-white/20 shadow-2xl z-20">
                   {/* Main Settings Menu */}
                   {currentSettingsView === 'main' && (
                     <div className="space-y-1">
@@ -1503,7 +1503,7 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
       {/* Custom Right-Click Context Menu */}
       {showContextMenu && (
         <div 
-          className="absolute z-50 bg-gray-900/95 backdrop-blur-sm border border-gray-700 rounded-lg shadow-2xl py-2 min-w-48"
+          className="absolute z-50 bg-gray-900/95 border border-gray-700 rounded-lg shadow-2xl py-2 min-w-48"
           style={{
             left: `${contextMenuPosition.x}px`,
             top: `${contextMenuPosition.y}px`,

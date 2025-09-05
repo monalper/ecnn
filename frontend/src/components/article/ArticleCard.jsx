@@ -48,7 +48,7 @@ const ArticleCard = ({ article }) => {
       </div>
       
       <div className="px-0 pt-3 sm:pt-4 pb-1 text-left">
-        <h3 className="text-[22px] sm:text-[22px] font-semibold md:font-bold text-slate-900 dark:text-white leading-tight mb-2">
+        <h3 className="text-[22px] sm:text-[22px] font-semibold text-slate-900 dark:text-white leading-tight mb-2">
           {article.title}
         </h3>
         <p className="text-[16px] sm:text-[16px] md:text-[16px] lg:text-[16px] text-[#7b7b7b] dark:text-slate-400 line-clamp-2 leading-normal font-medium mb-2 sm:mb-3">{displayDescription}</p>
