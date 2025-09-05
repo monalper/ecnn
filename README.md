@@ -1,36 +1,15 @@
 <div align="center">
 
-# OpenWall
+# The Openwall
+openwall.com.tr
 
-### Çok Kategorili Entelektüel İçerik Platformu
 
-[![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-000000?style=for-the-badge&logo=vercel)](https://openwall.com.tr)
-[![React](https://img.shields.io/badge/React-18.2.0-61DAFB?style=for-the-badge&logo=react)](https://reactjs.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=node.js)](https://nodejs.org/)
-[![AWS](https://img.shields.io/badge/AWS-DynamoDB-FF9900?style=for-the-badge&logo=amazon-aws)](https://aws.amazon.com/)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-
-*entelektüe
-
-[Canlı Demo](https://openwall.com.tr) • [Dokümantasyon](#dokümantasyon) • [Kurulum](#kurulum) • [Katkıda Bulun](#katkıda-bulun)
+[![My Skills](https://skillicons.dev/icons?i=js,html,css,ts)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=nodejs)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=aws,gcp,react)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=ps,xd)](https://skillicons.dev)
 
 </div>
-
----
-
-## İçindekiler
-
-- [Proje Hakkında](#proje-hakkında)
-- [Özellikler](#özellikler)
-- [Teknoloji Stack](#teknoloji-stack)
-- [Hızlı Başlangıç](#hızlı-başlangıç)
-- [Proje Yapısı](#proje-yapısı)
-- [Konfigürasyon](#konfigürasyon)
-- [API Dokümantasyonu](#api-dokümantasyonu)
-- [Ekran Görüntüleri](#ekran-görüntüleri)
-- [Deployment](#deployment)
-- [Katkıda Bulun](#katkıda-bulun)
-- [Lisans](#lisans)
 
 ---
 
@@ -84,23 +63,23 @@ Türkiye'nin en kapsamlı ve güvenilir entelektüel içerik platformu olmak.
 <table>
 <tr>
 <td align="center" width="20%">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" width="40" height="40"/>
-<br/><b>React 18</b>
+<img src="https://skillicons.dev/icons?i=react" width="40" height="40"/>
+<br/><b>React18</b>
 </td>
 <td align="center" width="20%">
-<img src="https://vitejs.dev/logo.svg" width="40" height="40"/>
+<img src="https://skillicons.dev/icons?i=vite" width="40" height="40"/>
 <br/><b>Vite</b>
 </td>
 <td align="center" width="20%">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg" width="40" height="40"/>
+<img src="https://skillicons.dev/icons?i=tailwind" width="40" height="40"/>
 <br/><b>TailwindCSS</b>
 </td>
 <td align="center" width="20%">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" width="40" height="40"/>
+<img src="https://skillicons.dev/icons?i=js" width="40" height="40"/>
 <br/><b>JavaScript</b>
 </td>
 <td align="center" width="20%">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" width="40" height="40"/>
+<img src="https://skillicons.dev/icons?i=html" width="40" height="40"/>
 <br/><b>HTML5</b>
 </td>
 </tr>
@@ -110,23 +89,23 @@ Türkiye'nin en kapsamlı ve güvenilir entelektüel içerik platformu olmak.
 <table>
 <tr>
 <td align="center" width="20%">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" width="40" height="40"/>
+<img src="https://skillicons.dev/icons?i=nodejs&theme=dark" width="40" height="40"/>
 <br/><b>Node.js</b>
 </td>
 <td align="center" width="20%">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" width="40" height="40"/>
+<img src="https://skillicons.dev/icons?i=express" width="40" height="40"/>
 <br/><b>Express.js</b>
 </td>
 <td align="center" width="20%">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg" width="40" height="40"/>
+<img src="https://skillicons.dev/icons?i=aws" width="40" height="40"/>
 <br/><b>AWS</b>
 </td>
 <td align="center" width="20%">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" width="40" height="40"/>
+<img src="https://skillicons.dev/icons?i=dynamodb" width="40" height="40"/>
 <br/><b>DynamoDB</b>
 </td>
 <td align="center" width="20%">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" width="40" height="40"/>
+<img src="https://skillicons.dev/icons?i=docker" width="40" height="40"/>
 <br/><b>Docker</b>
 </td>
 </tr>
@@ -194,32 +173,32 @@ npm run create-videos-table
 ## Proje Yapısı
 
 ```
-OpenWall
-├── frontend/                 # React frontend uygulaması
-│   ├── src/
-│   │   ├── components/       # React bileşenleri
-│   │   │   ├── article/      # Makale bileşenleri
-│   │   │   ├── auth/         # Kimlik doğrulama
-│   │   │   ├── layout/       # Layout bileşenleri
-│   │   │   ├── seo/          # SEO bileşenleri
-│   │   │   └── video/        # Video bileşenleri
-│   │   ├── contexts/         # React context'leri
-│   │   ├── hooks/            # Custom hooks
-│   │   ├── pages/            # Sayfa bileşenleri
-│   │   ├── services/         # API servisleri
-│   │   └── extensions/       # Editor eklentileri
-│   ├── public/               # Statik dosyalar
-│   └── package.json
-├── backend/                  # Node.js backend uygulaması
-│   ├── src/
-│   │   ├── config/           # Konfigürasyon dosyaları
-│   │   ├── controllers/      # API controller'ları
-│   │   ├── middlewares/      # Express middleware'leri
-│   │   ├── models/           # Veritabanı modelleri
-│   │   ├── routes/           # API route'ları
-│   │   └── utils/            # Yardımcı fonksiyonlar
-│   └── package.json
-└── README.md
+📦 OpenWall
+├── 📁 frontend/                 # React frontend uygulaması
+│   ├── 📁 src/
+│   │   ├── 📁 components/       # React bileşenleri
+│   │   │   ├── 📁 article/      # Makale bileşenleri
+│   │   │   ├── 📁 auth/         # Kimlik doğrulama
+│   │   │   ├── 📁 layout/       # Layout bileşenleri
+│   │   │   ├── 📁 seo/          # SEO bileşenleri
+│   │   │   └── 📁 video/        # Video bileşenleri
+│   │   ├── 📁 contexts/         # React context'leri
+│   │   ├── 📁 hooks/            # Custom hooks
+│   │   ├── 📁 pages/            # Sayfa bileşenleri
+│   │   ├── 📁 services/         # API servisleri
+│   │   └── 📁 extensions/       # Editor eklentileri
+│   ├── 📁 public/               # Statik dosyalar
+│   └── 📄 package.json
+├── 📁 backend/                  # Node.js backend uygulaması
+│   ├── 📁 src/
+│   │   ├── 📁 config/           # Konfigürasyon dosyaları
+│   │   ├── 📁 controllers/      # API controller'ları
+│   │   ├── 📁 middlewares/      # Express middleware'leri
+│   │   ├── 📁 models/           # Veritabanı modelleri
+│   │   ├── 📁 routes/           # API route'ları
+│   │   └── 📁 utils/            # Yardımcı fonksiyonlar
+│   └── 📄 package.json
+└── 📄 README.md
 ```
 
 ---
@@ -307,21 +286,13 @@ DELETE /api/dictionary/:id        # Terimi sil (Admin)
 
 ---
 
-## Ekran Görüntüleri
+## The Openwall : Kimlik
 
 <div align="center">
 
-### Ana Sayfa
-![Ana Sayfa](https://via.placeholder.com/800x400/1e40af/ffffff?text=Ana+Sayfa+Preview)
+![LOGO BW](https://raw.githubusercontent.com/monalper/ecnn/refs/heads/main/frontend/public/OPENWALL%20NEW%20LOGO.png) ![LOGO WB](https://raw.githubusercontent.com/monalper/ecnn/refs/heads/main/frontend/public/OPENWALL%20NEW%20LOGO%20%E2%80%93%201.png)
 
-### Responsive Tasarım
-![Mobil Görünüm](https://via.placeholder.com/400x800/7c3aed/ffffff?text=Mobil+View)
-
-### Admin Paneli
-![Admin Panel](https://via.placeholder.com/800x400/059669/ffffff?text=Admin+Panel)
-
-### Video Player
-![Video Player](https://via.placeholder.com/800x400/dc2626/ffffff?text=Video+Player)
+![LOGO HERO](https://raw.githubusercontent.com/monalper/ecnn/refs/heads/main/frontend/public/Openwall%20New%20Logo%20Hero.png)
 
 </div>
 
@@ -392,24 +363,80 @@ Katkılarınızı bekliyoruz! Lütfen aşağıdaki adımları takip edin:
 
 ---
 
-## İletişim
+## 📬 İletişim
 
-- **Website**: [openwall.com.tr](https://openwall.com.tr)
-- **Email**: info@monologed.com
-- **GitHub**: [@monalper](https://github.com/monalper)
+<p align="center">
+  <table>
+    <tr>
+      <td align="center" width="100">
+        <a href="https://openwall.com.tr" target="_blank">
+          <img src="https://raw.githubusercontent.com/monalper/ecnn/refs/heads/main/frontend/public/icon.png" width="40" alt="Website" />
+        </a>
+        <br/><sub><b>Website</b></sub>
+      </td>
+      <td align="center" width="100">
+        <a href="mailto:info@monologed.com" target="_blank">
+          <img src="https://raw.githubusercontent.com/LelouchFR/skill-icons/main/assets/gmail-dark.svg" width="40" alt="Email" />
+        </a>
+        <br/><sub><b>Email</b></sub>
+      </td>
+      <td align="center" width="100">
+        <a href="https://github.com/monalper" target="_blank">
+          <img src="https://raw.githubusercontent.com/LelouchFR/skill-icons/main/assets/github-dark.svg" width="40" alt="GitHub" />
+        </a>
+        <br/><sub><b>GitHub</b></sub>
+      </td>
+      <td align="center" width="100">
+        <a href="https://twitter.com/WrittenbyAlper" target="_blank">
+          <img src="https://raw.githubusercontent.com/LelouchFR/skill-icons/main/assets/x-dark.svg" width="40" alt="Twitter/X" />
+        </a>
+        <br/><sub><b>Twitter/X</b></sub>
+      </td>
+      <td align="center" width="100">
+        <a href="https://reddit.com" target="_blank">
+          <img src="https://raw.githubusercontent.com/LelouchFR/skill-icons/main/assets/reddit.svg" width="40" alt="Reddit" />
+        </a>
+        <br/><sub><b>Reddit</b></sub>
+      </td>
+      <td align="center" width="100">
+        <a href="https://discord.com" target="_blank">
+          <img src="https://raw.githubusercontent.com/LelouchFR/skill-icons/main/assets/discord.svg" width="40" alt="Discord" />
+        </a>
+        <br/><sub><b>Discord</b></sub>
+      </td>
+      <td align="center" width="100">
+        <a href="https://behance.net" target="_blank">
+          <img src="https://raw.githubusercontent.com/LelouchFR/skill-icons/main/assets/behance.svg" width="40" alt="Behance" />
+        </a>
+        <br/><sub><b>Behance</b></sub>
+      </td>
+    </tr>
+  </table>
+</p>
+
+
+
+
 
 ---
 
-## Lisans
+## ⚖️ Lisans & Teşekkürler
 
-Bu proje [MIT](LICENSE) lisansı altında lisanslanmıştır.
+Bu proje **MIT Lisansı** altında lisanslanmıştır.  
+Özgürce kullanabilirsiniz.
 
 ---
 
-<div align="center">
+### Destek Olun
 
-**Bu projeyi beğendiyseniz yıldız vermeyi unutmayın!**
+Bu projeyi beğendiyseniz bir **⭐ Yıldızlayabilirsiniz.**
 
-Made with ❤️ by [Alper](https://github.com/monalper)
+by <a href="https://github.com/monalper"><b>WrittenbyAlper</b></a>
 
-</div>
+---
+
+### GitHub Bilgileri
+
+[![GitHub stars](https://img.shields.io/github/stars/monalper/ecnn?style=flat&logo=github)](https://github.com/monalper/ecnn/stargazers)  
+[![GitHub forks](https://img.shields.io/github/forks/monalper/ecnn?style=flat&logo=github)](https://github.com/monalper/ecnn/fork)  
+[![GitHub issues](https://img.shields.io/github/issues/monalper/ecnn?style=flat&logo=github)](https://github.com/monalper/ecnn/issues)
