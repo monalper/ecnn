@@ -63,23 +63,23 @@ Türkiye'nin en kapsamlı ve güvenilir entelektüel içerik platformu olmak.
 <table>
 <tr>
 <td align="center" width="20%">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" width="40" height="40"/>
+<img src="https://skillicons.dev/icons?i=react" width="40" height="40"/>
 <br/><b>React 18</b>
 </td>
 <td align="center" width="20%">
-<img src="https://vitejs.dev/logo.svg" width="40" height="40"/>
+<img src="https://skillicons.dev/icons?i=vite" width="40" height="40"/>
 <br/><b>Vite</b>
 </td>
 <td align="center" width="20%">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg" width="40" height="40"/>
+<img src="https://skillicons.dev/icons?i=tailwind" width="40" height="40"/>
 <br/><b>TailwindCSS</b>
 </td>
 <td align="center" width="20%">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" width="40" height="40"/>
+<img src="https://skillicons.dev/icons?i=js" width="40" height="40"/>
 <br/><b>JavaScript</b>
 </td>
 <td align="center" width="20%">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" width="40" height="40"/>
+<img src="https://skillicons.dev/icons?i=html" width="40" height="40"/>
 <br/><b>HTML5</b>
 </td>
 </tr>
@@ -89,23 +89,23 @@ Türkiye'nin en kapsamlı ve güvenilir entelektüel içerik platformu olmak.
 <table>
 <tr>
 <td align="center" width="20%">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" width="40" height="40"/>
+<img src="https://skillicons.dev/icons?i=nodejs&theme=dark" width="40" height="40"/>
 <br/><b>Node.js</b>
 </td>
 <td align="center" width="20%">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" width="40" height="40"/>
+<img src="https://skillicons.dev/icons?i=express" width="40" height="40"/>
 <br/><b>Express.js</b>
 </td>
 <td align="center" width="20%">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg" width="40" height="40"/>
+<img src="https://skillicons.dev/icons?i=aws" width="40" height="40"/>
 <br/><b>AWS</b>
 </td>
 <td align="center" width="20%">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" width="40" height="40"/>
+<img src="https://skillicons.dev/icons?i=dynamodb" width="40" height="40"/>
 <br/><b>DynamoDB</b>
 </td>
 <td align="center" width="20%">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" width="40" height="40"/>
+<img src="https://skillicons.dev/icons?i=docker" width="40" height="40"/>
 <br/><b>Docker</b>
 </td>
 </tr>
@@ -286,15 +286,13 @@ DELETE /api/dictionary/:id        # Terimi sil (Admin)
 
 ---
 
-## Openwall & Articles.
+## The Openwall : Kimlik
 
 <div align="center">
 
-### Ana Sayfa
-![Ana Sayfa](https://www.openwall.com.tr/footerlogo.png)
+![LOGO BW](https://raw.githubusercontent.com/monalper/ecnn/refs/heads/main/frontend/public/OPENWALL%20NEW%20LOGO.png) ![LOGO WB](https://raw.githubusercontent.com/monalper/ecnn/refs/heads/main/frontend/public/OPENWALL%20NEW%20LOGO%20%E2%80%93%201.png)
 
-### Responsive Tasarım
-![Mobil Görünüm](https://www.openwall.com.tr/reklam.png)
+![LOGO HERO](https://raw.githubusercontent.com/monalper/ecnn/refs/heads/main/frontend/public/Openwall%20New%20Logo%20Hero.png)
 
 </div>
 
