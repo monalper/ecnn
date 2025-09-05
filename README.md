@@ -2,7 +2,10 @@
 
 # The Openwall
 
-[![My Skills](https://skillicons.dev/icons?i=js,html,css,wasm)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=js,html,css)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=nodejs)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=aws,gcp,react)](https://skillicons.dev)
+
 [![React](https://img.shields.io/badge/React-18.2.0-61DAFB?style=for-the-badge&logo=react)](https://reactjs.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=node.js)](https://nodejs.org/)
 [![AWS](https://img.shields.io/badge/AWS-DynamoDB-FF9900?style=for-the-badge&logo=amazon-aws)](https://aws.amazon.com/)
