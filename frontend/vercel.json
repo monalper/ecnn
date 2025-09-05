@@ -15,6 +15,10 @@
       "dest": "https://ecnn-backend.vercel.app/sitemap.xml"
     },
     {
+      "src": "/robots.txt",
+      "dest": "https://ecnn-backend.vercel.app/robots.txt"
+    },
+    {
       "src": "/favicon.ico",
       "dest": "/favicon.ico"
     },
