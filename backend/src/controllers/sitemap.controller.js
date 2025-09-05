@@ -30,7 +30,7 @@ const generateSitemap = async (req, res) => {
       return res.send(sitemapCache);
     }
 
-    const baseUrl = process.env.FRONTEND_URL || 'https://openwall.com.tr';
+    const baseUrl = 'https://openwall.com.tr';
     const currentDate = new Date().toISOString();
     
     // Statik sayfalar
@@ -169,7 +169,7 @@ const clearSitemapCache = () => {
 // Robots.txt oluştur
 const generateRobotsTxt = async (req, res) => {
   try {
-    const baseUrl = process.env.FRONTEND_URL || 'https://openwall.com.tr';
+    const baseUrl = 'https://openwall.com.tr';
     
     const robotsTxt = `User-agent: *
 Allow: /
