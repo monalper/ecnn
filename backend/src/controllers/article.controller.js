@@ -4,6 +4,36 @@ const { docClient, ARTICLES_TABLE, USERS_TABLE } = require('../config/aws.config
 const { PutCommand, GetCommand, ScanCommand, DeleteCommand, UpdateCommand, QueryCommand } = require('@aws-sdk/lib-dynamodb');
 const { clearSitemapCache } = require('./sitemap.controller');
 
+// Basit cache sistemi
+class SimpleCache {
+  constructor() {
+    this.cache = new Map();
+  }
+
+  set(key, value, ttl = 5 * 60 * 1000) { // 5 dakika default
+    const expiry = Date.now() + ttl;
+    this.cache.set(key, { value, expiry });
+  }
+
+  get(key) {
+    const item = this.cache.get(key);
+    if (!item) return null;
+    
+    if (Date.now() > item.expiry) {
+      this.cache.delete(key);
+      return null;
+    }
+    
+    return item.value;
+  }
+
+  clear() {
+    this.cache.clear();
+  }
+}
+
+const articleCache = new SimpleCache();
+
 // Yardımcı fonksiyon: Slug oluşturma
 // Not: Slug'ın benzersizliği veritabanı seviyesinde (primary key) sağlanır.
 // Eğer aynı başlıkla birden fazla makale oluşturulmaya çalışılırsa DynamoDB hata verecektir.
@@ -179,21 +209,30 @@ exports.deleteArticle = async (req, res, next) => {
 
 exports.listPublishedArticles = async (req, res, next) => {
   try {
+    // Cache kontrolü
+    const cacheKey = 'published_articles';
+    const cachedData = articleCache.get(cacheKey);
+    
+    if (cachedData) {
+      return res.status(200).json(cachedData);
+    }
+
     const params = {
       TableName: ARTICLES_TABLE,
-      FilterExpression: '#st = :status_val', // status bir keyword olabilir, #st kullandık
+      FilterExpression: '#st = :status_val',
       ExpressionAttributeNames: { '#st': 'status' },
       ExpressionAttributeValues: { ':status_val': 'published' },
-      // ProjectionExpression: 'slug, title, description, coverImage, authorId, createdAt' // İstenen alanlar
+      // Sadece gerekli alanları getir
+      ProjectionExpression: 'slug, title, description, coverImage, authorName, createdAt, updatedAt, isHighlight, tags, categories'
     };
-    // Not: Scan operasyonu tüm tabloyu tarar. Büyük tablolarda performans sorunlarına yol açabilir.
-    // Daha iyi bir çözüm, 'status' ve 'createdAt' alanlarını içeren bir Global Secondary Index (GSI) oluşturmaktır.
-    // Örneğin: GSI Adı: StatusDateIndex, Partition Key: status (S), Sort Key: createdAt (S)
-    // Bu GSI ile Query operasyonu kullanılabilir: KeyConditionExpression: "#st = :status_val" ve ScanIndexForward: false (tersten sıralama)
+    
     const { Items } = await docClient.send(new ScanCommand(params));
     
-    // Geçici olarak client-side sıralama (GSI kullanılması şiddetle önerilir)
+    // Client-side sıralama
     const sortedItems = Items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    
+    // Cache'e kaydet (5 dakika)
+    articleCache.set(cacheKey, sortedItems, 5 * 60 * 1000);
 
     res.status(200).json(sortedItems);
   } catch (error) {
