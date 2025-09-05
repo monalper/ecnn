@@ -2,6 +2,17 @@
 const { docClient, ARTICLES_TABLE } = require('../config/aws.config');
 const { ScanCommand } = require("@aws-sdk/lib-dynamodb");
 
+// XML escape fonksiyonu
+const escapeXml = (unsafe) => {
+  if (!unsafe) return '';
+  return unsafe.toString()
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+};
+
 // Sitemap cache
 let sitemapCache = null;
 let sitemapLastUpdate = null;
@@ -25,16 +36,31 @@ const generateSitemap = async (req, res) => {
     // Statik sayfalar
     const staticPages = [
       { url: '/', priority: '1.0', changefreq: 'daily' },
-      { url: '/about', priority: '0.8', changefreq: 'monthly' },
-      { url: '/categories', priority: '0.8', changefreq: 'weekly' },
-      { url: '/highlights', priority: '0.8', changefreq: 'daily' },
+      { url: '/articles', priority: '0.9', changefreq: 'daily' },
+      { url: '/categories', priority: '0.9', changefreq: 'weekly' },
+      { url: '/highlights', priority: '0.9', changefreq: 'daily' },
+      { url: '/gallery', priority: '0.8', changefreq: 'weekly' },
+      { url: '/videos', priority: '0.8', changefreq: 'weekly' },
+      { url: '/dictionary', priority: '0.8', changefreq: 'weekly' },
+      { url: '/about', priority: '0.7', changefreq: 'monthly' },
+      { url: '/climatechange', priority: '0.7', changefreq: 'weekly' },
       { url: '/legal/disclaimer', priority: '0.3', changefreq: 'yearly' }
+    ];
+
+    // Kategori sayfaları
+    const categories = [
+      'teknoloji', 'felsefe', 'sanat', 'spor', 'siyaset', 'ekonomi', 
+      'saglik', 'egitim', 'cevre', 'sosyoloji', 'psikoloji', 'din', 
+      'muzik', 'sinema', 'seyahat', 'yemek'
     ];
 
     // Makaleleri getir
     const articlesCommand = new ScanCommand({
       TableName: ARTICLES_TABLE,
-      FilterExpression: 'status = :status',
+      FilterExpression: '#status = :status',
+      ExpressionAttributeNames: {
+        '#status': 'status'
+      },
       ExpressionAttributeValues: {
         ':status': 'published'
       }
@@ -61,6 +87,17 @@ const generateSitemap = async (req, res) => {
 `;
     });
 
+    // Kategori sayfalarını ekle
+    categories.forEach(category => {
+      sitemap += `  <url>
+    <loc>${baseUrl}/category/${category}</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+`;
+    });
+
     // Makaleleri ekle
     articles.forEach(article => {
       const lastmod = article.updatedAt || article.createdAt || currentDate;
@@ -68,7 +105,7 @@ const generateSitemap = async (req, res) => {
       const changefreq = article.isHighlight ? 'weekly' : 'monthly';
       
       sitemap += `  <url>
-    <loc>${baseUrl}/articles/${article.slug}</loc>
+    <loc>${baseUrl}/articles/${escapeXml(article.slug)}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>${changefreq}</changefreq>
     <priority>${priority}</priority>`;
@@ -77,9 +114,9 @@ const generateSitemap = async (req, res) => {
       if (article.coverImage) {
         sitemap += `
     <image:image>
-      <image:loc>${article.coverImage}</image:loc>
-      <image:title>${article.title}</image:title>
-      <image:caption>${article.description || article.title}</image:caption>
+      <image:loc>${escapeXml(article.coverImage)}</image:loc>
+      <image:title>${escapeXml(article.title)}</image:title>
+      <image:caption>${escapeXml(article.description || article.title)}</image:caption>
     </image:image>`;
       }
       
@@ -93,9 +130,9 @@ const generateSitemap = async (req, res) => {
         <news:language>tr</news:language>
       </news:publication>
       <news:publication_date>${article.createdAt}</news:publication_date>
-      <news:title>${article.title}</news:title>
-      <news:keywords>${article.tags ? article.tags.join(',') : ''}</news:keywords>
-      <news:stock_tickers>${article.categories ? article.categories.join(',') : ''}</news:stock_tickers>
+      <news:title>${escapeXml(article.title)}</news:title>
+      <news:keywords>${escapeXml(article.tags ? article.tags.join(',') : '')}</news:keywords>
+      <news:stock_tickers>${escapeXml(article.categories ? article.categories.join(',') : '')}</news:stock_tickers>
     </news:news>`;
       }
       
@@ -137,32 +174,58 @@ const generateRobotsTxt = async (req, res) => {
     const robotsTxt = `User-agent: *
 Allow: /
 
-# Makale sayfalarına tam erişim
+# Ana içerik sayfaları - tam erişim
 Allow: /articles/
 Allow: /categories/
 Allow: /highlights/
+Allow: /gallery/
+Allow: /videos/
+Allow: /dictionary/
+Allow: /about/
+Allow: /climatechange/
+
+# Kategori sayfaları
+Allow: /category/
+
+# Statik dosyalar
+Allow: /images/
+Allow: /og-images/
+Allow: /assets/
+Allow: /css/
+Allow: /js/
 
 # Admin sayfalarını engelle
 Disallow: /admin/
 Disallow: /login
+Disallow: /register
+Disallow: /profile/
+Disallow: /dashboard/
 
 # API endpoint'lerini engelle
 Disallow: /api/
+Disallow: /private/
+
+# Next.js sistem dosyalarını engelle
+Disallow: /_next/
+Disallow: /static/
 
 # Sitemap
 Sitemap: ${baseUrl}/sitemap.xml
 
-# Crawl-delay (makale sayfaları için daha hızlı)
-Crawl-delay: 1
-
 # Host
 Host: ${baseUrl}
+
+# Crawl-delay (makale sayfaları için optimize)
+Crawl-delay: 1
 
 # Google için özel kurallar
 User-agent: Googlebot
 Allow: /articles/
 Allow: /categories/
 Allow: /highlights/
+Allow: /gallery/
+Allow: /videos/
+Allow: /dictionary/
 Crawl-delay: 0.5
 
 # Bing için özel kurallar
@@ -170,6 +233,9 @@ User-agent: Bingbot
 Allow: /articles/
 Allow: /categories/
 Allow: /highlights/
+Allow: /gallery/
+Allow: /videos/
+Allow: /dictionary/
 Crawl-delay: 0.5
 
 # Yandex için özel kurallar
@@ -177,7 +243,15 @@ User-agent: YandexBot
 Allow: /articles/
 Allow: /categories/
 Allow: /highlights/
+Allow: /gallery/
+Allow: /videos/
+Allow: /dictionary/
 Crawl-delay: 0.5
+
+# Site bilgileri
+# OpenWall - Türkçe entellektüel içerik platformu
+# 16 farklı kategoride makale, video ve görsel içerik
+# Günlük güncellenen içerikler
 `;
 
     res.setHeader('Content-Type', 'text/plain');
