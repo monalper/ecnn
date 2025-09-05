@@ -5,7 +5,7 @@ import VideoCard from '../components/VideoCard';
 import AdvertisementCard from '../components/AdvertisementCard';
 import MetaTags from '../components/seo/MetaTags';
 import SchemaMarkup from '../components/seo/SchemaMarkup';
-import api from '../services/api';
+import api, { getCached } from '../services/api';
 import { Link } from 'react-router-dom';
 import heroVideo from '../assets/hero.mp4';
 
@@ -22,8 +22,13 @@ const HomePage = () => {
       setLoading(true);
       setError(null);
       try {
-        // Tüm yayınlanmış makaleleri getir ve rastgele birini seç (hero için)
-        const allArticlesResponse = await api.get('/articles');
+        // Paralel API çağrıları ile hızlandırma
+        const [allArticlesResponse, featuredResponse, videosResponse] = await Promise.all([
+          getCached('/articles', {}, 2 * 60 * 1000), // 2 dakika cache
+          getCached('/articles/highlighted', {}, 5 * 60 * 1000), // 5 dakika cache
+          getCached('/videos', {}, 10 * 60 * 1000) // 10 dakika cache
+        ]);
+
         const allArticles = allArticlesResponse.data;
         
         if (allArticles.length > 0) {
@@ -31,20 +36,15 @@ const HomePage = () => {
           const randomIndex = Math.floor(Math.random() * allArticles.length);
           setHeroArticle(allArticles[randomIndex]);
           
-          // Son eklenen 6 makaleyi al (backend zaten en yeniden en eskiye sıralıyor)
+          // Son eklenen 6 makaleyi al
           setLatestArticles(allArticles.slice(0, 6));
         }
 
-        // Öne çıkan makaleleri getir
-        const featuredResponse = await api.get('/articles/highlighted');
         setFeaturedArticles(featuredResponse.data);
 
-        // Son eklenen 6 videoyu getir
-        const latestVideosResponse = await api.get('/videos');
-        const allVideos = latestVideosResponse.data;
-        
+        const allVideos = videosResponse.data;
         if (allVideos.length > 0) {
-          // Videoları oluşturulma tarihine göre sırala (en yeni önce)
+          // Videoları oluşturulma tarihine göre sırala
           const sortedVideos = allVideos.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
           setLatestVideos(sortedVideos.slice(0, 6));
         }
