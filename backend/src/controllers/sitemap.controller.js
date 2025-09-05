@@ -54,20 +54,26 @@ const generateSitemap = async (req, res) => {
       'muzik', 'sinema', 'seyahat', 'yemek'
     ];
 
-    // Makaleleri getir
-    const articlesCommand = new ScanCommand({
-      TableName: ARTICLES_TABLE,
-      FilterExpression: '#status = :status',
-      ExpressionAttributeNames: {
-        '#status': 'status'
-      },
-      ExpressionAttributeValues: {
-        ':status': 'published'
-      }
-    });
+    // Makaleleri getir (hata durumunda boş array döndür)
+    let articles = [];
+    try {
+      const articlesCommand = new ScanCommand({
+        TableName: ARTICLES_TABLE,
+        FilterExpression: '#status = :status',
+        ExpressionAttributeNames: {
+          '#status': 'status'
+        },
+        ExpressionAttributeValues: {
+          ':status': 'published'
+        }
+      });
 
-    const articlesResult = await docClient.send(articlesCommand);
-    const articles = articlesResult.Items || [];
+      const articlesResult = await docClient.send(articlesCommand);
+      articles = articlesResult.Items || [];
+    } catch (dbError) {
+      console.warn('Makaleler getirilemedi, sadece statik sayfalar eklenecek:', dbError.message);
+      articles = [];
+    }
 
     // XML sitemap oluştur
     let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
