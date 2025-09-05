@@ -6,8 +6,8 @@ const AboutPage = () => {
   return (
     <div className="min-h-screen">
       <MetaTags
-        title="Hakkımızda - OpenWall"
-        description="OpenWall, entellektüel konularda kaliteli içerikler sunan, düşünce dünyasını keşfetmeye odaklanmış bir platformdur."
+        title="Hakkımızda"
+        description="**The Openwall** ile tanışın."
         keywords="hakkımızda, openwall, entellektüel, düşünce, makale, blog, felsefe, teknoloji, sanat"
       />
       
