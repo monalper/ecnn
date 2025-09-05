@@ -387,7 +387,7 @@ Bu proje [MIT](LICENSE) lisansı altında lisanslanmıştır.
 
 <div align="center">
 
-**Bu projeyi beğendiyseniz yıldız vermeyi unutmayın!**
+https://cdn.jsdelivr.net/gh/Readme-Workflows/Readme-Icons@main/icons/octicons/StarredRepositoryYellow.svg **Bu projeyi beğendiyseniz yıldız vermeyi unutmayın!**
 
 Made with ❤️ by [Alper](https://github.com/monalper)
 
