@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import LazyImage from '../LazyImage';
 
 const ArticleCard = ({ article }) => {
   const displayDescription = article.description || (article.content ? article.content.substring(0, 120) + '...' : '');
@@ -38,13 +39,11 @@ const ArticleCard = ({ article }) => {
       style={{ boxShadow: 'none' }}
     >
       <div className="w-full aspect-[16/9] sm:aspect-[16/9] bg-dark-secondary relative overflow-hidden">
-        <img
+        <LazyImage
           src={article.coverImage || placeholderImage}
           alt={`Kapak görseli: ${article.title}`}
           className="w-full h-full object-cover object-center"
-          style={{ display: 'block' }}
-          onError={e => { e.currentTarget.onerror = null; e.currentTarget.src = placeholderImage; }}
-          loading="lazy"
+          placeholder={placeholderImage}
         />
       </div>
       
@@ -54,17 +53,13 @@ const ArticleCard = ({ article }) => {
         </h3>
         <p className="text-[16px] sm:text-[16px] md:text-[16px] lg:text-[16px] text-[#7b7b7b] dark:text-slate-400 line-clamp-2 leading-normal font-medium mb-2 sm:mb-3">{displayDescription}</p>
         
-        {/* Time ago and view count */}
+        {/* Time ago */}
         <div className="flex items-center gap-1 sm:gap-2 md:gap-4 text-[14px] sm:text-xs md:text-[13px] text-[#7b7b7b] dark:text-slate-400">
           {article.createdAt && (
             <div className="font-medium truncate">
               {getTimeAgo(article.createdAt)}
             </div>
           )}
-          {article.createdAt && <span className="text-slate-500 flex-shrink-0">•</span>}
-          <span className="font-medium truncate">
-            {article.viewCount || 0} görüntülenme
-          </span>
         </div>
       </div>
     </Link>
