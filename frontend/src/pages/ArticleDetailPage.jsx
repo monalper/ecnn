@@ -209,7 +209,11 @@ const ArticleDetailPage = () => {
   };
   
   const pageImage = getOgImage();
-  const pageUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const pageUrl = typeof window !== 'undefined' 
+    ? (process.env.NODE_ENV === 'production' 
+        ? `https://openwall.com.tr/articles/${article.slug}`
+        : window.location.href)
+    : '';
 
   // Twitter paylaşım metni oluşturma fonksiyonları
   const generateTweetTemplates = () => {
@@ -258,7 +262,7 @@ const ArticleDetailPage = () => {
         title={article.title}
         description={article.description || article.content?.substring(0, 160)}
         image={pageImage}
-        url={window.location.href}
+        url={pageUrl}
         type="article"
         author={author}
         publishedTime={article.createdAt}
@@ -275,11 +279,11 @@ const ArticleDetailPage = () => {
           title: article.title,
           description: article.description || article.content?.substring(0, 160),
           image: pageImage,
-          url: window.location.href,
+          url: pageUrl,
           author: author,
           publishedTime: article.createdAt,
           modifiedTime: article.updatedAt,
-          section: "Technology",
+          section: article.category || "General",
           keywords: article.tags?.join(', '),
           wordCount: article.content?.replace(/<[^>]+>/g, '').split(/\s+/).length,
           readingTime: readingTime,
@@ -290,7 +294,7 @@ const ArticleDetailPage = () => {
         breadcrumbs={[
           { name: 'Ana Sayfa', url: 'https://openwall.com.tr' },
           { name: 'Makaleler', url: 'https://openwall.com.tr/articles' },
-          { name: article.title, url: window.location.href }
+          { name: article.title, url: pageUrl }
         ]}
       />
       
