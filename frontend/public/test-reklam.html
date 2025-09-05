@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reklam Image Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .test-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .image-test {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        .image-test img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Reklam Image Test</h1>
+        <p>Bu sayfa reklam.png dosyasının erişilebilir olup olmadığını test eder.</p>
+        
+        <div class="image-test">
+            <h3>Test 1: /reklam.png (Public URL)</h3>
+            <img src="/reklam.png" alt="Reklam Test 1" onload="showStatus('test1', true)" onerror="showStatus('test1', false)">
+            <div id="test1" class="status">Yükleniyor...</div>
+        </div>
+
+        <div class="image-test">
+            <h3>Test 2: Relative Path</h3>
+            <img src="./reklam.png" alt="Reklam Test 2" onload="showStatus('test2', true)" onerror="showStatus('test2', false)">
+            <div id="test2" class="status">Yükleniyor...</div>
+        </div>
+
+        <div class="image-test">
+            <h3>Test 3: Absolute Path</h3>
+            <img src="reklam.png" alt="Reklam Test 3" onload="showStatus('test3', true)" onerror="showStatus('test3', false)">
+            <div id="test3" class="status">Yükleniyor...</div>
+        </div>
+
+        <div class="image-test">
+            <h3>Test 4: Assets Path</h3>
+            <img src="/assets/reklam.png" alt="Reklam Test 4" onload="showStatus('test4', true)" onerror="showStatus('test4', false)">
+            <div id="test4" class="status">Yükleniyor...</div>
+        </div>
+    </div>
+
+    <script>
+        function showStatus(testId, success) {
+            const statusElement = document.getElementById(testId);
+            if (success) {
+                statusElement.textContent = '✅ Başarılı: Resim yüklendi';
+                statusElement.className = 'status success';
+            } else {
+                statusElement.textContent = '❌ Hata: Resim yüklenemedi';
+                statusElement.className = 'status error';
+            }
+        }
+
+        // Check if images are accessible via fetch
+        async function checkImageAccess() {
+            const paths = ['/reklam.png', './reklam.png', 'reklam.png', '/assets/reklam.png'];
+            
+            for (const path of paths) {
+                try {
+                    const response = await fetch(path);
+                    console.log(`Path ${path}:`, response.status, response.ok);
+                } catch (error) {
+                    console.error(`Path ${path}:`, error);
+                }
+            }
+        }
+
+        // Run accessibility check after page loads
+        window.addEventListener('load', checkImageAccess);
+    </script>
+</body>
+</html> 
