@@ -10,24 +10,28 @@ import AdminLayout from './components/layout/AdminLayout';
 import AdminPasswordProtection from './components/auth/AdminPasswordProtection';
 import Footer from './components/layout/Footer';
 import NotFoundPage from './components/NotFoundPage';
+import ScrollToTop from './components/ScrollToTop';
 import './index.css';
 import './dark-header-nav.css'; // Tailwind ve genel stiller
 
+// Ana sayfalar - hemen yükle
 const HomePage = lazy(() => import('./pages/HomePage'));
 const ArticlesPage = lazy(() => import('./pages/ArticlesPage'));
 const ArticleDetailPage = lazy(() => import('./pages/ArticleDetailPage'));
+
+// Diğer sayfalar - lazy loading
 const LoginPage = lazy(() => import('./pages/LoginPage'));
-const CategoriesPage = lazy(() => import('./pages/CategoriesPage')); // Yeni
-const AboutPage = lazy(() => import('./pages/AboutPage')); // Yeni
-const HighlightsPage = lazy(() => import('./pages/HighlightsPage')); // Yeni
-const DisclaimerPage = lazy(() => import('./pages/DisclaimerPage')); // Yasal Uyarı
-const ClimateChangePage = lazy(() => import('./pages/ClimateChangePage')); // İklim Değişikliği
+const CategoriesPage = lazy(() => import('./pages/CategoriesPage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const HighlightsPage = lazy(() => import('./pages/HighlightsPage'));
+const DisclaimerPage = lazy(() => import('./pages/DisclaimerPage'));
+const ClimateChangePage = lazy(() => import('./pages/ClimateChangePage'));
 const DictionaryPage = lazy(() => import('./pages/DictionaryPage'));
-const GalleryPage = lazy(() => import('./pages/GalleryPage')); // Galeri
-const GalleryItemPage = lazy(() => import('./pages/GalleryItemPage')); // Galeri Öğesi
-const VideosPage = lazy(() => import('./pages/VideosPage')); // Videolar
-const VideoDetailPage = lazy(() => import('./pages/VideoDetailPage')); // Video Öğesi
-const VideoDetailDemo = lazy(() => import('./components/video/VideoDetailDemo')); // Video Detay Demo
+const GalleryPage = lazy(() => import('./pages/GalleryPage'));
+const GalleryItemPage = lazy(() => import('./pages/GalleryItemPage'));
+const VideosPage = lazy(() => import('./pages/VideosPage'));
+const VideoDetailPage = lazy(() => import('./pages/VideoDetailPage'));
+const VideoDetailDemo = lazy(() => import('./components/video/VideoDetailDemo'));
 
 // Admin Sayfaları
 const AdminDashboardPage = lazy(() => import('./pages/admin/AdminDashboardPage'));
@@ -86,7 +90,12 @@ function AppContent() {
       <ConditionalHeaderFooter />
       <ThemeToggleButton />
       <main className={mainClasses}>
-        <Suspense fallback={<div className="text-center py-20 text-lg font-semibold">Sayfa Yükleniyor...</div>}>
+        <Suspense fallback={
+          <div className="flex flex-col items-center justify-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mb-4"></div>
+            <div className="text-lg font-semibold text-slate-600 dark:text-slate-300">Sayfa Yükleniyor...</div>
+          </div>
+        }>
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<HomePage />} />
@@ -161,6 +170,7 @@ function App() {
       <AuthProvider>
         <HelmetProvider>
           <Router>
+            <ScrollToTop />
             <AppContent />
           </Router>
         </HelmetProvider>
