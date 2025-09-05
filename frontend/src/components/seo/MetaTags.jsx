@@ -17,7 +17,7 @@ const MetaTags = ({
   wordCount,
   isHighlight = false
 }) => {
-  const siteName = 'OpenWall';
+  const siteName = 'The Openwall';
   const fullTitle = title ? `${title} | ${siteName}` : siteName;
   const defaultDescription = 'OpenWall, çeşitli alanlarda yazılmış makaleleri okuyun.';
   const defaultImage = 'https://openwall.com.tr/og-images/default/og-default.jpg'; // Güncellenmiş OG image yolu

@@ -84,11 +84,20 @@ const HomePage = () => {
     );
   }
   
+  // Son yazılan makale için dinamik description oluştur
+  const getDynamicDescription = () => {
+    if (latestArticles.length > 0) {
+      const latestArticle = latestArticles[0]; // En son makale (zaten sıralı geliyor)
+      return `Yazılmış son makale olan **${latestArticle.title}**'ye göz atın.`;
+    }
+    return "OpenWall, teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat ve yemek gibi çeşitli alanlarda kaliteli içerikler sunan kapsamlı bir platformdur.";
+  };
+
   return (
     <div className="min-h-screen bg-site-background dark:bg-dark-primary">
       <MetaTags
-        title="Home"
-        description="OpenWall, teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat ve yemek gibi çeşitli alanlarda kaliteli içerikler sunan kapsamlı bir platformdur. Güncel makaleler, öne çıkan yazılar ve entellektüel tartışmalar."
+        title="Openwall"
+        description={getDynamicDescription()}
         keywords="teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat, yemek, makale, haber, içerik, blog, entellektüel, düşünce, analiz, araştırma"
         type="website"
       />
