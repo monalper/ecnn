@@ -1,6 +1,6 @@
 <div align="center">
 
-# THE OPENWALL
+# The Openwall
 
 ### Çok Kategorili Entelektüel İçerik Platformu
 
