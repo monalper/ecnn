@@ -1,13 +1,13 @@
 <div align="center">
 
 # The Openwall
+openwall.com.tr
+
 
 [![My Skills](https://skillicons.dev/icons?i=js,html,css,ts)](https://skillicons.dev)
 [![My Skills](https://skillicons.dev/icons?i=nodejs)](https://skillicons.dev)
 [![My Skills](https://skillicons.dev/icons?i=aws,gcp,react)](https://skillicons.dev)
 [![My Skills](https://skillicons.dev/icons?i=ps,xd)](https://skillicons.dev)
-
-[Canlı Demo](https://openwall.com.tr) • [Dokümantasyon](#dokümantasyon) • [Kurulum](#kurulum) • [Katkıda Bulun](#katkıda-bulun)
 
 </div>
 
@@ -64,7 +64,7 @@ Türkiye'nin en kapsamlı ve güvenilir entelektüel içerik platformu olmak.
 <tr>
 <td align="center" width="20%">
 <img src="https://skillicons.dev/icons?i=react" width="40" height="40"/>
-<br/><b>React 18</b>
+<br/><b>React18</b>
 </td>
 <td align="center" width="20%">
 <img src="https://skillicons.dev/icons?i=vite" width="40" height="40"/>
@@ -363,24 +363,79 @@ Katkılarınızı bekliyoruz! Lütfen aşağıdaki adımları takip edin:
 
 ---
 
-## İletişim
+## 📬 İletişim
 
-- **Website**: [openwall.com.tr](https://openwall.com.tr)
-- **Email**: info@monologed.com
-- **GitHub**: [@monalper](https://github.com/monalper)
+<p align="center">
+  <table>
+    <tr>
+      <td align="center" width="100">
+        <a href="https://openwall.com.tr" target="_blank">
+          <img src="https://raw.githubusercontent.com/monalper/ecnn/refs/heads/main/frontend/public/icon.png" width="40" alt="Website" />
+        </a>
+        <br/><sub><b>Website</b></sub>
+      </td>
+      <td align="center" width="100">
+        <a href="mailto:info@monologed.com" target="_blank">
+          <img src="https://raw.githubusercontent.com/LelouchFR/skill-icons/main/assets/gmail-dark.svg" width="40" alt="Email" />
+        </a>
+        <br/><sub><b>Email</b></sub>
+      </td>
+      <td align="center" width="100">
+        <a href="https://github.com/monalper" target="_blank">
+          <img src="https://raw.githubusercontent.com/LelouchFR/skill-icons/main/assets/github-dark.svg" width="40" alt="GitHub" />
+        </a>
+        <br/><sub><b>GitHub</b></sub>
+      </td>
+      <td align="center" width="100">
+        <a href="https://twitter.com/WrittenbyAlper" target="_blank">
+          <img src="https://raw.githubusercontent.com/LelouchFR/skill-icons/main/assets/x-dark.svg" width="40" alt="Twitter/X" />
+        </a>
+        <br/><sub><b>Twitter/X</b></sub>
+      </td>
+      <td align="center" width="100">
+        <a href="https://reddit.com" target="_blank">
+          <img src="https://raw.githubusercontent.com/LelouchFR/skill-icons/main/assets/reddit.svg" width="40" alt="Reddit" />
+        </a>
+        <br/><sub><b>Reddit</b></sub>
+      </td>
+      <td align="center" width="100">
+        <a href="https://discord.com" target="_blank">
+          <img src="https://raw.githubusercontent.com/LelouchFR/skill-icons/main/assets/discord.svg" width="40" alt="Discord" />
+        </a>
+        <br/><sub><b>Discord</b></sub>
+      </td>
+      <td align="center" width="100">
+        <a href="https://behance.net" target="_blank">
+          <img src="https://raw.githubusercontent.com/LelouchFR/skill-icons/main/assets/behance.svg" width="40" alt="Behance" />
+        </a>
+        <br/><sub><b>Behance</b></sub>
+      </td>
+    </tr>
+  </table>
+</p>
+
+
+
+
 
 ---
 
-## Lisans
+## ⚖️ Lisans & Teşekkürler
 
-Bu proje [MIT](LICENSE) lisansı altında lisanslanmıştır.
 
----
+Bu proje **MIT Lisansı** altında lisanslanmıştır.  
+Özgürce kullanabilirsiniz.
 
-<div align="center">
 
-**Bu projeyi beğendiyseniz yıldız vermeyi unutmayın!**
+Bu projeyi beğendiyseniz bir **⭐ Yıldızlayabilirsiniz.**
 
-Made with ❤️ by [Alper](https://github.com/monalper)
 
-</div>
+by <a href="https://github.com/monalper"><b>WrittenbyAlper</b></a>
+
+
+[![GitHub stars](https://img.shields.io/github/stars/monalper/ecnn?style=flat&logo=github)](https://github.com/monalper/ecnn/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/monalper/ecnn?style=flat&logo=github)](https://github.com/monalper/ecnn/fork)
+[![GitHub issues](https://img.shields.io/github/issues/monalper/ecnn?style=flat&logo=github)](https://github.com/monalper/ecnn/issues)
+
+
+
