@@ -22,13 +22,13 @@ const generateSitemap = async (req, res) => {
   try {
     const now = Date.now();
     
-    // Cache kontrolü
-    if (sitemapCache && sitemapLastUpdate && (now - sitemapLastUpdate) < CACHE_DURATION) {
-      res.setHeader('Content-Type', 'application/xml');
-      res.setHeader('Cache-Control', 'public, max-age=3600');
-      res.setHeader('X-Cache', 'HIT');
-      return res.send(sitemapCache);
-    }
+    // Cache'i geçici olarak devre dışı bırak
+    // if (sitemapCache && sitemapLastUpdate && (now - sitemapLastUpdate) < CACHE_DURATION) {
+    //   res.setHeader('Content-Type', 'application/xml');
+    //   res.setHeader('Cache-Control', 'public, max-age=3600');
+    //   res.setHeader('X-Cache', 'HIT');
+    //   return res.send(sitemapCache);
+    // }
 
     const baseUrl = 'https://openwall.com.tr';
     const currentDate = new Date().toISOString();
