@@ -1,0 +1,28 @@
+.dark .header-nav-link, .dark .header-site-title {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.dark .header-nav-link:hover, .dark .header-site-title:hover {
+  color: #ffffff !important;
+}
+
+/* Light theme header background */
+.header-bg {
+  background-color: #F8F9FA !important;
+}
+
+/* Dark theme header background */
+html.dark .header-bg {
+  background-color: #0F0F0F !important;
+  border-bottom-color: #252525 !important;
+}
+
+/* Light theme mobile menu background */
+.mobile-menu {
+  background-color: #F8F9FA !important;
+}
+
+/* Dark theme mobile menu background */
+html.dark .mobile-menu {
+  background-color: #0F0F0F !important;
+}
