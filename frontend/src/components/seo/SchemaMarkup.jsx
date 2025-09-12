@@ -168,6 +168,94 @@ const SchemaMarkup = ({
           }
         };
         
+      case 'NASAAPOD':
+        return {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": data.title,
+          "description": data.description,
+          "image": {
+            "@type": "ImageObject",
+            "url": data.image,
+            "contentUrl": data.image,
+            "description": data.title,
+            "width": 1200,
+            "height": 630
+          },
+          "author": {
+            "@type": "Organization",
+            "name": "NASA",
+            "url": "https://www.nasa.gov"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "OpenWall",
+            "logo": {
+              "@type": "ImageObject",
+              "url": `${baseUrl}/logo.png`
+            },
+            "url": baseUrl
+          },
+          "datePublished": data.publishedTime,
+          "dateModified": data.publishedTime,
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": data.url
+          },
+          "articleSection": "Astronomy",
+          "keywords": data.keywords,
+          "wordCount": data.wordCount,
+          "timeRequired": data.readingTime,
+          "articleBody": data.content,
+          "inLanguage": "tr-TR",
+          "isAccessibleForFree": true,
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "OpenWall",
+            "url": baseUrl
+          },
+          "about": [
+            {
+              "@type": "Thing",
+              "name": "Astronomy",
+              "description": "The study of celestial objects and phenomena"
+            },
+            {
+              "@type": "Thing", 
+              "name": "Space",
+              "description": "The physical universe beyond Earth's atmosphere"
+            },
+            {
+              "@type": "Thing",
+              "name": "NASA",
+              "description": "National Aeronautics and Space Administration"
+            }
+          ],
+          "mentions": [
+            {
+              "@type": "Organization",
+              "name": "NASA",
+              "url": "https://www.nasa.gov"
+            }
+          ],
+          "publisherImprint": {
+            "@type": "Organization",
+            "name": "OpenWall",
+            "url": baseUrl
+          },
+          "copyrightHolder": {
+            "@type": "Organization",
+            "name": data.copyright || "NASA"
+          },
+          "copyrightYear": new Date(data.publishedTime).getFullYear(),
+          "genre": "Educational",
+          "educationalLevel": "Beginner",
+          "audience": {
+            "@type": "Audience",
+            "audienceType": "General Public"
+          }
+        };
+        
       default:
         return null;
     }

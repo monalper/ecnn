@@ -200,27 +200,55 @@ const ApodPage = () => {
   // Check if it's a video
   const isVideo = apodData.media_type === 'video';
 
-  // Page metadata
-  const pageTitle = `${apodData.title} - NASA Günün Astronomi Fotoğrafı`;
-  const pageDescription = apodData.explanation?.substring(0, 160) || 'NASA Günün Astronomi Fotoğrafı';
+  // Page metadata - Enhanced SEO
+  const pageTitle = `${apodData.title} - NASA Günün Astronomi Fotoğrafı (${displayDate})`;
+  const pageDescription = apodData.explanation?.substring(0, 155) + '...' || `NASA'nın ${displayDate} tarihli günün astronomi fotoğrafı. Uzay ve astronomi hakkında güncel bilgiler.`;
   const pageUrl = typeof window !== 'undefined' 
     ? `${window.location.origin}/apod/${apodData.date}`
     : '';
+  
+  // Enhanced keywords for better SEO
+  const seoKeywords = [
+    "NASA APOD",
+    "Günün Astronomi Fotoğrafı", 
+    "Astronomi",
+    "Uzay",
+    "NASA",
+    "Bilim",
+    "Gökbilim",
+    "Uzay Fotoğrafı",
+    "Astronomi Fotoğrafı",
+    "Space",
+    "Astronomy",
+    "Science",
+    apodData.title?.toLowerCase(),
+    displayDate
+  ].filter(Boolean).join(', ');
+
+  // Calculate reading time and word count
+  const wordCount = apodData.explanation?.split(' ').length || 0;
+  const readingTime = Math.ceil(wordCount / 200); // 200 words per minute
 
   return (
     <>
       <MetaTags
         title={pageTitle}
         description={pageDescription}
+        keywords={seoKeywords}
         image={apodData.hdurl || apodData.url}
         url={pageUrl}
         type="article"
         author="NASA"
         publishedTime={apodData.date}
+        section="Astronomy"
+        tags={["NASA", "APOD", "Astronomy", "Space", "Science", "Bilim", "Uzay"]}
+        readingTime={`${readingTime} dakika`}
+        wordCount={wordCount}
+        isHighlight={true}
       />
       
       <SchemaMarkup
-        type="Article"
+        type="NASAAPOD"
         data={{
           title: apodData.title,
           description: pageDescription,
@@ -229,9 +257,12 @@ const ApodPage = () => {
           author: "NASA",
           publishedTime: apodData.date,
           section: "Astronomy",
-          keywords: ["NASA", "APOD", "Astronomy", "Space", "Science"],
+          keywords: seoKeywords,
           content: apodData.explanation,
-          tags: ["NASA", "APOD", "Astronomy", "Space"]
+          tags: ["NASA", "APOD", "Astronomy", "Space", "Science", "Bilim", "Uzay"],
+          wordCount: wordCount,
+          readingTime: `${readingTime} dakika`,
+          copyright: apodData.copyright
         }}
         breadcrumbs={[
           { name: 'Ana Sayfa', url: 'https://openwall.com.tr' },
@@ -239,6 +270,93 @@ const ApodPage = () => {
           { name: apodData.title, url: pageUrl }
         ]}
       />
+
+      {/* Additional JSON-LD for Enhanced SEO */}
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Ana Sayfa",
+                "item": "https://openwall.com.tr"
+              },
+              {
+                "@type": "ListItem", 
+                "position": 2,
+                "name": "NASA APOD",
+                "item": "https://openwall.com.tr/apod"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": apodData.title,
+                "item": pageUrl
+              }
+            ]
+          })}
+        </script>
+        
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": pageTitle,
+            "description": pageDescription,
+            "url": pageUrl,
+            "mainEntity": {
+              "@type": "Article",
+              "headline": apodData.title,
+              "description": pageDescription,
+              "image": apodData.hdurl || apodData.url,
+              "author": {
+                "@type": "Organization",
+                "name": "NASA",
+                "url": "https://www.nasa.gov"
+              },
+              "publisher": {
+                "@type": "Organization",
+                "name": "OpenWall",
+                "url": "https://openwall.com.tr"
+              },
+              "datePublished": apodData.date,
+              "dateModified": apodData.date,
+              "articleSection": "Astronomy",
+              "keywords": seoKeywords,
+              "wordCount": wordCount,
+              "timeRequired": `${readingTime} dakika`,
+              "inLanguage": "tr-TR",
+              "isAccessibleForFree": true
+            },
+            "breadcrumb": {
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Ana Sayfa",
+                  "item": "https://openwall.com.tr"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2, 
+                  "name": "NASA APOD",
+                  "item": "https://openwall.com.tr/apod"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": apodData.title,
+                  "item": pageUrl
+                }
+              ]
+            }
+          })}
+        </script>
+      </Helmet>
 
       <Header scrollPercent={scrollPercent} customTitle="apod" />
 

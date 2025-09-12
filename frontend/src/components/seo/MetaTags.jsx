@@ -46,6 +46,18 @@ const MetaTags = ({
       <meta property="og:site_name" content={siteName} />
       <meta property="og:locale" content="tr_TR" />
       
+      {/* Enhanced Open Graph for Articles */}
+      {type === 'article' && (
+        <>
+          <meta property="og:article:author" content={author} />
+          <meta property="og:article:published_time" content={publishedTime} />
+          <meta property="og:article:modified_time" content={modifiedTime || publishedTime} />
+          <meta property="og:article:section" content={section} />
+          <meta property="og:article:tag" content={tags.join(', ')} />
+          {isHighlight && <meta property="og:article:tag" content="Öne Çıkan" />}
+        </>
+      )}
+      
       {/* Twitter Card Meta Tags */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content={twitterHandle} />
@@ -54,6 +66,16 @@ const MetaTags = ({
       <meta name="twitter:description" content={description || defaultDescription} />
       <meta name="twitter:image" content={image || defaultImage} />
       <meta name="twitter:image:alt" content={title || siteName} />
+      
+      {/* Enhanced Twitter Card for Articles */}
+      {type === 'article' && (
+        <>
+          <meta name="twitter:label1" content="Yazar" />
+          <meta name="twitter:data1" content={author} />
+          <meta name="twitter:label2" content="Okuma Süresi" />
+          <meta name="twitter:data2" content={readingTime || 'Bilinmiyor'} />
+        </>
+      )}
       
       {/* Article Specific Meta Tags */}
       {type === 'article' && (
@@ -96,9 +118,32 @@ const MetaTags = ({
       {readingTime && <meta name="article:reading_time" content={readingTime} />}
       {wordCount && <meta name="article:word_count" content={wordCount} />}
       
-      {/* Hreflang Tags */}
+      {/* Enhanced Hreflang Tags */}
       <link rel="alternate" hrefLang="tr" href={currentUrl} />
+      <link rel="alternate" hrefLang="tr-TR" href={currentUrl} />
       <link rel="alternate" hrefLang="x-default" href={currentUrl} />
+      
+      {/* Additional SEO Meta Tags */}
+      <meta name="geo.region" content="TR" />
+      <meta name="geo.country" content="Turkey" />
+      <meta name="language" content="Turkish" />
+      <meta name="distribution" content="global" />
+      <meta name="rating" content="general" />
+      <meta name="revisit-after" content="1 days" />
+      <meta name="expires" content="never" />
+      <meta name="cache-control" content="public, max-age=3600" />
+      
+      {/* Mobile and App Meta Tags */}
+      <meta name="mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+      <meta name="format-detection" content="telephone=no" />
+      
+      {/* Security Meta Tags */}
+      <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
+      <meta httpEquiv="X-Frame-Options" content="SAMEORIGIN" />
+      <meta httpEquiv="X-XSS-Protection" content="1; mode=block" />
+      <meta httpEquiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
       
       {/* Preconnect for Performance */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />
