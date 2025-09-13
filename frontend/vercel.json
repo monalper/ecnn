@@ -53,6 +53,22 @@
       "dest": "/assets/$1"
     },
     {
+      "src": "/moon/(.*)",
+      "dest": "/moon/$1"
+    },
+    {
+      "src": "/APP.png",
+      "dest": "/APP.png"
+    },
+    {
+      "src": "/UPP.png",
+      "dest": "/UPP.png"
+    },
+    {
+      "src": "/(.*\\.(png|jpg|jpeg|gif|webp|svg|ico|css|js|json|xml|txt|woff|woff2|ttf|eot))",
+      "dest": "/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
