@@ -153,11 +153,10 @@ const Iframe = Node.create({
   renderHTML({ HTMLAttributes }) {
     return [
       'div',
-      { class: 'yt-embed-wrapper', style: 'margin:16px 0; width:100%;' },
+      { class: 'yt-embed-wrapper' },
       ['iframe', mergeAttributes(HTMLAttributes, {
         frameborder: '0',
         allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share',
-        style: 'width:100%;max-width:100%;border-radius:12px;display:block;',
         title: 'YouTube video player',
       })],
     ];

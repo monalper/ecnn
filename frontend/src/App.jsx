@@ -35,11 +35,8 @@ const VideoDetailPage = lazy(() => import('./pages/VideoDetailPage'));
 const VideoDetailDemo = lazy(() => import('./components/video/VideoDetailDemo'));
 const LoadingTestPage = lazy(() => import('./pages/LoadingTestPage'));
 const ApodPage = lazy(() => import('./pages/ApodPage'));
-<<<<<<< HEAD
 const AsteroidPage = lazy(() => import('./pages/AsteroidPage'));
 const MoonPage = lazy(() => import('./pages/MoonPage'));
-=======
->>>>>>> 9a4674cad33e31f71e43bd65fa2b35d5ca69f23a
 
 // Admin Sayfaları
 const AdminDashboardPage = lazy(() => import('./pages/admin/AdminDashboardPage'));
@@ -86,7 +83,6 @@ const PublicRoute = ({ children }) => {
 function AppContent() {
   const location = useLocation();
   
-<<<<<<< HEAD
   // Check if current route is an article detail page, APOD page, asteroid page, or moon page
   const isArticleDetailPage = location.pathname.match(/^\/articles\/[^\/]+$/);
   const isApodPage = location.pathname.match(/^\/apod(\/.*)?$/);
@@ -96,15 +92,6 @@ function AppContent() {
   // Conditional classes for main element
   const mainClasses = (isArticleDetailPage || isApodPage || isAsteroidPage || isMoonPage)
     ? "flex-grow transition-colors" // No padding at all for article detail, APOD, asteroid, and moon pages
-=======
-  // Check if current route is an article detail page or APOD page
-  const isArticleDetailPage = location.pathname.match(/^\/articles\/[^\/]+$/);
-  const isApodPage = location.pathname.match(/^\/apod(\/.*)?$/);
-  
-  // Conditional classes for main element
-  const mainClasses = (isArticleDetailPage || isApodPage)
-    ? "flex-grow transition-colors" // No padding at all for article detail and APOD pages
->>>>>>> 9a4674cad33e31f71e43bd65fa2b35d5ca69f23a
     : "flex-grow px-4 sm:px-6 lg:px-8 py-8 pt-24 md:pt-28 transition-colors"; // Full padding for other pages
 
   return (
@@ -137,11 +124,8 @@ function AppContent() {
             <Route path="/loading-test" element={<LoadingTestPage />} />
             <Route path="/apod" element={<ApodPage />} />
             <Route path="/apod/:date" element={<ApodPage />} />
-<<<<<<< HEAD
             <Route path="/asteroid" element={<AsteroidPage />} />
             <Route path="/moon" element={<MoonPage />} />
-=======
->>>>>>> 9a4674cad33e31f71e43bd65fa2b35d5ca69f23a
             
             <Route path="/login" element={
               <PublicRoute>
