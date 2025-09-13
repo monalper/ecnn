@@ -135,7 +135,6 @@ const ApodPage = () => {
       setIsTranslating(false);
     }
   };
-
   // Navigation functions
   const goToPreviousDay = () => {
     const currentDate = date ? new Date(date) : new Date();

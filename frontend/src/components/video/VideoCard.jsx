@@ -8,66 +8,46 @@ const VideoCard = ({ video }) => {
   const videoRef = useRef(null);
   const hoverTimeoutRef = useRef(null);
 
+  const handleVideoClick = () => {
+    navigate(`/videos/${video.id}`);
+  };
+
   const handleMouseEnter = () => {
+    // Clear any existing timeout
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
     }
+    
+    // Start video after a short delay (YouTube-like behavior)
     hoverTimeoutRef.current = setTimeout(() => {
       setIsHovered(true);
-    }, 300); // 300ms gecikme
+      if (videoRef.current && video.videoUrl) {
+        videoRef.current.currentTime = 0; // Start from beginning
+        videoRef.current.play().catch(error => {
+          console.log('Video autoplay failed:', error);
+        });
+      }
+    }, 200); // 200ms delay like YouTube
   };
 
   const handleMouseLeave = () => {
+    // Clear timeout if mouse leaves before delay
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
     }
+    
     setIsHovered(false);
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0; // Reset to beginning
+    }
   };
 
   const handleVideoLoad = () => {
     setIsVideoLoaded(true);
   };
 
-  const handleVideoClick = () => {
-    navigate(`/videos/${video.id}`);
-  };
-
-  const formatDuration = (seconds) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const remainingSeconds = seconds % 60;
-
-    if (hours > 0) {
-      return `${hours}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-    }
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-  };
-
-  const formatUploadTime = (dateString) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInSeconds = Math.floor((now - date) / 1000);
-
-    if (diffInSeconds < 60) {
-      return 'Az önce';
-    } else if (diffInSeconds < 3600) {
-      const minutes = Math.floor(diffInSeconds / 60);
-      return `${minutes} dakika önce`;
-    } else if (diffInSeconds < 86400) {
-      const hours = Math.floor(diffInSeconds / 3600);
-      return `${hours} saat önce`;
-    } else if (diffInSeconds < 2592000) {
-      const days = Math.floor(diffInSeconds / 86400);
-      return `${days} gün önce`;
-    } else if (diffInSeconds < 31536000) {
-      const months = Math.floor(diffInSeconds / 2592000);
-      return `${months} ay önce`;
-    } else {
-      const years = Math.floor(diffInSeconds / 31536000);
-      return `${years} yıl önce`;
-    }
-  };
-
+  // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
       if (hoverTimeoutRef.current) {
@@ -76,41 +56,91 @@ const VideoCard = ({ video }) => {
     };
   }, []);
 
+  const formatDuration = (seconds) => {
+    if (!seconds) return '0:00';
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
+  const formatUploadTime = (timestamp) => {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diffTime = now.getTime() - date.getTime();
+    const diffSeconds = Math.floor(diffTime / 1000);
+    const diffMinutes = Math.floor(diffSeconds / 60);
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+    
+    if (diffDays < 0) return '';
+    if (diffDays === 0) {
+      if (diffHours === 0) {
+        if (diffMinutes === 0) {
+          return `${diffSeconds} saniye önce`;
+        }
+        return `${diffMinutes} dakika önce`;
+      }
+      return `${diffHours} saat önce`;
+    }
+    if (diffDays === 1) return '1 gün önce';
+    if (diffDays < 7) return `${diffDays} gün önce`;
+    if (diffDays < 30) return `${Math.floor(diffDays / 7)} hafta önce`;
+    if (diffDays < 365) return `${Math.floor(diffDays / 30)} ay önce`;
+    return `${Math.floor(diffDays / 365)} yıl önce`;
+  };
+
+  const renderTimeAndSubtitles = () => {
+    if (!video.createdAt) return null;
+    
+    const timeText = formatUploadTime(video.createdAt);
+    const hasSubtitles = (video.subtitles && video.subtitles.length > 0) || video.subtitleUrl;
+    
+    if (!hasSubtitles) {
+      return (
+        <p className="text-gray-600 dark:text-gray-400 text-xs mt-3 opacity-50">
+          {timeText}
+        </p>
+      );
+    }
+    
+    return (
+      <p className="text-gray-600 dark:text-gray-400 text-xs mt-3 opacity-50">
+        {timeText} · <span className="text-blue-600 dark:text-blue-400 font-normal opacity-100">Altyazılı</span>
+      </p>
+    );
+  };
+
   return (
     <div
-      className="relative bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-hidden cursor-pointer group transition-all duration-300 hover:shadow-xl hover:scale-105"
+      className="relative cursor-pointer"
+      onClick={handleVideoClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onClick={handleVideoClick}
     >
-      {/* Video Container */}
-      <div className="relative aspect-video bg-slate-200 dark:bg-slate-700">
-        {video.thumbnailUrl ? (
-          <img
-            src={video.thumbnailUrl}
-            alt={video.title}
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <div className="text-slate-400 dark:text-slate-500">
-              <svg className="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
-              </svg>
-            </div>
-          </div>
-        )}
-        
-        {/* Play Button Overlay */}
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 group-hover:bg-opacity-50 transition-all duration-300">
-          <div className="w-16 h-16 bg-white bg-opacity-90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-            <svg className="w-6 h-6 text-slate-800 ml-1" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-            </svg>
-          </div>
+      {/* 16:9 Aspect Ratio Container */}
+      <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+        <div className="absolute inset-0 bg-black rounded-lg overflow-hidden">
+          {isHovered && video.videoUrl ? (
+            <video
+              ref={videoRef}
+              src={video.videoUrl}
+              className="w-full h-full object-cover"
+              muted
+              playsInline
+              onLoadedData={handleVideoLoad}
+              style={{ display: isVideoLoaded ? 'block' : 'none' }}
+            />
+          ) : (
+            <img
+              src={video.thumbnailUrl || `https://placehold.co/400x400/E2E8F0/A0AEC0?text=${encodeURIComponent(video.title.substring(0,15))}`}
+              alt={video.title}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+          )}
         </div>
-
-        {/* Duration Badge */}
+        
+        {/* Duration badge */}
         {video.duration && (
           <div className="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white text-xs px-2 py-1 rounded">
             {formatDuration(video.duration)}
@@ -118,18 +148,25 @@ const VideoCard = ({ video }) => {
         )}
       </div>
 
-      {/* Video Info */}
-      <div className="p-4">
-        <h3 className="font-semibold text-slate-800 dark:text-slate-200 text-sm line-clamp-2 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+      {/* Video info */}
+      <div className="mt-3">
+        <h3 className="font-bold text-gray-900 dark:text-white text-base line-clamp-2">
           {video.title}
         </h3>
         
-        <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-          <span>{formatUploadTime(video.uploadTime)}</span>
-          {video.views && (
-            <span>{video.views.toLocaleString()} görüntüleme</span>
-          )}
-        </div>
+        {/* User info */}
+        {video.createdByUsername && (
+          <p className="text-gray-600 dark:text-gray-400 text-xs mt-1">
+            {video.createdByUsername} tarafından
+          </p>
+        )}
+        
+        {/* Upload time */}
+        {video.createdAt && (
+          <p className="text-gray-600 dark:text-gray-400 text-xs mt-1 opacity-50">
+            {formatUploadTime(video.createdAt)}
+          </p>
+        )}
       </div>
     </div>
   );
