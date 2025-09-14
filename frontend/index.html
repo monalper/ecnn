@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    
+    <!-- Favicon Configuration with Cache Busting -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico?v=2" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=2" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=2" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png?v=2" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png?v=2" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=2" />
+    <link rel="manifest" href="/site.webmanifest?v=2" />
+    
+    <!-- Google Logo Recognition -->
+    <link rel="icon" type="image/png" sizes="512x512" href="/site-logo.png?v=2" />
+    <meta name="msapplication-TileImage" content="/android-chrome-144x144.png?v=2" />
+    <meta name="msapplication-config" content="/browserconfig.xml?v=2" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Sistem temasını algıla ve uygula -->
+    <script>
+      (function() {
+        const savedTheme = localStorage.getItem('theme');
+        
+        if (savedTheme) {
+          document.documentElement.classList.add(savedTheme);
+        } else {
+          const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          document.documentElement.classList.add(systemTheme);
+        }
+      })();
+    </script>
+    
+    <!-- Title and meta tags will be set by React Helmet -->
+    <title>OpenWall - To Ideas and Beyond</title>
+    <meta name="description" content="To Ideas and Beyond" />
+    <meta name="keywords" content="teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat, yemek, makale, haber, içerik, blog, entellektüel, düşünce, analiz, araştırma" />
+    <meta name="author" content="Openwall" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://openwall.com.tr" />
+    
+    <!-- Enhanced Meta Tags for AI Understanding -->
+    <meta name="application-name" content="OpenWall" />
+    <meta name="category" content="İçerik Platformu" />
+    <meta name="classification" content="Blog, Haber Sitesi, Eğitim Platformu" />
+    <meta name="coverage" content="Worldwide" />
+    <meta name="distribution" content="Global" />
+    <meta name="rating" content="General" />
+    <meta name="revisit-after" content="1 days" />
+    <meta name="target" content="all" />
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="format-detection" content="telephone=no" />
+    
+    <!-- Makale sayfaları için ek meta bilgiler -->
+    <meta name="article:content_type" content="makale" />
+    <meta name="article:content_format" content="html" />
+    <meta name="article:content_language" content="tr-TR" />
+    <meta name="article:content_region" content="TR" />
+    <meta name="article:content_category" content="entellektuel-icerik" />
+    <meta name="article:content_rating" content="general" />
+    <meta name="article:content_tier" content="premium" />
+    <meta name="article:content_difficulty" content="orta" />
+    <meta name="article:content_target_audience" content="entellektuel-kitle" />
+    <meta name="article:content_update_frequency" content="günlük" />
+    <meta name="article:content_quality" content="yüksek" />
+    <meta name="article:content_verification" content="editöryal-kontrol" />
+    
+    <!-- Content Type and Language Details -->
+    <meta name="content-language" content="tr" />
+    <meta name="content-type" content="text/html; charset=UTF-8" />
+    <meta name="content-script-type" content="text/javascript" />
+    <meta name="content-style-type" content="text/css" />
+    
+    <!-- Site Purpose and Mission -->
+    <meta name="purpose" content="OpenWall, entellektüel içerik arayan okuyucular için çok kategorili bir platform sunar. Amacımız kaliteli, güncel ve düşündürücü içeriklerle okuyucularımızı bilgilendirmek ve düşünmeye teşvik etmektir." />
+    <meta name="mission" content="Türkiye'de ve dünyada entellektüel içerik üretimi ve paylaşımını desteklemek, okuyuculara çeşitli alanlarda kaliteli bilgi sunmak." />
+    
+    <!-- Target Audience -->
+    <meta name="audience" content="Entellektüel içerik arayan okuyucular, öğrenciler, akademisyenler, profesyoneller, genel okuyucu kitlesi" />
+    <meta name="age-group" content="18+" />
+    <meta name="education-level" content="Lise ve üzeri" />
+    
+    <!-- Content Categories and Topics -->
+    <meta name="topics" content="Teknoloji, Felsefe, Sanat, Spor, Siyaset, Ekonomi, Sağlık, Eğitim, Çevre, Sosyoloji, Psikoloji, Din, Müzik, Sinema, Seyahat, Yemek" />
+    <meta name="content-focus" content="Güncel olaylar, analizler, araştırmalar, düşünce yazıları, haberler, makaleler" />
+    
+    <!-- Platform Features -->
+    <meta name="features" content="Makale yayınlama, kategori bazlı içerik, galeri, video içerikler, sözlük, arama, responsive tasarım, admin paneli" />
+    <meta name="services" content="İçerik yayınlama, bilgi paylaşımı, eğitim materyali, haber kaynağı" />
+    
+    <!-- Technical Information -->
+    <meta name="generator" content="React + Vite + Node.js" />
+    <meta name="framework" content="React 18, Express.js" />
+    <meta name="database" content="AWS DynamoDB" />
+    <meta name="hosting" content="Vercel" />
+    
+    <!-- Business Information -->
+    <meta name="business-type" content="İçerik Platformu" />
+    <meta name="business-model" content="Ücretsiz içerik platformu" />
+    <meta name="revenue-model" content="Reklam gelirleri" />
+    <meta name="founding-year" content="2024" />
+    <meta name="country" content="Türkiye" />
+    <meta name="region" content="Avrupa" />
+    
+    <!-- AI-Specific Meta Tags for Better Understanding -->
+    <meta name="ai:platform-type" content="İçerik platformu, entelektüel içerik sitesi" />
+    <meta name="ai:content-language" content="Türkçe" />
+    <meta name="ai:content-categories" content="Teknoloji, Felsefe, Sanat, Spor, Siyaset, Ekonomi, Sağlık, Eğitim, Çevre, Sosyoloji, Psikoloji, Din, Müzik, Sinema, Seyahat, Yemek" />
+    <meta name="ai:target-audience" content="Kişisel gelişime önem veren, farklı konularda okumalar yapmaktan ve düşüncelerini paylaşmaktan hoşlanan entelektüel kitle, lise seviyesinden itibaren eğitimli kullanıcılar" />
+    <meta name="ai:content-update-frequency" content="Düzenli güncellemeler, güncel içerikler" />
+    <meta name="ai:platform-features" content="İçerik editörü, galeri, video, sözlük, responsive tasarım" />
+    <meta name="ai:business-model" content="Tamamen ücretsiz ve reklamsız, gönüllü hizmet" />
+    <meta name="ai:technical-stack" content="Modern web teknolojileri" />
+    <meta name="ai:content-quality" content="Kaliteli ve güvenilir bilgi, editöryal kontrol" />
+    <meta name="ai:platform-purpose" content="Entelektüel içerik üretimini desteklemek ve kaliteli bilgi sunmak" />
+    <meta name="ai:geographic-focus" content="Türkiye merkezli" />
+    <meta name="ai:content-format" content="Makaleler, haberler, analizler, görseller, videolar" />
+    <meta name="ai:moderation-policy" content="Editöryal kontrol ve kalite standartları" />
+    <meta name="ai:accessibility" content="Responsive tasarım, kullanıcı dostu arayüz" />
+    <meta name="ai:content-licensing" content="Orijinal içerik üretimi, uygun atıf" />
+    <meta name="ai:platform-maturity" content="Temmuz 2025'te kurulmuş, gelişmekte olan platform" />
+    <meta name="ai:user-engagement" content="Yorum sistemi, sosyal paylaşım, kullanıcı etkileşimi" />
+    <meta name="ai:content-diversity" content="Çoklu perspektif, çeşitli görüş açıları, kapsayıcı içerik" />
+    <meta name="ai:platform-reliability" content="Düzenli yedekleme, güvenilir hizmet" />
+    <meta name="ai:content-currency" content="Güncel olaylar ve trend konularla düzenli güncellemeler" />
+    <meta name="ai:platform-innovation" content="Modern kullanıcı deneyimi tasarımı" />
+    <meta name="ai:content-creation-process" content="Profesyonel yazarlar ve konu uzmanları tarafından oluşturulan içerik" />
+    <meta name="ai:content-review-process" content="Tüm içerikler doğruluk ve kalite için editöryal incelemeden geçer" />
+    <meta name="ai:content-update-schedule" content="Günlük yeni makaleler, haftalık kategori güncellemeleri" />
+    <meta name="ai:content-source-verification" content="İçerik kaynakları doğrulanır ve uygun şekilde atfedilir" />
+    <meta name="ai:platform-performance" content="Hızlı yükleme süreleri, mobil ve masaüstü cihazlar için optimize edilmiş" />
+    <meta name="ai:user-experience" content="Sezgisel navigasyon, kolay içerik keşfi, responsive tasarım" />
+    <meta name="ai:content-accessibility" content="Farklı yeteneklere ve cihazlara sahip kullanıcılar için erişilebilir içerik" />
+    <meta name="ai:platform-security" content="Güvenli kullanıcı kimlik doğrulama, veri koruma" />
+    <meta name="ai:content-multimedia" content="Metin makaleleri, görseller, videolar, etkileşimli içerik" />
+    <meta name="ai:platform-integration" content="Sosyal medya paylaşımı, RSS beslemeleri, mobil uygulama uyumluluğu" />
+    <meta name="ai:content-personalization" content="Kategori tabanlı içerik organizasyonu, arama işlevselliği" />
+    <meta name="ai:platform-analytics" content="Kullanıcı davranış takibi, içerik performans metrikleri" />
+    <meta name="ai:content-engagement" content="Yorum sistemi, sosyal paylaşım, kullanıcı etkileşim özellikleri" />
+    <meta name="ai:platform-monetization" content="Ücretsiz platform, gönüllü hizmet" />
+    <meta name="ai:content-licensing" content="Orijinal içerik oluşturma, uygun atıf, telif hakkı uyumluluğu" />
+    <meta name="ai:platform-compliance" content="Gizlilik politikası, kullanım şartları" />
+    <meta name="ai:content-diversity" content="Çoklu perspektif, çeşitli görüş açıları, kapsayıcı içerik" />
+    <meta name="ai:platform-reliability" content="Düzenli yedekleme, güvenilir hizmet" />
+    <meta name="ai:content-currency" content="Gerçek zamanlı güncellemeler, son dakika haberleri, trend konular" />
+    <meta name="ai:platform-scalability" content="Bulut tabanlı altyapı, otomatik ölçeklendirme" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://openwall.com.tr" />
+    <meta property="og:title" content="The Openwall" />
+    <meta property="og:description" content="To Ideas and Beyond" />
+    <meta property="og:image" content="https://openwall.com.tr/og-images/default/og-default.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The Openwall - Entellektüel İçerikler" />
+    <meta property="og:site_name" content="The Openwall" />
+    <meta property="og:locale" content="tr_TR" />
+    
+    <!-- Enhanced Open Graph Tags for AI Understanding -->
+    <meta property="og:determiner" content="the" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:secure_url" content="https://openwall.com.tr/og-images/default/og-default.jpg" />
+    <meta property="og:updated_time" content="2024-01-15T00:00:00+03:00" />
+    <meta property="og:see_also" content="https://openwall.com.tr/articles" />
+    <meta property="og:see_also" content="https://openwall.com.tr/categories" />
+    <meta property="og:see_also" content="https://openwall.com.tr/highlights" />
+    
+    <!-- Open Graph Profile Information -->
+    <meta property="og:profile:first_name" content="OpenWall" />
+    <meta property="og:profile:last_name" content="Platform" />
+    <meta property="og:profile:username" content="openwall" />
+    
+    <!-- Open Graph Article Information -->
+    <meta property="article:published_time" content="2024-01-15T00:00:00+03:00" />
+    <meta property="article:modified_time" content="2024-01-15T00:00:00+03:00" />
+    <meta property="article:author" content="The Openwall" />
+    <meta property="article:section" content="İçerik Platformu" />
+    <meta property="article:tag" content="teknoloji" />
+    <meta property="article:tag" content="felsefe" />
+    <meta property="article:tag" content="sanat" />
+    <meta property="article:tag" content="spor" />
+    <meta property="article:tag" content="siyaset" />
+    <meta property="article:tag" content="ekonomi" />
+    <meta property="article:tag" content="sağlık" />
+    <meta property="article:tag" content="eğitim" />
+    <meta property="article:tag" content="çevre" />
+    <meta property="article:tag" content="sosyoloji" />
+    <meta property="article:tag" content="psikoloji" />
+    <meta property="article:tag" content="din" />
+    <meta property="article:tag" content="müzik" />
+    <meta property="article:tag" content="sinema" />
+    <meta property="article:tag" content="seyahat" />
+    <meta property="article:tag" content="yemek" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://openwall.com.tr" />
+    <meta property="twitter:title" content="The Openwall" />
+    <meta property="twitter:description" content="To Ideas and Beyond" />
+    <meta property="twitter:image" content="https://openwall.com.tr/og-images/default/og-default.jpg" />
+    <meta property="twitter:image:alt" content="The Openwall - Entellektüel İçerikler" />
+    
+    <!-- Enhanced Twitter Card Tags -->
+    <meta property="twitter:site" content="@openwall" />
+    <meta property="twitter:creator" content="@openwall" />
+    <meta property="twitter:app:country" content="TR" />
+    <meta property="twitter:app:name:iphone" content="OpenWall" />
+    <meta property="twitter:app:name:ipad" content="OpenWall" />
+    <meta property="twitter:app:name:googleplay" content="OpenWall" />
+    
+    <!-- Ek SEO Meta Etiketleri -->
+    <meta name="theme-color" content="#f97316" />
+    <meta name="msapplication-TileColor" content="#f97316" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="OpenWall" />
+    
+    <!-- Hreflang Tags -->
+    <link rel="alternate" hrefLang="tr" href="https://openwall.com.tr" />
+    <link rel="alternate" hrefLang="x-default" href="https://openwall.com.tr" />
+    
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://openwall.s3.eu-north-1.amazonaws.com" />
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="/src/main.jsx" as="script" />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Inter:wght@400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" as="style" />
+    
+    <!-- DNS Prefetch -->
+    <link rel="dns-prefetch" href="//www.google-analytics.com" />
+    <link rel="dns-prefetch" href="//platform.twitter.com" />
+    <link rel="dns-prefetch" href="//www.facebook.com" />
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+    
+    <!-- AI-Friendly CSS for Better Content Understanding -->
+    <style id="ai-friendly-styles">
+      /* AI-friendly content structure */
+      .ai-content-section { margin: 20px 0; }
+      .ai-content-title { font-weight: bold; margin-bottom: 10px; }
+      .ai-content-description { line-height: 1.6; }
+      .ai-category-list { list-style: none; padding: 0; }
+      .ai-category-item { margin: 10px 0; padding: 10px; border-left: 3px solid #f97316; }
+      .ai-feature-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+      .ai-feature-item { padding: 15px; border: 1px solid #e5e7eb; border-radius: 8px; }
+      
+      /* Hidden content for AI crawlers */
+      #ai-site-info {
+        position: absolute;
+        left: -9999px;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+      }
+      
+      /* Semantic content markers */
+      .content-marker { color: transparent; font-size: 1px; }
+      .ai-semantic-content { position: relative; }
+      
+      /* Enhanced accessibility for AI */
+      .ai-accessible-content { outline: 1px solid transparent; }
+      .ai-content-hierarchy { display: block; }
+    </style>
+    
+    <!-- AI-Enhanced JavaScript for Content Understanding -->
+    <script id="ai-enhancement-script">
+      // AI Enhancement Script
+      document.addEventListener('DOMContentLoaded', function() {
+        // Inject AI-specific data attributes
+        const main = document.querySelector('main');
+        if (main) {
+          main.setAttribute('data-ai-content', 'entellektuel-icerik-platformu');
+          main.setAttribute('data-ai-heading-level', '1');
+          main.setAttribute('data-ai-language', 'tr');
+          main.setAttribute('data-ai-region', 'turkiye');
+          main.setAttribute('data-ai-country', 'TR');
+          
+          // Platform bilgileri JSON formatında
+          const platformInfo = {
+            name: 'OpenWall',
+            type: 'İçerik Platformu',
+            mission: 'Entelektüel içerik üretimini desteklemek ve kaliteli bilgi sunmak',
+            targetAudience: 'Kişisel gelişime önem veren entelektüel kitle',
+            foundingDate: '2025-07',
+            businessModel: 'Ücretsiz ve reklamsız, gönüllü hizmet',
+            contentFocus: 'Akademik ve genel bilgiye dayalı entelektüel içerik',
+            features: 'İçerik editörü, galeri, video, sözlük, responsive tasarım'
+          };
+          
+          main.setAttribute('data-ai-platform-info', JSON.stringify(platformInfo));
+          main.setAttribute('data-ai-last-update', new Date().toISOString());
+          main.setAttribute('data-ai-content-freshness', 'guncel');
+        }
+        
+        // Navigation için AI bilgileri
+        const nav = document.querySelector('nav');
+        if (nav) {
+          nav.setAttribute('data-ai-content', 'platform-navigasyon');
+          nav.setAttribute('data-ai-language', 'tr');
+        }
+        
+        // Footer için AI bilgileri
+        const footer = document.querySelector('footer');
+        if (footer) {
+          footer.setAttribute('data-ai-content', 'platform-bilgileri');
+          footer.setAttribute('data-ai-language', 'tr');
+        }
+        
+        // Başlıklar için AI bilgileri
+        const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        headings.forEach((heading, index) => {
+          heading.setAttribute('data-ai-heading-level', (index + 1).toString());
+          heading.setAttribute('data-ai-content', 'platform-icerik');
+          heading.setAttribute('data-ai-language', 'tr');
+        });
+        
+        // HTML root için AI bilgileri
+        document.documentElement.setAttribute('data-ai-platform', 'openwall');
+        document.documentElement.setAttribute('data-ai-language', 'tr');
+        document.documentElement.setAttribute('data-ai-region', 'turkiye');
+      });
+    </script>
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5253715298133137"
+     crossorigin="anonymous"></script>
+    
+    <!-- Schema.org Structured Data for AI Understanding -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "OpenWall",
+      "alternateName": "OpenWall Platform",
+      "url": "https://openwall.com.tr",
+      "description": "Türkiye merkezli, bağımsız bir içerik platformu. Kişisel gelişimine önem veren, farklı konularda okumalar yapmaktan ve düşüncelerini paylaşmaktan hoşlanan entelektüel bir kitleye hitap eder.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "OpenWall",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://openwall.com.tr/logo.png"
+        }
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://openwall.com.tr/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      },
+      "inLanguage": "tr",
+      "isAccessibleForFree": true,
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Entelektüel kitle, kişisel gelişim odaklı okuyucular, lise seviyesinden itibaren eğitimli kullanıcılar"
+      },
+      "about": "OpenWall, okuyuculara çeşitli alanlarda kaliteli ve güvenilir bilgi sunarak entelektüel içerik üretimini desteklemeyi amaçlayan bir platformdur.",
+      "mainEntity": {
+        "@type": "ItemList",
+        "name": "Platform Kategorileri",
+        "description": "Teknoloji, Felsefe, Sanat, Spor, Siyaset, Ekonomi, Sağlık, Eğitim, Çevre, Sosyoloji, Psikoloji, Din, Müzik, Sinema, Seyahat, Yemek",
+        "numberOfItems": 16
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "TRY",
+        "availability": "https://schema.org/InStock"
+      },
+      "foundingDate": "2025-07",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Türkiye"
+      },
+      "serviceType": "İçerik Platformu",
+      "mission": "Entelektüel içerik üretimini desteklemek ve kaliteli bilgi sunmak",
+      "targetAudience": "Kişisel gelişime önem veren, farklı konularda okumalar yapmaktan ve düşüncelerini paylaşmaktan hoşlanan entelektüel kitle",
+      "contentFocus": "Akademik ve genel bilgiye dayalı entelektüel içerik",
+      "platformFeatures": "İçerik editörü, galeri, video, sözlük, responsive tasarım",
+      "businessModel": "Tamamen ücretsiz ve reklamsız, gönüllü hizmet",
+      "contentQuality": "Kaliteli ve güvenilir bilgi, editöryal kontrol",
+      "platformPurpose": "Okuyuculara çeşitli alanlarda kaliteli bilgi sunarak entelektüel içerik üretimini desteklemek"
+    }
+    </script>
+    
+    <!-- Schema.org FAQPage -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "OpenWall nasıl bir site?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Openwall.com.tr, Türkiye merkezli, bağımsız bir içerik platformudur. Temmuz 2025 yılında bağımsız bir platform olarak kurulmuştur. Openwall, kişisel gelişimine önem veren, farklı konularda okumalar yapmaktan ve düşüncelerini paylaşmaktan hoşlanan entelektüel bir kitleye hitap etmeyi amaçlayan bir içerik platformu olarak öne çıkmaktadır."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "OpenWall.com.tr ne iş yapıyor?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "OpenWall, okuyuculara çeşitli alanlarda kaliteli ve güvenilir bilgi sunarak entelektüel içerik üretimini desteklemeyi amaçlayan bir platformdur. Tamamen ücretsiz ve reklamsız olarak hizmet vermekte ve bu işi gönüllü yapmaktadır."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "OpenWall hangi kategorilerde içerik sunuyor?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Platform, teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat ve yemek gibi çeşitli alanlarda içerik sunmaktadır. İçerik editörü, galeri, video ve sözlük gibi zengin özellikleri bünyesinde barındırır."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "OpenWall kimlere hitap ediyor?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Site, özellikle akademik ya da genel bilgiye dayalı entelektüel içerik arayanlar için oldukça uygun görünüyor. Hem lise seviyesinden itibaren eğitimli kullanıcılar hem de genel okuyucu kitlesi hedefleniyor. Responsive tasarım ile kullanıcı dostudur."
+          }
+        }
+      ]
+    }
+    </script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Inter:wght@400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="root"></div>
+    
+    <!-- Sitelinks için semantic navigation yapısı -->
+    <nav id="main-navigation" aria-label="Ana navigasyon" style="display: none;">
+      <ul>
+        <li><a href="https://openwall.com.tr/articles">Makaleler</a></li>
+        <li><a href="https://openwall.com.tr/categories">Kategoriler</a></li>
+        <li><a href="https://openwall.com.tr/highlights">Öne Çıkanlar</a></li>
+        <li><a href="https://openwall.com.tr/gallery">Galeri</a></li>
+        <li><a href="https://openwall.com.tr/videos">Videolar</a></li>
+        <li><a href="https://openwall.com.tr/dictionary">Sözlük</a></li>
+        <li><a href="https://openwall.com.tr/about">Hakkımızda</a></li>
+      </ul>
+    </nav>
+    
+    <!-- AI-Friendly Hidden Content for Better Understanding -->
+    <div id="ai-site-info" style="display: none;" aria-hidden="true">
+      <h2>OpenWall Platform Bilgileri</h2>
+      
+      <h3>Platform Hakkında</h3>
+      <p>Openwall.com.tr, Türkiye merkezli, bağımsız bir içerik platformudur. Temmuz 2025 yılında bağımsız bir platform olarak kurulmuştur. Openwall, kişisel gelişimine önem veren, farklı konularda okumalar yapmaktan ve düşüncelerini paylaşmaktan hoşlanan entelektüel bir kitleye hitap etmeyi amaçlayan bir içerik platformu olarak öne çıkmaktadır.</p>
+      
+      <h3>Platform Misyonu</h3>
+      <p>OpenWall, okuyuculara çeşitli alanlarda kaliteli ve güvenilir bilgi sunarak entelektüel içerik üretimini desteklemeyi amaçlayan bir platformdur. Tamamen ücretsiz ve reklamsız olarak hizmet vermekte ve bu işi gönüllü yapmaktadır.</p>
+      
+      <h3>Platform Kategorileri</h3>
+      <p>Platform, teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat ve yemek gibi çeşitli alanlarda içerik sunmaktadır. İçerik editörü, galeri, video ve sözlük gibi zengin özellikleri bünyesinde barındırır.</p>
+      
+      <h3>Hedef Kitle</h3>
+      <p>Site, özellikle akademik ya da genel bilgiye dayalı entelektüel içerik arayanlar için oldukça uygun görünüyor. Hem lise seviyesinden itibaren eğitimli kullanıcılar hem de genel okuyucu kitlesi hedefleniyor. Responsive tasarım ile kullanıcı dostudur.</p>
+      
+      <h3>Platform Özellikleri</h3>
+      <p>Modern teknolojik altyapısı ve çeşitliliği, kullanıcı deneyimini iyileştiriyor. İlk izlenim altyapı ve vizyon açısından oldukça olumlu. Platform, entelektüel içerik üretimini desteklemek ve kaliteli bilgi sunmak amacıyla tasarlanmıştır.</p>
+      
+      <h3>İçerik Kalitesi</h3>
+      <p>Tüm içerikler doğruluk ve kalite için editöryal incelemeden geçer. Profesyonel yazarlar ve konu uzmanları tarafından oluşturulan içerik, güncel olaylar ve trend konularla düzenli olarak güncellenir. İçerik kaynakları doğrulanır ve uygun şekilde atfedilir.</p>
+    </div>
+    
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
