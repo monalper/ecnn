@@ -63,6 +63,7 @@ exports.createComment = async (req, res, next) => {
       authorName: req.user.name || req.user.username, // Display name
       authorUsername: req.user.username, // Username
       authorEmail: req.user.email,
+      authorUserId: req.user.userId, // Add user ID for avatar fetching
       content: content.trim(),
       parentCommentId: parentCommentId || null,
       isApproved,
@@ -121,6 +122,40 @@ exports.getCommentsByArticle = async (req, res, next) => {
       includeReplies === 'true'
     );
 
+    // Helper function to add author avatar URLs to comments
+    const addAuthorAvatars = async (comments) => {
+      const commentsWithAvatars = [];
+      
+      for (const comment of comments) {
+        let authorAvatarUrl = null;
+        
+        // Get author's avatar URL if authorUserId exists
+        if (comment.authorUserId) {
+          try {
+            const author = await userModel.getUserById(comment.authorUserId);
+            if (author && author.avatarUrl) {
+              authorAvatarUrl = author.avatarUrl;
+            }
+          } catch (error) {
+            console.error('Error fetching author avatar:', error);
+          }
+        }
+        
+        const commentWithAvatar = {
+          ...comment,
+          authorAvatarUrl,
+          replies: comment.replies ? await addAuthorAvatars(comment.replies) : undefined
+        };
+        
+        commentsWithAvatars.push(commentWithAvatar);
+      }
+      
+      return commentsWithAvatars;
+    };
+
+    // Add author avatars to all comments
+    const commentsWithAvatars = await addAuthorAvatars(comments);
+
     // If user is authenticated, add hasLiked status to comments
     if (req.user) {
       const userId = req.user.userId;
@@ -137,7 +172,7 @@ exports.getCommentsByArticle = async (req, res, next) => {
           });
         };
         
-        collectCommentIds(comments);
+        collectCommentIds(commentsWithAvatars);
         
         // Get user's liked comments
         const userLikedComments = await userModel.getUserLikesForComments(userId, commentIds);
@@ -151,7 +186,7 @@ exports.getCommentsByArticle = async (req, res, next) => {
           }));
         };
         
-        const commentsWithLikes = addLikeStatus(comments);
+        const commentsWithLikes = addLikeStatus(commentsWithAvatars);
         return res.status(200).json(commentsWithLikes);
       } catch (error) {
         console.error('Error fetching user likes:', error);
@@ -164,12 +199,12 @@ exports.getCommentsByArticle = async (req, res, next) => {
           }));
         };
         
-        const commentsWithDefaultLikes = addDefaultLikeStatus(comments);
+        const commentsWithDefaultLikes = addDefaultLikeStatus(commentsWithAvatars);
         return res.status(200).json(commentsWithDefaultLikes);
       }
     }
 
-    res.status(200).json(comments);
+    res.status(200).json(commentsWithAvatars);
 
   } catch (error) {
     console.error('Get Comments By Article Error:', error);

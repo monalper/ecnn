@@ -6,6 +6,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import ConditionalHeaderFooter from './components/layout/ConditionalHeaderFooter';
 import ThemeToggleButton from './components/ThemeToggleButton';
 import LoadingSpinner from './components/LoadingSpinner';
+import Banner from './components/Banner';
 import { ThemeProvider } from './contexts/ThemeContext';
 import AdminLayout from './components/layout/AdminLayout';
 import AdminPasswordProtection from './components/auth/AdminPasswordProtection';
@@ -39,6 +40,7 @@ const LoadingTestPage = lazy(() => import('./pages/LoadingTestPage'));
 const ApodPage = lazy(() => import('./pages/ApodPage'));
 const AsteroidPage = lazy(() => import('./pages/AsteroidPage'));
 const MoonPage = lazy(() => import('./pages/MoonPage'));
+const AuthorProfilePage = lazy(() => import('./pages/AuthorProfilePage'));
 
 // Admin Sayfaları
 const AdminDashboardPage = lazy(() => import('./pages/admin/AdminDashboardPage'));
@@ -51,6 +53,7 @@ const AdminDictionaryPage = lazy(() => import('./pages/admin/AdminDictionaryPage
 const AdminGalleryPage = lazy(() => import('./pages/admin/AdminGalleryPage')); // Admin Galeri
 const AdminVideosPage = lazy(() => import('./pages/admin/AdminVideosPage')); // Admin Videolar
 const AdminArticlesGSYPage = lazy(() => import('./pages/admin/AdminArticlesGSYPage')); // Admin GSY
+const AdminBannersPage = lazy(() => import('./pages/admin/AdminBannersPage')); // Admin Banner'lar
 const DictWordPage = lazy(() => import('./pages/dict/[word]'));
 
 // Admin yetkisi kontrolü için yardımcı bileşen
@@ -128,6 +131,7 @@ function AppContent() {
             <Route path="/apod/:date" element={<ApodPage />} />
             <Route path="/asteroid" element={<AsteroidPage />} />
             <Route path="/moon" element={<MoonPage />} />
+            <Route path="/author/:nickname" element={<AuthorProfilePage />} />
             
             <Route path="/login" element={
               <PublicRoute>
@@ -157,6 +161,7 @@ function AppContent() {
               <Route path="dictionary" element={<AdminDictionaryPage />} />
               <Route path="gallery" element={<AdminGalleryPage />} />
               <Route path="videos" element={<AdminVideosPage />} />
+              <Route path="banners" element={<AdminBannersPage />} />
             </Route>
 
             {/* Şifre korumalı admin rotaları */}

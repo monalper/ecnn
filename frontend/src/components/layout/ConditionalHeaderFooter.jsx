@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from './Header';
+import Banner from '../Banner';
 
 /**
  * Sadece /admin/dashboard sayfasında Header ve Footer'ı gizler.
@@ -16,7 +17,12 @@ const ConditionalHeaderFooter = () => {
   
   return (
     <>
-      {!shouldHide && <Header customTitle={customTitle} />}
+      {!shouldHide && (
+        <>
+          <Header customTitle={customTitle} />
+          <Banner />
+        </>
+      )}
     </>
   );
 };

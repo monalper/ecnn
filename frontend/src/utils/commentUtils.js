@@ -162,6 +162,20 @@ export const findExternalLinksInComment = (content) => {
   return externalLinks;
 };
 
+// Markdown'ı HTML'e çevir (sadece GIF'ler için)
+export const convertMarkdownToHtml = (content) => {
+  if (!content || typeof content !== 'string') {
+    return content;
+  }
+  
+  // GIF markdown pattern'ini bul: ![GIF](url)
+  const gifRegex = /!\[GIF\]\(([^)]+)\)/g;
+  
+  return content.replace(gifRegex, (match, url) => {
+    return `<img src="${url}" alt="GIF" style="max-width: 200px; max-height: 200px; border-radius: 8px; margin: 4px 0;" />`;
+  });
+};
+
 // Yorum içeriğini işle ve makale linklerini ayır
 export const processCommentContent = (content) => {
   if (!content || typeof content !== 'string') {
@@ -170,12 +184,17 @@ export const processCommentContent = (content) => {
       articleLinks: [],
       externalLinks: [],
       hasArticleLinks: false,
-      hasExternalLinks: false
+      hasExternalLinks: false,
+      hasGifs: false
     };
   }
 
   const articleLinks = findArticleLinksInComment(content);
   const externalLinks = findExternalLinksInComment(content);
+  
+  // GIF'leri tespit et
+  const gifRegex = /!\[GIF\]\(([^)]+)\)/g;
+  const hasGifs = gifRegex.test(content);
   
   // Makale linklerini kaldır ama external linkleri koru
   let cleanContent = content;
@@ -194,6 +213,7 @@ export const processCommentContent = (content) => {
     articleLinks,
     externalLinks,
     hasArticleLinks: articleLinks.length > 0,
-    hasExternalLinks: externalLinks.length > 0
+    hasExternalLinks: externalLinks.length > 0,
+    hasGifs
   };
 };

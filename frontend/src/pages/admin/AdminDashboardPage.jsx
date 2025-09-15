@@ -22,7 +22,8 @@ import {
   FaGlobe,
   FaMoon,
   FaMeteor,
-  FaThermometerHalf
+  FaThermometerHalf,
+  FaFlag
 } from 'react-icons/fa';
 import api from '../../services/api';
 
@@ -438,6 +439,16 @@ const AdminDashboardPage = () => {
                 <FaUsers className="w-6 h-6 text-white" />
               </div>
               <span className="text-sm font-medium text-gray-900 dark:text-white text-center">Kullanıcılar</span>
+            </Link>
+
+            <Link
+              to="/admin/banners"
+              className="flex flex-col items-center gap-3 p-6 bg-white dark:bg-gray-800 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
+            >
+              <div className="p-3 bg-red-600 rounded-lg">
+                <FaFlag className="w-6 h-6 text-white" />
+              </div>
+              <span className="text-sm font-medium text-gray-900 dark:text-white text-center">Banner'lar</span>
             </Link>
 
             <Link

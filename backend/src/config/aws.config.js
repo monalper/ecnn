@@ -35,5 +35,6 @@ module.exports = {
   ARTICLES_TABLE: process.env.DYNAMODB_ARTICLES_TABLE || 'OpenWallArticles',
   COMMENTS_TABLE: process.env.DYNAMODB_COMMENTS_TABLE || 'OpenWallComments',
   COMMENT_LIKES_TABLE: process.env.DYNAMODB_COMMENT_LIKES_TABLE || 'OpenWallCommentLikes',
+  BANNERS_TABLE: process.env.DYNAMODB_BANNERS_TABLE || 'OpenWallBanners',
   S3_BUCKET_NAME: process.env.S3_BUCKET_NAME || 'openwall',
 };

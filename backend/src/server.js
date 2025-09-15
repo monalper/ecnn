@@ -15,6 +15,7 @@ const sitemapRoutes = require('./routes/sitemap.routes');
 const galleryRoutes = require('./routes/gallery.routes');
 const videoRoutes = require('./routes/video.routes');
 const commentRoutes = require('./routes/comment.routes');
+const bannerRoutes = require('./routes/banner.routes');
 
 
 const app = express();
@@ -67,6 +68,7 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/videos', videoRoutes);
 app.use('/api/comments', commentRoutes);
+app.use('/api/banners', bannerRoutes);
 
 // Kısa link API endpointi
 app.use('/api/shortlink', shortlinkRoutes);

@@ -1,16 +1,29 @@
 import React, { useState, useEffect } from 'react';
 
 const useIsMobile = () => {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => {
+    // Initialize with a safe default
+    if (typeof window === 'undefined') {
+      return false;
+    }
+    return window.innerWidth < 768;
+  });
 
   useEffect(() => {
-    const checkIsMobile = () => {
-      // Tailwind CSS'in md breakpoint'ini (768px) kullanıyoruz
-      setIsMobile(window.innerWidth < 768);
-    };
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined') {
+      return;
+    }
 
-    // İlk yüklemede kontrol et
-    checkIsMobile();
+    const checkIsMobile = () => {
+      try {
+        // Tailwind CSS'in md breakpoint'ini (768px) kullanıyoruz
+        setIsMobile(window.innerWidth < 768);
+      } catch (error) {
+        console.warn('Error checking mobile status:', error);
+        // Don't update state if there's an error
+      }
+    };
 
     // Pencere boyutu değiştiğinde kontrol et
     window.addEventListener('resize', checkIsMobile);

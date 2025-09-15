@@ -209,30 +209,60 @@ exports.deleteArticle = async (req, res, next) => {
 
 exports.listPublishedArticles = async (req, res, next) => {
   try {
-    // Cache kontrolü
-    const cacheKey = 'published_articles_v2';
-    const cachedData = articleCache.get(cacheKey);
+    const { author } = req.query;
+    
+    // Cache kontrolü (author filtresi varsa cache kullanma)
+    const cacheKey = author ? `published_articles_author_${author}` : 'published_articles_v2';
+    const cachedData = !author ? articleCache.get(cacheKey) : null;
     
     if (cachedData) {
       return res.status(200).json(cachedData);
     }
 
-    const params = {
+    let params = {
       TableName: ARTICLES_TABLE,
       FilterExpression: '#st = :status_val',
       ExpressionAttributeNames: { '#st': 'status' },
       ExpressionAttributeValues: { ':status_val': 'published' },
       // Sadece gerekli alanları getir
-      ProjectionExpression: 'slug, title, description, content, coverImage, authorName, createdAt, updatedAt, isHighlight, tags, categories, viewCount'
+      ProjectionExpression: 'slug, title, description, content, coverImage, authorName, authorId, createdAt, updatedAt, isHighlight, tags, categories, viewCount'
     };
-    
+
     const { Items } = await docClient.send(new ScanCommand(params));
     
-    // Client-side sıralama
-    const sortedItems = Items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    // Add authorName to each article
+    const itemsWithAuthorName = await Promise.all(
+      Items.map(async (article) => {
+        if (article.authorId) {
+          try {
+            const authorParams = { TableName: USERS_TABLE, Key: { userId: article.authorId }};
+            const { Item: author } = await docClient.send(new GetCommand(authorParams));
+            if (author) {
+              article.authorName = author.name || author.username;
+            }
+          } catch (error) {
+            console.error('Error fetching author for article:', error);
+          }
+        }
+        return article;
+      })
+    );
     
-    // Cache'e kaydet (5 dakika)
-    articleCache.set(cacheKey, sortedItems, 5 * 60 * 1000);
+    // Filter by author if specified (after adding authorName)
+    let filteredItems = itemsWithAuthorName;
+    if (author) {
+      filteredItems = itemsWithAuthorName.filter(item => 
+        item.authorName && item.authorName.toLowerCase() === author.toLowerCase()
+      );
+    }
+    
+    // Client-side sıralama
+    const sortedItems = filteredItems.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    
+    // Cache'e kaydet (5 dakika) - sadece author filtresi yoksa
+    if (!author) {
+      articleCache.set(cacheKey, sortedItems, 5 * 60 * 1000);
+    }
 
     res.status(200).json(sortedItems);
   } catch (error) {

@@ -4,7 +4,7 @@ import { FaHeart } from 'react-icons/fa';
 import VideoCommentForm from './VideoCommentForm';
 import PendingCommentWarning from '../comments/PendingCommentWarning';
 import CommentArticleCard from '../comments/CommentArticleCard';
-import { processCommentContent } from '../../utils/commentUtils';
+import { processCommentContent, convertMarkdownToHtml } from '../../utils/commentUtils';
 import api from '../../services/api';
 
 const VideoCommentItem = ({ comment, onCommentAdded, isReply = false, currentUserEmail = null, currentUser = null }) => {
@@ -146,9 +146,13 @@ const VideoCommentItem = ({ comment, onCommentAdded, isReply = false, currentUse
         <div className="flex-shrink-0">
           <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden shadow-lg">
             <img
-              src={comment.isAdmin ? "/APP.png" : "/UPP.png"}
+              src={comment.authorAvatarUrl || (comment.isAdmin ? "/APP.png" : "/UPP.png")}
               alt={`${comment.authorName} profil fotoğrafı`}
               className="w-full h-full object-cover"
+              onError={(e) => {
+                // If the avatar URL fails to load, fall back to placeholder
+                e.target.src = comment.isAdmin ? "/APP.png" : "/UPP.png";
+              }}
             />
           </div>
         </div>
@@ -178,9 +182,19 @@ const VideoCommentItem = ({ comment, onCommentAdded, isReply = false, currentUse
             ) : (
               <>
                 {/* Yorum içeriği - her zaman göster */}
-                <p className="text-[15px] text-gray-700 dark:text-gray-300 mb-3 whitespace-pre-wrap leading-relaxed break-words overflow-wrap-anywhere">
-                  {renderCommentContent(processedContent.cleanContent, processedContent.externalLinks)}
-                </p>
+                <div className="text-[15px] text-gray-700 dark:text-gray-300 mb-3 leading-relaxed break-words overflow-wrap-anywhere">
+                  {processedContent.hasGifs ? (
+                    <div 
+                      dangerouslySetInnerHTML={{ 
+                        __html: convertMarkdownToHtml(processedContent.cleanContent)
+                      }} 
+                    />
+                  ) : (
+                    <p className="whitespace-pre-wrap">
+                      {renderCommentContent(processedContent.cleanContent, processedContent.externalLinks)}
+                    </p>
+                  )}
+                </div>
                 
                 {/* Makale kartları */}
                 {processedContent.hasArticleLinks && (

@@ -1,0 +1,36 @@
+/* Twitter Emoji Styles */
+.twemoji {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin: 0 .05em 0 .1em;
+  vertical-align: -0.1em;
+}
+
+/* Emoji picker specific styles */
+.emoji-picker .twemoji {
+  width: 1.2em;
+  height: 1.2em;
+  margin: 0;
+}
+
+/* Ensure emojis are properly sized in the picker */
+.emoji-picker button .twemoji {
+  width: 1.5em;
+  height: 1.5em;
+  display: block;
+}
+
+/* Smooth transitions for emoji hover effects */
+.emoji-picker button {
+  transition: all 0.15s ease;
+}
+
+.emoji-picker button:hover {
+  transform: scale(1.1);
+}
+
+/* Dark mode emoji adjustments */
+.dark .emoji-picker .twemoji {
+  filter: brightness(1.1);
+}

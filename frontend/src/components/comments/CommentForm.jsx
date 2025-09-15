@@ -1,8 +1,12 @@
 // frontend/src/components/comments/CommentForm.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import api from '../../services/api';
+import GifSearchModal from '../GifSearchModal';
+import EmojiPicker from '../EmojiPicker';
+import { PiGifFill } from 'react-icons/pi';
+import { HiOutlineEmojiHappy } from 'react-icons/hi';
 
 const CommentForm = ({ articleSlug, parentCommentId = null, parentAuthorName = null, onCommentAdded, onCancel, isModal = false }) => {
   const { user } = useAuth();
@@ -12,12 +16,31 @@ const CommentForm = ({ articleSlug, parentCommentId = null, parentAuthorName = n
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [showGifModal, setShowGifModal] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
+    }));
+  };
+
+  const handleGifSelect = (gif) => {
+    const gifUrl = gif.images.fixed_height.webp || gif.images.fixed_height.url;
+    const gifMarkdown = `![GIF](${gifUrl})`;
+    
+    setFormData(prev => ({
+      ...prev,
+      content: prev.content + (prev.content ? ' ' : '') + gifMarkdown
+    }));
+  };
+
+  const handleEmojiSelect = (emoji) => {
+    setFormData(prev => ({
+      ...prev,
+      content: prev.content + emoji
     }));
   };
 
@@ -126,9 +149,13 @@ const CommentForm = ({ articleSlug, parentCommentId = null, parentAuthorName = n
           <div className="flex-shrink-0">
             <div className="w-8 h-8 rounded-full overflow-hidden">
               <img
-                src={user.isAdmin ? "/APP.png" : "/UPP.png"}
+                src={user.avatarUrl || (user.isAdmin ? "/APP.png" : "/UPP.png")}
                 alt={`${user.name || user.username} profil fotoğrafı`}
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                  // If the avatar URL fails to load, fall back to placeholder
+                  e.target.src = user.isAdmin ? "/APP.png" : "/UPP.png";
+                }}
               />
             </div>
           </div>
@@ -149,12 +176,12 @@ const CommentForm = ({ articleSlug, parentCommentId = null, parentAuthorName = n
                 value={formData.content}
                 onChange={handleChange}
                 required
-                rows={3}
+                rows={4}
                 maxLength={1000}
-                className="w-full px-4 py-3 pr-20 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-300/30 dark:border-gray-600/30 shadow-sm focus:outline-none dark:text-white resize-none"
+                className="w-full px-4 py-4 pr-20 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-300/30 dark:border-gray-600/30 shadow-sm focus:outline-none dark:text-white resize-none"
                 placeholder="Yorumunuzu yazın..."
               />
-              <div className="absolute bottom-2 right-2 flex items-center space-x-2">
+              <div className="absolute bottom-3 right-3">
                 <span className="text-xs text-gray-500 dark:text-gray-400">
                   {formData.content.length}/1000
                 </span>
@@ -173,15 +200,50 @@ const CommentForm = ({ articleSlug, parentCommentId = null, parentAuthorName = n
               İptal
             </button>
           )}
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className={`px-6 py-2 text-sm font-bold text-white dark:text-black bg-black dark:bg-white rounded-full focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed ${isModal ? 'w-full sm:w-auto' : ''}`}
-          >
-            {isSubmitting ? 'Gönderiliyor...' : (parentCommentId ? 'Yanıtla' : 'Yorum Yap')}
-          </button>
+          <div className="flex items-center space-x-3">
+            <button
+              type="button"
+              onClick={() => setShowEmojiPicker(true)}
+              className="p-2 text-gray-500 hover:text-yellow-500 dark:text-gray-400 dark:hover:text-yellow-400 transition-colors rounded-full"
+              style={{ backgroundColor: '#2A2A2A' }}
+              title="Emoji Ekle"
+            >
+              <HiOutlineEmojiHappy className="w-5 h-5" />
+            </button>
+            
+            <button
+              type="button"
+              onClick={() => setShowGifModal(true)}
+              className="p-2 text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 transition-colors rounded-full"
+              style={{ backgroundColor: '#2A2A2A' }}
+              title="GIF Ekle"
+            >
+              <PiGifFill className="w-5 h-5" />
+            </button>
+            
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className={`px-6 py-2 text-sm font-bold text-white dark:text-black bg-black dark:bg-white rounded-full focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed ${isModal ? 'w-full sm:w-auto' : ''}`}
+            >
+              {isSubmitting ? 'Gönderiliyor...' : (parentCommentId ? 'Yanıtla' : 'Yorum Yap')}
+            </button>
+          </div>
         </div>
       </form>
+
+      {/* GIF Search Modal */}
+      <GifSearchModal
+        isOpen={showGifModal}
+        onClose={() => setShowGifModal(false)}
+        onSelectGif={handleGifSelect}
+      />
+      
+      <EmojiPicker
+        isOpen={showEmojiPicker}
+        onClose={() => setShowEmojiPicker(false)}
+        onSelectEmoji={handleEmojiSelect}
+      />
     </div>
   );
 };

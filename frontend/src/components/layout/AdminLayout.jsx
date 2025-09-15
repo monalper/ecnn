@@ -105,6 +105,14 @@ const AdminLayout = ({ children }) => {
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87M16 8a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
             Kullanıcılar
           </NavLink>
+          <NavLink
+            to="/admin/banners"
+            className={({ isActive }) => `${commonLinkClasses} ${isActive ? activeClassName : inactiveClassName}`}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
+            Banner'lar
+          </NavLink>
         </nav>
         {/* Profil ve Çıkış Butonu */}
         <div className="mt-auto pt-6 border-t border-slate-700">

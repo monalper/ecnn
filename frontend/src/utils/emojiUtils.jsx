@@ -1,17 +1,34 @@
 // Emoji utility functions for consistent emoji display
-import { emoji } from 'emoji-js';
+import Emoji from 'emoji-js';
 
 // Initialize emoji-js with WhatsApp-style settings
-emoji.allow_native = true;
-emoji.use_sheet = false;
-emoji.replace_mode = 'unified';
+let emoji;
+try {
+  emoji = new Emoji();
+  emoji.allow_native = true;
+  emoji.use_sheet = false;
+  emoji.replace_mode = 'unified';
+} catch (error) {
+  console.warn('Failed to initialize emoji-js:', error);
+  // Create a fallback object
+  emoji = {
+    replace_colons: (text) => text,
+    replace_unified: (text) => text,
+    get: () => null
+  };
+}
 
 // Convert text with emoji shortcodes to actual emojis
 // @param {string} text - Text containing emoji shortcodes
 // @returns {string} - Text with emojis rendered
 export const convertEmojiShortcodes = (text) => {
   if (!text) return '';
-  return emoji.replace_colons(text);
+  try {
+    return emoji.replace_colons(text);
+  } catch (error) {
+    console.warn('Emoji conversion failed:', error);
+    return text;
+  }
 };
 
 // Convert text with unicode emojis to shortcodes (for storage)
@@ -19,14 +36,24 @@ export const convertEmojiShortcodes = (text) => {
 // @returns {string} - Text with emoji shortcodes
 export const convertToEmojiShortcodes = (text) => {
   if (!text) return '';
-  return emoji.replace_unified(text);
+  try {
+    return emoji.replace_unified(text);
+  } catch (error) {
+    console.warn('Emoji conversion failed:', error);
+    return text;
+  }
 };
 
 // Get emoji data for a specific shortcode
 // @param {string} shortcode - Emoji shortcode (e.g., ':smile:')
 // @returns {object} - Emoji data object
 export const getEmojiData = (shortcode) => {
-  return emoji.get(shortcode);
+  try {
+    return emoji.get(shortcode);
+  } catch (error) {
+    console.warn('Emoji data retrieval failed:', error);
+    return null;
+  }
 };
 
 // Check if a string contains emojis
@@ -165,5 +192,10 @@ export const getRandomEmoji = () => {
 // @returns {string} - Formatted text with emojis
 export const formatTextForDisplay = (text) => {
   if (!text) return '';
-  return convertEmojiShortcodes(text);
+  try {
+    return convertEmojiShortcodes(text);
+  } catch (error) {
+    console.warn('Text formatting failed:', error);
+    return text;
+  }
 };

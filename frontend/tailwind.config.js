@@ -44,6 +44,7 @@ export default {
         'float-delayed': 'float 8s ease-in-out 4s infinite',
         'gradient': 'gradient 8s ease-in-out infinite',
         'scroll': 'scroll 2s ease-in-out infinite',
+        'scroll-horizontal': 'scroll-horizontal 15s linear infinite',
       },
       keyframes: {
         float: {
@@ -67,6 +68,10 @@ export default {
         scroll: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(8px)' },
+        },
+        'scroll-horizontal': {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-100%)' },
         },
       },
     },

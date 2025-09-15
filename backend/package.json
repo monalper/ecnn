@@ -8,7 +8,8 @@
     "build": "echo 'No build step required'",
     "create-gallery-table": "node src/utils/create-gallery-table.js",
     "create-videos-table": "node src/utils/create-videos-table.js",
-    "create-comments-table": "node src/utils/create-comments-table.js"
+    "create-comments-table": "node src/utils/create-comments-table.js",
+    "create-banners-table": "node src/utils/create-banners-table.js"
   },
   "keywords": [],
   "author": "",

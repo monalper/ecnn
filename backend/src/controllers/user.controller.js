@@ -4,25 +4,85 @@ const { GetCommand, ScanCommand, UpdateCommand, QueryCommand } = require('@aws-s
 // Public: Kullanıcı profilini username ile getir
 exports.getUserProfileByUsername = async (req, res, next) => {
   const { username } = req.params;
+  console.log(`Fetching user profile for username: ${username}`);
+  
   try {
     const params = {
       TableName: USERS_TABLE,
-      IndexName: 'UsernameIndex', // DynamoDB'de tanımladığınız GSI adı
-      KeyConditionExpression: 'username = :usernameVal',
-      ExpressionAttributeValues: { ':usernameVal': username },
-      // Sadece public olarak gösterilecek alanları seçin
-      ProjectionExpression: 'userId, username, name, avatarUrl, bio, createdAt, logCount, reviewCount, listCount, followerCount, followingCount, watchlistCount, pinnedLogId'
+      FilterExpression: "username = :username",
+      ExpressionAttributeValues: {
+        ':username': username
+      }
     };
-    const { Items } = await docClient.send(new QueryCommand(params));
+    
+    console.log('DynamoDB params:', JSON.stringify(params, null, 2));
+    
+    const { Items } = await docClient.send(new ScanCommand(params));
+    console.log(`Found ${Items ? Items.length : 0} users with username: ${username}`);
 
     if (!Items || Items.length === 0) {
+      console.log('No user found with username:', username);
       return res.status(404).json({ message: 'Kullanıcı bulunamadı.' });
     }
-    // `passwordHash`, `email`, `isAdmin`, `isVerified` gibi alanlar ProjectionExpression ile zaten gelmiyor.
-    const userProfile = Items[0]; 
-    res.status(200).json(userProfile);
+    
+    // Get the first user found
+    const userProfile = Items[0];
+    console.log('User profile found:', {
+      userId: userProfile.userId,
+      username: userProfile.username,
+      name: userProfile.name,
+      isAdmin: userProfile.isAdmin
+    });
+    
+    // Only return admin users for public profiles
+    if (!userProfile.isAdmin) {
+      console.log('User is not admin, returning 404');
+      return res.status(404).json({ message: 'Kullanıcı bulunamadı.' });
+    }
+    
+    // Prepare public profile data
+    const publicProfile = {
+      userId: userProfile.userId,
+      username: userProfile.username,
+      name: userProfile.name,
+      avatarUrl: userProfile.avatarUrl || '',
+      bio: userProfile.bio || '',
+      createdAt: userProfile.createdAt,
+      logCount: userProfile.logCount || 0,
+      reviewCount: userProfile.reviewCount || 0,
+      listCount: userProfile.listCount || 0,
+      followerCount: userProfile.followerCount || 0,
+      followingCount: userProfile.followingCount || 0,
+      watchlistCount: userProfile.watchlistCount || 0,
+      pinnedLogId: userProfile.pinnedLogId || ''
+    };
+    
+    console.log('Returning public profile:', publicProfile);
+    res.status(200).json(publicProfile);
   } catch (error) {
     console.error("Get User Profile Error:", error);
+    console.error("Error details:", {
+      name: error.name,
+      message: error.message,
+      code: error.code
+    });
+    next(error);
+  }
+};
+
+// Test endpoint to check all users
+exports.testGetAllUsers = async (req, res, next) => {
+  try {
+    const params = {
+      TableName: USERS_TABLE,
+      ProjectionExpression: 'userId, username, name, isAdmin'
+    };
+    const { Items } = await docClient.send(new ScanCommand(params));
+    
+    console.log('All users in database:', Items);
+    res.status(200).json(Items || []);
+  } catch (error) {
+    console.error("Test Get All Users Error:", error);
     next(error);
   }
 };

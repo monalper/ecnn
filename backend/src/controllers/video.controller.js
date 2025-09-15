@@ -26,6 +26,7 @@ const getUsernameById = async (userId) => {
 // Get all video items
 const getAllVideoItems = async (req, res) => {
   try {
+    const { author } = req.query;
     const items = await VideoModel.getAll();
     
     // Add username for each video
@@ -39,7 +40,15 @@ const getAllVideoItems = async (req, res) => {
       })
     );
     
-    res.json(itemsWithUsername);
+    // Filter by author if specified
+    let filteredItems = itemsWithUsername;
+    if (author) {
+      filteredItems = itemsWithUsername.filter(item => 
+        item.createdByUsername && item.createdByUsername.toLowerCase() === author.toLowerCase()
+      );
+    }
+    
+    res.json(filteredItems);
   } catch (error) {
     console.error('Video items fetch error:', error);
     
