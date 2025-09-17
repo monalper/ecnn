@@ -7,6 +7,8 @@ import MetaTags from '../components/seo/MetaTags';
 import SchemaMarkup from '../components/seo/SchemaMarkup';
 import Breadcrumb from '../components/navigation/Breadcrumb';
 import LoadingSpinner from '../components/LoadingSpinner';
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
 
 // Google AdSense script will be injected via Helmet below
 import api from '../services/api';
@@ -129,6 +131,27 @@ const ArticleDetailPage = () => {
     };
     fetchData();
   }, [slug]);
+
+  // Render KaTeX for math nodes inside article content
+  useEffect(() => {
+    if (!article) return;
+    // Wait for content to be in DOM
+    requestAnimationFrame(() => {
+      const container = document.querySelector('.prose');
+      if (!container) return;
+      const nodes = container.querySelectorAll('.math-block, .math-inline');
+      nodes.forEach((el) => {
+        const isBlock = el.classList.contains('math-block');
+        const latexAttr = el.getAttribute('data-latex');
+        const raw = (latexAttr || el.textContent || '').trim().replace(/^\$+|\$+$/g, '');
+        try {
+          katex.render(raw, el, { displayMode: isBlock, throwOnError: false });
+        } catch (e) {
+          // leave as-is on error
+        }
+      });
+    });
+  }, [article]);
 
   // Kısa linki al
   useEffect(() => {
