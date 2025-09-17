@@ -142,6 +142,7 @@ const ArticleDetailPage = () => {
       const nodes = container.querySelectorAll('.math-block, .math-inline');
       nodes.forEach((el) => {
         const isBlock = el.classList.contains('math-block');
+        // support both legacy math nodes (data-latex) and new mathInline/mathBlock attrs
         const latexAttr = el.getAttribute('data-latex');
         const raw = (latexAttr || el.textContent || '').trim().replace(/^\$+|\$+$/g, '');
         try {

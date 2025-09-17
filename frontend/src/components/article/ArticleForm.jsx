@@ -27,7 +27,7 @@ import { FontSize } from '../../extensions/FontSizeExtension';
 import { LineHeight } from '../../extensions/LineHeightExtension';
 import { LetterSpacing } from '../../extensions/LetterSpacingExtension';
 import { InlineCode } from '../../extensions/InlineCodeExtension';
-import { Math } from '../../extensions/MathExtension';
+import { Math, MathInline, MathBlock } from '../../extensions/MathExtension';
 import { Chemistry } from '../../extensions/ChemistryExtension';
 import { ScientificNotation } from '../../extensions/ScientificNotationExtension';
 import { CountdownTimer } from '../../extensions/CountdownTimerExtension';
@@ -228,7 +228,9 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
       LineHeight,
       LetterSpacing,
       InlineCode,
-      // Math, // Temporarily disabled
+      Math,
+      MathInline,
+      MathBlock,
       // Chemistry, // Temporarily disabled
       // ScientificNotation, // Temporarily disabled
       // CountdownTimer, // Temporarily disabled
@@ -973,21 +975,25 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               <FaCode />
             </button>
 
-            {/* Matematik Formülü - Temporarily disabled
+            {/* Matematik Formülü */}
             <button
               type="button"
               onClick={() => {
-                const formula = window.prompt('LaTeX matematik formülünü girin (örn: x^2 + y^2 = z^2):');
+                const isBlock = window.confirm('Tamam = Blok ($$...$$), İptal = Inline ($...$)');
+                const formula = window.prompt('LaTeX formülü (örn: \\mathbb{N} = \\{0,1,2,3,\\dots\\})');
                 if (formula) {
-                  editor.chain().focus().setMath({ content: formula, display: 'block' }).run();
+                  if (isBlock) {
+                    editor.chain().focus().setMathBlock({ latex: formula }).run();
+                  } else {
+                    editor.chain().focus().setMathInline({ latex: formula }).run();
+                  }
                 }
               }}
-              className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
-              title="Matematik Formülü"
+              className={`p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 ${editor?.isActive('mathInline') || editor?.isActive('mathBlock') ? 'bg-gray-200 dark:bg-gray-600 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'}`}
+              title="Matematik (π)"
             >
-              <FaSuperscript />
+              <span style={{ fontWeight: 700, fontFamily: 'serif' }}>π</span>
             </button>
-            */}
 
             {/* Kimyasal Formül - Temporarily disabled
             <button
