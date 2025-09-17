@@ -995,6 +995,25 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               <span style={{ fontWeight: 700, fontFamily: 'serif' }}>π</span>
             </button>
 
+            {/* JSON Yükle (ProseMirror doc) */}
+            <button
+              type="button"
+              onClick={() => {
+                const input = window.prompt('ProseMirror JSON dokümanı yapıştırın');
+                if (!input) return;
+                try {
+                  const doc = JSON.parse(input);
+                  editor?.commands.setContent(doc, true);
+                } catch (e) {
+                  alert('Geçersiz JSON');
+                }
+              }}
+              className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
+              title="JSON Yükle"
+            >
+              JSON
+            </button>
+
             {/* Kimyasal Formül - Temporarily disabled
             <button
               type="button"
