@@ -228,7 +228,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
       LineHeight,
       LetterSpacing,
       InlineCode,
-      Math,
+      // Math, // Temporarily disabled
       // Chemistry, // Temporarily disabled
       // ScientificNotation, // Temporarily disabled
       // CountdownTimer, // Temporarily disabled
@@ -275,7 +275,31 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
     }
   }, [isEditing, articleData, editor]);
 
-  // KaTeX is bundled via dependency; no dynamic CDN loading needed
+  // Load KaTeX only when needed for math rendering
+  useEffect(() => {
+    if (typeof window !== 'undefined' && !window.katex) {
+      // Check if KaTeX is actually needed by looking for math content
+      const hasMathContent = editor?.getHTML().includes('math-block') || 
+                           editor?.getHTML().includes('math-inline');
+      
+      if (hasMathContent || editor?.isActive('math')) {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js';
+        script.onload = () => {
+          console.log('KaTeX loaded successfully');
+        };
+        script.onerror = () => {
+          console.warn('Failed to load KaTeX from CDN');
+        };
+        document.head.appendChild(script);
+
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css';
+        document.head.appendChild(link);
+      }
+    }
+  }, [editor]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -949,21 +973,21 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               <FaCode />
             </button>
 
-            {/* Matematik Formülü */}
+            {/* Matematik Formülü - Temporarily disabled
             <button
               type="button"
               onClick={() => {
-                const type = window.confirm('Tamam = Blok ($$...$$), İptal = Inline ($...$)');
-                const formula = window.prompt('LaTeX formülü (örn: \\mathbb{N} = \\{0,1,2,3,\\dots\\})');
+                const formula = window.prompt('LaTeX matematik formülünü girin (örn: x^2 + y^2 = z^2):');
                 if (formula) {
-                  editor.chain().focus().setMath({ content: formula, display: type ? 'block' : 'inline' }).run();
+                  editor.chain().focus().setMath({ content: formula, display: 'block' }).run();
                 }
               }}
-              className={`p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 ${editor?.isActive('math') ? 'bg-gray-200 dark:bg-gray-600 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'}`}
-              title="Matematik (π)"
+              className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
+              title="Matematik Formülü"
             >
-              <span style={{ fontWeight: 700, fontFamily: 'serif' }}>π</span>
+              <FaSuperscript />
             </button>
+            */}
 
             {/* Kimyasal Formül - Temporarily disabled
             <button
