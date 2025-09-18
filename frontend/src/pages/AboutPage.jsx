@@ -193,21 +193,11 @@ const AboutPage = () => {
             <div className="order-2 lg:col-span-3">
               <div className="about-content prose prose-sm md:prose-base lg:prose-lg max-w-none lg:-mt-8">
 
-                {/* Content Sections */}
+                {/* Body Text */}
                 <div className="space-y-8">
-                  {aboutContent.sections.map((section, index) => {
-                    return (
-                      <div key={section.id}>
-                        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                          {section.title}
-                        </h2>
-                        
-                        <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                          {section.content}
-                        </p>
-                      </div>
-                    );
-                  })}
+                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                    The Openwall Archive, ilk çıkış amacı astronomiyle ilgili yazıları bir araya getirmekti; ancak telif gibi bazı sorunlar nedeniyle sitemizin amacından saparak kişisel bir arşive dönüşmüştür. Sitemiz tamamen açık kaynaklı ve reklamsızdır.
+                  </p>
                 </div>
 
                 {/* Contact Information for Mobile */}
@@ -231,20 +221,7 @@ const AboutPage = () => {
                   </div>
                 </div>
 
-                {/* Footer */}
-                <div className="mt-16 text-center">
-                  <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
-                    <div className="flex items-center justify-center space-x-2 mb-4">
-                      <FiClock className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm text-gray-500 dark:text-gray-400">
-                        {aboutContent.lastUpdated}
-                      </span>
-                    </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                      OpenWall, entellektüel merakı olan insanlar için tasarlanmış bir platformdur. Bilgiyi paylaşarak toplumsal gelişime katkıda bulunmayı hedefliyoruz.
-                    </p>
-                  </div>
-                </div>
+                
               </div>
             </div>
           </div>
