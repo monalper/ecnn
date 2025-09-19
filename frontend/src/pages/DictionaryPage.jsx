@@ -42,7 +42,7 @@ const DictionaryPage = () => {
     <div className="min-h-screen bg-site-background dark:bg-dark-primary transition-colors">
       <MetaTags
         title="Türkçe Sözlük"
-        description="OpenWall Türkçe Sözlüğü - Kelimeler ve anlamları."
+        description="TheOpenwall Türkçe Sözlüğü - Kelimeler ve anlamları."
         keywords="sözlük, dictionary, kelime, anlam, openwall, türkçe"
       />
       <div className="px-0 sm:px-12 lg:px-20 xl:px-32 py-8 sm:py-12">
@@ -52,7 +52,7 @@ const DictionaryPage = () => {
             Sözlük
           </h1>
           <p className="text-lg text-gray-500 dark:text-[#f5f5f5] font-light">
-            Openwall Türkçe Sözlüğü
+            The Openwall Türkçe Sözlüğü
           </p>
         </div>
 

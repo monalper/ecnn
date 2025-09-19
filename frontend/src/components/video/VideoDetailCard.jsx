@@ -3,7 +3,7 @@ import { FaHeart, FaShare } from 'react-icons/fa';
 
 const VideoDetailCard = ({ 
   title = "Avrupa Yakası",
-  source = "OpenWall",
+  source = "Openwall",
   date = "bugün",
   episode = "48. Bölüm",
   onLike,

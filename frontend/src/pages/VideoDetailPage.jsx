@@ -264,7 +264,7 @@ const VideoDetailPage = () => {
   return (
     <>
       <Helmet>
-        <title>{video.title} - OpenWall</title>
+        <title>{video.title} - Openwall</title>
         <meta name="description" content={video.description || `OpenWall video: ${video.title}`} />
         
         {/* Open Graph Meta Tags - Facebook/WhatsApp için */}
@@ -286,7 +286,7 @@ const VideoDetailPage = () => {
         {/* Video oynatıcı URL'si */}
         <meta property="og:video:secure_url" content={video.videoUrl} />
         <meta property="og:video:tag" content="video" />
-        <meta property="og:video:tag" content="OpenWall" />
+        <meta property="og:video:tag" content="Openwall" />
         
         {/* Video süresi meta etiketi */}
         {video.duration && (
@@ -318,8 +318,8 @@ const VideoDetailPage = () => {
         
         {/* Ek meta etiketleri */}
         <meta name="robots" content="index, follow" />
-        <meta name="author" content="OpenWall" />
-        <meta name="keywords" content={`video, ${video.title}, OpenWall`} />
+        <meta name="author" content="Openwall" />
+        <meta name="keywords" content={`video, ${video.title}, Openwall`} />
         
         {/* Canonical URL */}
         <link rel="canonical" href={`https://www.openwall.com.tr/videos/${video.id}`} />

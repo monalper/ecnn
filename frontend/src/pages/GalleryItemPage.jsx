@@ -70,10 +70,10 @@ const GalleryItemPage = () => {
   return (
     <>
       <Helmet>
-        <title>{galleryItem.title} - Galeri - OpenWall</title>
-        <meta name="description" content={galleryItem.description || `OpenWall galeri - ${galleryItem.title}`} />
-        <meta property="og:title" content={`${galleryItem.title} - Galeri - OpenWall`} />
-        <meta property="og:description" content={galleryItem.description || `OpenWall galeri - ${galleryItem.title}`} />
+        <title>{galleryItem.title} - Galeri</title>
+        <meta name="description" content={galleryItem.description || `Openwall galeri - ${galleryItem.title}`} />
+        <meta property="og:title" content={`${galleryItem.title} - Galeri - Openwall`} />
+        <meta property="og:description" content={galleryItem.description || `Openwall galeri - ${galleryItem.title}`} />
         <meta property="og:image" content={galleryItem.imageUrl} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`https://openwall.com.tr/gallery/${galleryItem.id}`} />
@@ -83,8 +83,8 @@ const GalleryItemPage = () => {
         
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`${galleryItem.title} - Galeri - OpenWall`} />
-        <meta name="twitter:description" content={galleryItem.description || `OpenWall galeri - ${galleryItem.title}`} />
+        <meta name="twitter:title" content={`${galleryItem.title} - Galeri - Openwall`} />
+        <meta name="twitter:description" content={galleryItem.description || `Openwall galeri - ${galleryItem.title}`} />
         <meta name="twitter:image" content={galleryItem.imageUrl} />
         
         {/* Canonical URL */}
@@ -96,7 +96,7 @@ const GalleryItemPage = () => {
         type="ImageObject"
         data={{
           title: galleryItem.title,
-          description: galleryItem.description || `OpenWall galeri - ${galleryItem.title}`,
+          description: galleryItem.description || `Openwall galeri - ${galleryItem.title}`,
           imageUrl: galleryItem.imageUrl,
           uploadDate: galleryItem.createdAt
         }}

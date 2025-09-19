@@ -30,7 +30,10 @@ const Footer = () => {
               {/* Site Text - Hidden on very small screens, shown on sm and up */}
               <div className="hidden sm:block flex-shrink-0 lg:w-[280px]">
                 <p className={`${isDark ? 'text-[#E0D9C9]' : 'text-gray-600'} text-xs sm:text-sm leading-relaxed`}>
-                  The Openwall Archive, tamamen açık kaynaklı kişisel bir bilgi arşividir. Farklı konularda çok sayıda kişisel makaleyi bir araya getirmek için kuruldu.
+                  To Ideas and Beyond...
+                  <br />
+                  <br />
+                  The Openwall Archive, tamamı açık kaynaklı kişisel bir arşivdir.
                 </p>
               </div>
             </div>

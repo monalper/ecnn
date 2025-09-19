@@ -95,7 +95,7 @@ const AdvertisementCard = ({ className = '' }) => {
               <div className="text-center text-white">
                 <AdIcon />
                 <div className="text-sm font-medium mt-2">Reklam Alanı</div>
-                <div className="text-xs opacity-75">Openwall</div>
+                <div className="text-xs opacity-75">The Openwall</div>
               </div>
             </div>
           )}

@@ -373,7 +373,7 @@ const ApodPage = () => {
               },
               "publisher": {
                 "@type": "Organization",
-                "name": "OpenWall",
+                "name": "The Openwall",
                 "url": "https://openwall.com.tr"
               },
               "datePublished": apodData.date,

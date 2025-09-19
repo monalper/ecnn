@@ -75,10 +75,10 @@ const GalleryPage = () => {
     return (
       <>
         <Helmet>
-          <title>Galeri - OpenWall</title>
-          <meta name="description" content="OpenWall galeri sayfası - Projelerimizden görseller" />
-          <meta property="og:title" content="Galeri - OpenWall" />
-          <meta property="og:description" content="OpenWall galeri sayfası - Projelerimizden görseller" />
+          <title>Galeri</title>
+          <meta name="description" content="Openwall galeri sayfası - Projelerimizden görseller" />
+          <meta property="og:title" content="Galeri - Openwall" />
+          <meta property="og:description" content="Openwall galeri sayfası - Projelerimizden görseller" />
           <meta property="og:type" content="website" />
           <meta property="og:url" content="https://openwall.com.tr/gallery" />
         </Helmet>
@@ -182,7 +182,7 @@ const GalleryPage = () => {
   return (
     <>
       <Helmet>
-        <title>Galeri - OpenWall</title>
+        <title>Galeri</title>
         <meta name="description" content="OpenWall galeri sayfası - Projelerimizden görseller" />
         <meta property="og:title" content="Galeri - OpenWall" />
         <meta property="og:description" content="OpenWall galeri sayfası - Projelerimizden görseller" />

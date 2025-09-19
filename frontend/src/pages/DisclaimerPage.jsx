@@ -52,7 +52,7 @@ const DisclaimerPage = () => {
   const disclaimerContent = {
     tr: {
       title: "Yasal Uyarı ve Sorumluluk Reddi",
-      subtitle: "OpenWall Platform Kullanım Koşulları",
+      subtitle: "TheOpenwall Platform Kullanım Koşulları",
       lastUpdated: "Son güncelleme: Eylül 2025",
       readingTime: "5 dakika",
       wordCount: 2847,
@@ -60,7 +60,7 @@ const DisclaimerPage = () => {
         {
           id: 'general-info',
           title: "Genel Bilgilendirme ve İçerik Politikası",
-          content: "OpenWall platformunda sunulan tüm içerikler, makaleler, görseller, videolar, infografikler, veri analizleri, araştırma sonuçları, yorumlar, değerlendirmeler ve diğer tüm materyaller yalnızca genel bilgilendirme ve eğitim amaçlıdır. Bu platformda yer alan her türlü içerik, profesyonel tavsiye, hukuki görüş, tıbbi öneri, finansal danışmanlık, yatırım tavsiyesi, iş stratejisi önerisi veya herhangi bir uzmanlık alanında verilen danışmanlık hizmeti niteliği taşımamaktadır. Platformda sunulan bilgiler genel nitelikte olup, herhangi bir kişi, kurum, durum veya özel koşula yönelik değildir. Ziyaretçiler ve kullanıcılar, bu platformdaki içerikleri kendi sorumluluklarında değerlendirmeli ve önemli kararlar almadan önce mutlaka konuyla ilgili uzmanlardan profesyonel danışmanlık almalıdırlar. Platform içeriklerinin yanlış yorumlanması veya yanlış kullanımından doğabilecek herhangi bir sonuçtan OpenWall sorumlu tutulamaz."
+          content: "The Openwall platformunda sunulan tüm içerikler, makaleler, görseller, videolar, infografikler, veri analizleri, araştırma sonuçları, yorumlar, değerlendirmeler ve diğer tüm materyaller yalnızca genel bilgilendirme ve eğitim amaçlıdır. Bu platformda yer alan her türlü içerik, profesyonel tavsiye, hukuki görüş, tıbbi öneri, finansal danışmanlık, yatırım tavsiyesi, iş stratejisi önerisi veya herhangi bir uzmanlık alanında verilen danışmanlık hizmeti niteliği taşımamaktadır. Platformda sunulan bilgiler genel nitelikte olup, herhangi bir kişi, kurum, durum veya özel koşula yönelik değildir. Ziyaretçiler ve kullanıcılar, bu platformdaki içerikleri kendi sorumluluklarında değerlendirmeli ve önemli kararlar almadan önce mutlaka konuyla ilgili uzmanlardan profesyonel danışmanlık almalıdırlar. Platform içeriklerinin yanlış yorumlanması veya yanlış kullanımından doğabilecek herhangi bir sonuçtan The Openwall sorumlu tutulamaz."
         },
         {
           id: 'liability',
@@ -91,7 +91,7 @@ const DisclaimerPage = () => {
     },
     en: {
       title: "Legal Notice and Comprehensive Disclaimer",
-      subtitle: "OpenWall Platform Terms of Use",
+      subtitle: "TheOpenwall Platform Terms of Use",
       lastUpdated: "Last updated: September 2025",
       readingTime: "5 minutes",
       wordCount: 2847,
@@ -137,7 +137,7 @@ const DisclaimerPage = () => {
   return (
     <div className="min-h-screen select-none">
       <MetaTags
-        title="Yasal Uyarı - OpenWall"
+        title="Yasal Uyarı"
         description="OpenWall platformu yasal uyarı sayfası"
         keywords="yasal uyarı, sorumluluk reddi"
       />

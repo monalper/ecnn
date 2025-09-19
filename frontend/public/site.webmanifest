@@ -1,7 +1,7 @@
 {
-  "name": "OpenWall - Entellektüel İçerikler ve Makaleler",
-  "short_name": "OpenWall",
-  "description": "OpenWall, teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat ve yemek gibi çeşitli alanlarda kaliteli içerikler sunan kapsamlı bir platformdur.",
+  "name": "The Openwall - Entellektüel İçerikler ve Makaleler",
+  "short_name": "The Openwall",
+  "description": "The Openwall, teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat ve yemek gibi çeşitli alanlarda kaliteli içerikler sunan kapsamlı bir platformdur.",
   "icons": [
     {
       "src": "/favicon-16x16.png",
@@ -54,7 +54,7 @@
       "sizes": "1200x630",
       "type": "image/jpeg",
       "form_factor": "wide",
-      "label": "OpenWall Ana Sayfa"
+      "label": "The Openwall Ana Sayfa"
     }
   ],
   "shortcuts": [

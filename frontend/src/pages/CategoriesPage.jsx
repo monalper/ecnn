@@ -101,7 +101,7 @@ const CategoriesPage = () => {
   return (
     <div className="min-h-screen bg-site-background dark:bg-dark-primary">
       <MetaTags
-        title="Kategoriler - OpenWall"
+        title="Kategoriler"
         description="Teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat ve yemek kategorilerinde içerikler"
         keywords="kategoriler, teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat, yemek"
       />

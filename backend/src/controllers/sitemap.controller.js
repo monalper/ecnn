@@ -495,7 +495,7 @@ const generateNewsSitemap = async (req, res) => {
     <priority>0.8</priority>
     <news:news>
       <news:publication>
-        <news:name>OpenWall</news:name>
+        <news:name>The Openwall</news:name>
         <news:language>tr</news:language>
       </news:publication>
       <news:publication_date>${article.createdAt}</news:publication_date>
@@ -617,7 +617,7 @@ Allow: /dictionary/
 Crawl-delay: 0.5
 
 # Site bilgileri
-# OpenWall - Türkçe entellektüel içerik platformu
+# The Openwall - Türkçe entellektüel içerik platformu
 # 16 farklı kategoride makale, video ve görsel içerik
 # Günlük güncellenen içerikler
 `;

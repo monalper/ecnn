@@ -69,8 +69,8 @@ const DictWordPage = () => {
     <div className="min-h-screen bg-[#F8F9FA] dark:bg-dark-primary transition-colors">
       <MetaTags
         title={`${entry.word} - Sözlük`}
-        description={`${entry.word} kelimesinin anlamı ve tanımı. OpenWall Türkçe Sözlüğü.`}
-        keywords={`${entry.word}, sözlük, anlam, tanım, openwall`}
+        description={`${entry.word} kelimesinin anlamı ve tanımı. The Openwall Türkçe Sözlüğü.`}
+        keywords={`${entry.word}, sözlük, anlam, tanım, The Openwall`}
       />
       
       <div className="max-w-2xl mx-auto px-6 py-8">

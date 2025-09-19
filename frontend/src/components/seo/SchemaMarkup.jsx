@@ -20,11 +20,11 @@ const SchemaMarkup = ({
           "image": data.image || `${baseUrl}/og-images/default/og-default.jpg`,
           "author": {
             "@type": "Person",
-            "name": data.author || "OpenWall"
+            "name": data.author || "Openwall"
           },
           "publisher": {
             "@type": "Organization",
-            "name": "OpenWall",
+            "name": "Openwall",
             "logo": {
               "@type": "ImageObject",
               "url": `${baseUrl}/logo.png`
@@ -47,14 +47,14 @@ const SchemaMarkup = ({
           "isAccessibleForFree": true,
           "isPartOf": {
             "@type": "WebSite",
-            "name": "OpenWall",
+            "name": "Openwall",
             "url": baseUrl
           },
           "about": data.tags || [],
           "mentions": data.references || [],
           "publisherImprint": {
             "@type": "Organization",
-            "name": "OpenWall",
+            "name": "Openwall",
             "url": baseUrl
           }
         };
@@ -63,9 +63,9 @@ const SchemaMarkup = ({
         return {
           "@context": "https://schema.org",
           "@type": "WebSite",
-          "name": "OpenWall",
+          "name": "Openwall",
           "url": baseUrl,
-          "description": "OpenWall, çeşitli alanlarda yazılmış makaleleri okuyun.",
+          "description": "Openwall, çeşitli alanlarda yazılmış makaleleri okuyun.",
           "potentialAction": {
             "@type": "SearchAction",
             "target": `${baseUrl}/search?q={search_term_string}`,
@@ -77,7 +77,7 @@ const SchemaMarkup = ({
         return {
           "@context": "https://schema.org",
           "@type": "Organization",
-          "name": "OpenWall",
+          "name": "Openwall",
           "url": baseUrl,
           "logo": `${baseUrl}/logo.png`,
           "description": "Çeşitli alanlarda yazılmış makaleleri okuyun",
@@ -89,7 +89,7 @@ const SchemaMarkup = ({
           "contactPoint": {
             "@type": "ContactPoint",
             "contactType": "customer service",
-            "email": "info@openwall.com.tr"
+            "email": "info@monologed.com.tr"
           }
         };
         
@@ -118,7 +118,7 @@ const SchemaMarkup = ({
           },
           "publisher": {
             "@type": "Organization",
-            "name": "OpenWall",
+            "name": "Openwall",
             "logo": {
               "@type": "ImageObject",
               "url": `${baseUrl}/logo.png`
@@ -145,7 +145,7 @@ const SchemaMarkup = ({
           "embedUrl": data.embedUrl,
           "publisher": {
             "@type": "Organization",
-            "name": "OpenWall",
+            "name": "Openwall",
             "logo": {
               "@type": "ImageObject",
               "url": `${baseUrl}/logo.png`
@@ -164,7 +164,7 @@ const SchemaMarkup = ({
           "uploadDate": data.uploadDate,
           "publisher": {
             "@type": "Organization",
-            "name": "OpenWall"
+            "name": "Openwall"
           }
         };
         
@@ -189,7 +189,7 @@ const SchemaMarkup = ({
           },
           "publisher": {
             "@type": "Organization",
-            "name": "OpenWall",
+            "name": "Openwall",
             "logo": {
               "@type": "ImageObject",
               "url": `${baseUrl}/logo.png`
@@ -211,7 +211,7 @@ const SchemaMarkup = ({
           "isAccessibleForFree": true,
           "isPartOf": {
             "@type": "WebSite",
-            "name": "OpenWall",
+            "name": "Openwall",
             "url": baseUrl
           },
           "about": [
@@ -240,7 +240,7 @@ const SchemaMarkup = ({
           ],
           "publisherImprint": {
             "@type": "Organization",
-            "name": "OpenWall",
+            "name": "Openwall",
             "url": baseUrl
           },
           "copyrightHolder": {

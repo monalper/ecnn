@@ -367,7 +367,7 @@ const ArticlesPage = () => {
     <div className="min-h-screen bg-site-background dark:bg-dark-primary">
       <MetaTags
         title="Makaleler"
-        description="OpenWall'da yayınlanan tüm teknoloji,felsefe,sanat,spor,siyaset,ekonomi,sağlık,eğitim,çevre,sosyoloji,psikoloji,din,müzik,sinema,seyahat,yemek makalelerini keşfedin. En güncel teknoloji, felsefe,sanat,spor,siyaset,ekonomi,sağlık,eğitim,çevre,sosyoloji,psikoloji,din,müzik,sinema,seyahat,yemek haberleri ve analizler."
+        description="The Openwall'da yayınlanan tüm teknoloji,felsefe,sanat,spor,siyaset,ekonomi,sağlık,eğitim,çevre,sosyoloji,psikoloji,din,müzik,sinema,seyahat,yemek makalelerini keşfedin. En güncel teknoloji, felsefe,sanat,spor,siyaset,ekonomi,sağlık,eğitim,çevre,sosyoloji,psikoloji,din,müzik,sinema,seyahat,yemek haberleri ve analizler."
         keywords="teknoloji makaleleri, teknoloji haberleri, yazılım, donanım, yapay zeka, blockchain, siber güvenlik, felsefe,sanat,spor,siyaset,ekonomi,sağlık,eğitim,çevre,sosyoloji,psikoloji,din,müzik,sinema,seyahat,yemek"
       />
       <SchemaMarkup type="WebSite" />

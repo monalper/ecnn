@@ -92,10 +92,10 @@ const VideosPage = () => {
   return (
     <>
       <Helmet>
-        <title>Videolar - OpenWall</title>
-        <meta name="description" content="OpenWall video sayfası - Projelerimizden videolar" />
-        <meta property="og:title" content="Videolar - OpenWall" />
-        <meta property="og:description" content="OpenWall video sayfası - Projelerimizden videolar" />
+        <title>Videolar</title>
+        <meta name="description" content="Openwall video sayfası - Projelerimizden videolar" />
+        <meta property="og:title" content="Videolar - Openwall" />
+        <meta property="og:description" content="Openwall video sayfası - Projelerimizden videolar" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://openwall.com.tr/videos" />
       </Helmet>

@@ -107,17 +107,17 @@ const AuthorProfilePage = () => {
   return (
     <>
       <Helmet>
-        <title>{author.name || author.username} - OpenWall Yazar Profili</title>
-        <meta name="description" content={`${author.name || author.username} yazarının OpenWall'daki profili, makaleleri ve videoları`} />
-        <meta property="og:title" content={`${author.name || author.username} - OpenWall Yazar`} />
-        <meta property="og:description" content={`${author.name || author.username} yazarının OpenWall'daki profili, makaleleri ve videoları`} />
+        <title>{author.name || author.username} - The Openwall Yazar Profili</title>
+        <meta name="description" content={`${author.name || author.username} yazarının The Openwall'daki profili, makaleleri ve videoları`} />
+        <meta property="og:title" content={`${author.name || author.username} - TheOpenwall Yazar`} />
+        <meta property="og:description" content={`${author.name || author.username} yazarının The Openwall'daki profili, makaleleri ve videoları`} />
         {author.avatarUrl && (
           <meta property="og:image" content={author.avatarUrl} />
         )}
         <meta property="og:type" content="profile" />
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content={`${author.name || author.username} - OpenWall Yazar`} />
-        <meta name="twitter:description" content={`${author.name || author.username} yazarının OpenWall'daki profili, makaleleri ve videoları`} />
+        <meta name="twitter:title" content={`${author.name || author.username} - TheOpenwall Yazar`} />
+        <meta name="twitter:description" content={`${author.name || author.username} yazarının The Openwall'daki profili, makaleleri ve videoları`} />
         {author.avatarUrl && (
           <meta name="twitter:image" content={author.avatarUrl} />
         )}

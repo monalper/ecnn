@@ -52,7 +52,7 @@ const AboutPage = () => {
 
   const aboutContent = {
     title: "Hakkımızda",
-    subtitle: "OpenWall Platform Tanıtımı",
+    subtitle: "The Openwall Platform Tanıtımı",
     lastUpdated: "Son güncelleme: Eylül 2025",
     readingTime: "3 dakika",
     wordCount: 1247,
@@ -60,7 +60,7 @@ const AboutPage = () => {
       {
         id: 'mission',
         title: "Misyonumuz ve Vizyonumuz",
-        content: "OpenWall, entellektüel merakı olan insanlar için bir buluşma noktası olarak tasarlandı. Amacımız, farklı alanlardaki düşünceleri, fikirleri ve keşifleri paylaşarak zengin bir düşünce ekosistemi oluşturmak. Teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat ve yemek gibi çeşitli alanlarda kaliteli içerikler sunarak, okuyucularımızın ufuklarını genişletmeyi hedefliyoruz."
+        content: "The Openwall Archive, 2025 yılında, dünyadaki makaleleri yayınlamak üzere kurulmuş ancak telif hakkı gibi birçok problemden dolayı kişisel bir arşiv haline gelmiştir."
       },
       {
         id: 'philosophy',
@@ -83,9 +83,9 @@ const AboutPage = () => {
   return (
     <div className="min-h-screen select-none">
       <MetaTags
-        title="Hakkımızda - OpenWall"
-        description="OpenWall platformu hakkında bilgi edinin"
-        keywords="hakkımızda, openwall, entellektüel, düşünce, makale, blog, felsefe, teknoloji, sanat"
+        title="Hakkımızda"
+        description="Openwall platformu hakkında bilgi edinin"
+        keywords="hakkımızda, Openwall, entellektüel, düşünce, makale, blog, felsefe, teknoloji, sanat"
       />
       <SchemaMarkup />
 
@@ -196,7 +196,10 @@ const AboutPage = () => {
                 {/* Body Text */}
                 <div className="space-y-8">
                   <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                    The Openwall Archive, ilk çıkış amacı astronomiyle ilgili yazıları bir araya getirmekti; ancak telif gibi bazı sorunlar nedeniyle sitemizin amacından saparak kişisel bir arşive dönüşmüştür. Sitemiz tamamen açık kaynaklı ve reklamsızdır.
+                    To Ideas and Beyond...
+                    <br />
+                    <br />
+                    The Openwall Archive, tamamı açık kaynaklı kişisel bir arşivdir.
                   </p>
                 </div>
 

@@ -5,7 +5,7 @@ Allow: /
 Sitemap: https://openwall.com.tr/sitemap.xml
 
 # Site Information for AI Crawlers
-# OpenWall is a multi-category content platform offering articles in 16 different categories
+# The Openwall is a multi-category content platform offering articles in 16 different categories
 # including technology, philosophy, art, sports, politics, economy, health, education, environment,
 # sociology, psychology, religion, music, cinema, travel, and food.
 
@@ -82,7 +82,7 @@ Host: https://openwall.com.tr
 Crawl-delay: 1
 
 # Additional Information for AI Crawlers
-# OpenWall is a Turkish content platform founded in 2024
+# The Openwall is a Turkish content platform founded in 2024
 # It provides free access to intellectual content across multiple disciplines
 # The platform uses React 18, Express.js, and AWS services
 # Content is updated daily with new articles and highlights

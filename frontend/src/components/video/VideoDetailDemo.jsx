@@ -29,7 +29,7 @@ const VideoDetailDemo = () => {
         <div className="mb-8">
           <VideoDetailCard
             title="Avrupa Yakası"
-            source="OpenWall"
+            source="Openwall"
             date="bugün"
             episode="48. Bölüm"
             onLike={handleLike}
