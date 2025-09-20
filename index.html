@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Basit Site</title>
+    <meta name="description" content="Hızlı başlamak için basit, responsive bir statik site şablonu.">
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href="#anasayfa" class="logo" aria-label="Anasayfa">Basit Site</a>
+        <button id="navToggle" class="nav-toggle" aria-expanded="false" aria-controls="siteNav" aria-label="Menüyü aç/kapat">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+        <nav id="siteNav" class="site-nav" aria-label="Ana menü">
+          <ul>
+            <li><a href="#anasayfa">Anasayfa</a></li>
+            <li><a href="#ozellikler">Özellikler</a></li>
+            <li><a href="#iletisim">İletişim</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section id="anasayfa" class="hero">
+        <div class="container hero-inner">
+          <h1>Basit, hızlı ve modern bir başlangıç</h1>
+          <p>Bu şablonla dakikalar içinde şık bir statik site kurabilirsiniz.</p>
+          <div class="actions">
+            <a href="#ozellikler" class="button primary">Özelliklere Bak</a>
+            <a href="#iletisim" class="button">Bize Yaz</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="ozellikler" class="section">
+        <div class="container">
+          <h2>Özellikler</h2>
+          <div class="features">
+            <article class="card">
+              <h3>Hafif</h3>
+              <p>Hiçbir bağımlılık yok. Sadece HTML, CSS ve JavaScript.</p>
+            </article>
+            <article class="card">
+              <h3>Responsive</h3>
+              <p>Tüm cihazlarda şık görünüm için duyarlı düzen.</p>
+            </article>
+            <article class="card">
+              <h3>Özelleştirilebilir</h3>
+              <p>Basit yapısıyla hızlıca kendi içeriğinizi ekleyin.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="iletisim" class="section alt">
+        <div class="container">
+          <h2>İletişim</h2>
+          <form id="contactForm" class="contact-form" novalidate>
+            <div class="field">
+              <label for="name">Ad</label>
+              <input id="name" name="name" type="text" required placeholder="Adınız">
+            </div>
+            <div class="field">
+              <label for="email">E‑posta</label>
+              <input id="email" name="email" type="email" required placeholder="ornek@site.com">
+            </div>
+            <div class="field full">
+              <label for="message">Mesaj</label>
+              <textarea id="message" name="message" rows="4" required placeholder="Mesajınız"></textarea>
+            </div>
+            <div class="actions">
+              <button type="submit" class="button primary">Gönder</button>
+            </div>
+            <p id="formStatus" class="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <small>© <span id="year"></span> Basit Site</small>
+        <a href="#anasayfa" class="to-top" aria-label="Başa dön">Başa dön ↑</a>
+      </div>
+    </footer>
+
+    <script src="/script.js" defer></script>
+  </body>
+  </html>
