@@ -104,7 +104,7 @@ const VideoCommentForm = ({ videoId, parentCommentId = null, parentAuthorName = 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               to="/login"
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-full text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-full text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               Giriş Yap
             </Link>
@@ -124,8 +124,8 @@ const VideoCommentForm = ({ videoId, parentCommentId = null, parentAuthorName = 
   return (
     <div className={isModal ? "" : ""}>
       {error && (
-        <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 rounded-xl">
-          <p className="text-sm text-red-600 dark:text-red-400 font-medium">{error}</p>
+        <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+          <p className="text-sm text-blue-600 dark:text-blue-400 font-medium">{error}</p>
         </div>
       )}
 
@@ -156,7 +156,7 @@ const VideoCommentForm = ({ videoId, parentCommentId = null, parentAuthorName = 
           <div className="flex-1">
             {parentAuthorName && (
               <div className="mb-2">
-                <span className="text-xs text-red-500 font-medium">
+                <span className="text-xs text-blue-500 font-medium">
                   Yanıt: @{parentAuthorUsername || parentAuthorName}
                 </span>
               </div>
