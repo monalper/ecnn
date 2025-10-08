@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://openwall.com.tr/articles/bir-objenin-anatomisi-abramovicin-sifir-ritmi</loc>
+    <lastmod>2025-08-16T22:53:48.296Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image>
+      <image:loc>https://openwall.s3.eu-north-1.amazonaws.com/covers/7325d40b-f323-46ef-967c-e5a50e3b23d5/3f4ad1a6-776c-41f3-964f-2c79c9c84dd6.webp</image:loc>
+      <image:title>Bir Objenin Anatomisi</image:title>
+      <image:caption>Çünkü artık Marina bir &quot;şey&quot; değil, yeniden bir insan olmuştu. Gözleri dolmuştu. Vücudu yaralı, yarı çıplak, üstü başı yırtılmış ve kana bulanmıştı. Ve insanlar kaçtı.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://openwall.com.tr/articles/primatlarda-dogal-bir-ahlak-anlayisi-oldugunu-kanitlayan-maymun-adalet-deneyi</loc>
+    <lastmod>2025-09-08T12:36:37.282Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image>
+      <image:loc>https://openwall.s3.eu-north-1.amazonaws.com/covers/7325d40b-f323-46ef-967c-e5a50e3b23d5/02ff6eec-0ce4-4493-a0b7-40a5ed924fbb.jpg</image:loc>
+      <image:title>Primatların Adalet Algısı</image:title>
+      <image:caption>yukarıdaki maymun adalet deneyi, primatolog frans de waal tarafından gerçekleştirilen ve primatlarda da doğal bir ahlak anlayışı olduğunu ve eşitliğin evrensel bir norm olduğunu ortaya çıkaran muazzam deneydir.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://openwall.com.tr/articles/daron-acemoglunun-kapsayici-kurumlar-teorisi-ve-amerikan-ruyasi</loc>
+    <lastmod>2025-08-16T22:55:04.616Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://openwall.s3.eu-north-1.amazonaws.com/covers/7325d40b-f323-46ef-967c-e5a50e3b23d5/512104ac-26fb-4097-a55b-1c2f53d7444c.webp</image:loc>
+      <image:title>Kapsayıcı Kurumlar Teorisi</image:title>
+      <image:caption>2023 yılında Nobel Ekonomi Ödülü’ne layık görülen Daron Acemoğlu, aslında bu ödülü yıllar önce hak etmişti. Özellikle James Robinson ile birlikte yazdığı Why Nations Fail (2012) kitabı, “kapsayıcı kurumlar” teorisini yalnızca akademik bir tartışma olmaktan çıkarıp kamuoyuna da taşıdı. Bu teoriye göre, ülkelerin zengin ya da fakir olmasının en temel nedeni, sahip oldukları ekonomik ve siyasi kurumların niteliğidir (Acemoglu &amp; Robinson, 2012).</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://openwall.com.tr/articles/eskisehirdeki-kus-turleri</loc>
+    <lastmod>2025-08-16T22:56:54.456Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image>
+      <image:loc>https://openwall.s3.eu-north-1.amazonaws.com/covers/7325d40b-f323-46ef-967c-e5a50e3b23d5/f00d0967-c2a3-401a-8bcb-cd428a4fdb51.jpg</image:loc>
+      <image:title>Eskişehir&#39;de Gözlemlenebilir Kuşlar</image:title>
+      <image:caption>Eskişehir ili sınırlarında yer alan Kentpark, Kent Ormanı ve şehir merkezi ile Bilecik ili Bozüyük ilçesi ve çevre köylerinde yapılan gözlemler sonucu tespit edilmiştir. Kuş gözlemleri farklı mevsimlerde gerçekleştirilmiş olup, türlerin görülme sıklığı ve dağılımında mevsimsel değişkenlik gözlemlenebilir.</image:caption>
+    </image:image>
+  </url>
+</urlset>

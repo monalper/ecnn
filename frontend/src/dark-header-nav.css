@@ -1,0 +1,38 @@
+/* Apple-style header styles */
+
+/* Ensure backdrop blur works across browsers */
+@supports (backdrop-filter: blur(20px)) or (-webkit-backdrop-filter: blur(20px)) {
+  header {
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+  }
+}
+
+/* Safari-specific fixes */
+@supports (-webkit-backdrop-filter: blur(20px)) {
+  header {
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+  }
+}
+
+/* Smooth transitions for all header elements */
+header * {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Remove old header-bg class styles if they exist */
+.header-bg {
+  background: transparent !important;
+}
+
+/* Mobile menu glassmorphism effect */
+.mobile-menu {
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+}
+
+/* Ensure link underlines animate smoothly */
+header a span {
+  transform-origin: left;
+}

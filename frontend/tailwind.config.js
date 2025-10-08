@@ -1,0 +1,83 @@
+// ECNN - Kopya/frontend/tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+export default {
+  darkMode: 'class',
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        'brand-orange': '#ffffff', // Turuncu Nokta
+        'site-background': '#f8f9fa', // Genel sayfa arka planı
+        'text-main': '#334155', // Ana metin rengi (Koyu Gri/Siyah)
+        'text-muted': '#64748b', // Daha soluk metin rengi
+        'text-heading': '#1e293b', // Başlıklar için
+        'dawn-pink': '#ff9a8b', // Şafak pembesi
+        'warm-yellow': '#f7e377', // Sıcak sarı
+        'dark-primary': '#0F0F0F', // Ana karanlık tema rengi
+        'dark-secondary': '#2A2A2A', // İkincil karanlık tema rengi (kutular vs.)
+      },
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'], // Ana sans-serif font
+        serif: ['Lora', 'serif'], // Makale içeriği için serif font
+        mono: ['JetBrains Mono', 'monospace'], // Header nav için
+        logo: ['Inter', 'sans-serif'], // Logo için (Inter, kalın)
+        garamond: ['EB Garamond', 'serif'], // EB Garamond font için
+      },
+      letterSpacing: {
+        'tighter': '-.05em',
+        'tight': '-.025em',
+        'normal': '0',
+        'wide': '.025em',
+        'wider': '.05em',
+        'widest': '.1em',
+        'extrawidest': '.25em', // Header nav için
+      },
+      fontSize: {
+        '7xl': '5rem', // Örnek büyük font boyutu
+        '8xl': '6rem',
+      },
+      animation: {
+        'float': 'float 8s ease-in-out infinite',
+        'float-delayed': 'float 8s ease-in-out 4s infinite',
+        'gradient': 'gradient 8s ease-in-out infinite',
+        'scroll': 'scroll 2s ease-in-out infinite',
+        'scroll-horizontal': 'scroll-horizontal 15s linear infinite',
+      },
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-20px)' },
+        },
+        gradient: {
+          '0%': { 
+            backgroundPosition: '0% 50%',
+            opacity: '1'
+          },
+          '50%': { 
+            backgroundPosition: '100% 50%',
+            opacity: '0.8'
+          },
+          '100%': { 
+            backgroundPosition: '0% 50%',
+            opacity: '1'
+          }
+        },
+        scroll: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(8px)' },
+        },
+        'scroll-horizontal': {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-100%)' },
+        },
+      },
+    },
+  },
+  plugins: [
+    require('@tailwindcss/typography'),
+    require('@tailwindcss/aspect-ratio'), // Resim oranları için
+  ],
+}

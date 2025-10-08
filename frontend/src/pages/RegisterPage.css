@@ -1,0 +1,39 @@
+/* Animated Checkbox Styles */
+.animated-checkbox-container {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.animated-checkbox-container input {
+  display: none;
+}
+
+.animated-checkbox-container svg {
+  overflow: visible;
+}
+
+.animated-checkbox-path {
+  fill: none;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke-dasharray 0.5s ease, stroke-dashoffset 0.5s ease;
+  stroke-dasharray: 241 9999999;
+  stroke-dashoffset: 0;
+}
+
+/* Dark theme checkbox */
+.checkbox-dark .animated-checkbox-path {
+  stroke: white;
+}
+
+/* Light theme checkbox */
+.checkbox-light .animated-checkbox-path {
+  stroke: #1f2937;
+}
+
+.animated-checkbox-container input:checked ~ svg .animated-checkbox-path {
+  stroke-dasharray: 70.5096664428711 9999999;
+  stroke-dashoffset: -262.2723388671875;
+}
+

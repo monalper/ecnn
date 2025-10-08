@@ -1,0 +1,346 @@
+/* Editor Extension Styles */
+
+/* Drop Cap stili artık index.css dosyasında tanımlandı - site genelinde kullanılabilir */
+/* Editörde de aynı stili kullanmak için burada da tanımlayalım */
+.drop-cap {
+  font-size: 4rem;
+  line-height: 0.75;
+  float: left;
+  margin-right: 0.5rem;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: 600;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  color: #111827;
+  vertical-align: baseline;
+  padding-top: 0.1rem;
+}
+
+.dark .drop-cap {
+  color: #ffffff;
+}
+
+@media (max-width: 767px) {
+  .drop-cap {
+    font-size: 3.5rem;
+    margin-right: 0.4rem;
+    line-height: 0.7;
+  }
+}
+
+@media (min-width: 768px) {
+  .drop-cap {
+    font-size: 5rem;
+    margin-right: 0.6rem;
+    line-height: 0.75;
+  }
+}
+
+@media (min-width: 1024px) {
+  .drop-cap {
+    font-size: 6rem;
+    margin-right: 0.8rem;
+    line-height: 0.8;
+  }
+}
+
+/* Inline Code */
+span.inline-code {
+  background-color: #f3f4f6;
+  color: #dc2626;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875em;
+  border: 1px solid #e5e7eb;
+}
+
+.dark span.inline-code {
+  background-color: #374151;
+  color: #f87171;
+  border-color: #4b5563;
+}
+
+/* Math Blocks */
+.math-block {
+  text-align: center;
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.dark .math-block {
+  background-color: #1f2937;
+  border-color: #374151;
+}
+
+.math-inline {
+  background-color: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid #cbd5e1;
+}
+
+.dark .math-inline {
+  background-color: #334155;
+  border-color: #475569;
+}
+
+/* Chemistry Formula */
+.chemistry-formula {
+  text-align: center;
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: #f0f9ff;
+  border-radius: 8px;
+  border: 1px solid #0ea5e9;
+}
+
+.dark .chemistry-formula {
+  background-color: #0c4a6e;
+  border-color: #0284c7;
+}
+
+.formula-display {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #0369a1;
+  margin-bottom: 0.5rem;
+}
+
+.dark .formula-display {
+  color: #38bdf8;
+}
+
+.formula-name {
+  font-size: 0.875rem;
+  color: #64748b;
+  font-style: italic;
+}
+
+.dark .formula-name {
+  color: #94a3b8;
+}
+
+/* Scientific Notation */
+.scientific-notation {
+  font-family: 'Times New Roman', serif;
+  font-size: 1.1em;
+}
+
+.scientific-notation .coefficient {
+  font-weight: bold;
+}
+
+.scientific-notation .times {
+  margin: 0 4px;
+  color: #6b7280;
+}
+
+.scientific-notation .base {
+  font-weight: bold;
+}
+
+.scientific-notation .exponent {
+  font-size: 0.8em;
+  vertical-align: super;
+  color: #dc2626;
+}
+
+.scientific-notation .unit {
+  margin-left: 4px;
+  font-style: italic;
+  color: #059669;
+}
+
+/* Unit Converter */
+.unit-converter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background-color: #fef3c7;
+  border-radius: 6px;
+  border: 1px solid #f59e0b;
+  font-size: 0.9em;
+}
+
+.dark .unit-converter {
+  background-color: #451a03;
+  border-color: #d97706;
+}
+
+.unit-converter .conversion-arrow {
+  color: #d97706;
+  font-weight: bold;
+}
+
+.dark .unit-converter .conversion-arrow {
+  color: #fbbf24;
+}
+
+/* Countdown Timer */
+.countdown-timer {
+  text-align: center;
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  color: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.timer-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.timer-display {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.timer-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+}
+
+.timer-value {
+  font-size: 2rem;
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  min-width: 60px;
+  text-align: center;
+}
+
+.timer-label {
+  font-size: 0.875rem;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Code Block Copy Button */
+.code-block-wrapper {
+  position: relative;
+}
+
+.code-block-copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px 8px;
+  background-color: #374151;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.code-block-wrapper:hover .code-block-copy-btn {
+  opacity: 1;
+}
+
+.code-block-copy-btn:hover {
+  background-color: #4b5563;
+}
+
+/* Save Indicator */
+.save-indicator {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Font Preview */
+.font-preview {
+  font-family: inherit;
+}
+
+.font-preview.arial { font-family: Arial, sans-serif; }
+.font-preview.times { font-family: 'Times New Roman', serif; }
+.font-preview.courier { font-family: 'Courier New', monospace; }
+.font-preview.georgia { font-family: Georgia, serif; }
+.font-preview.verdana { font-family: Verdana, sans-serif; }
+.font-preview.trebuchet { font-family: 'Trebuchet MS', sans-serif; }
+.font-preview.impact { font-family: Impact, sans-serif; }
+.font-preview.comic { font-family: 'Comic Sans MS', cursive; }
+
+/* Code Block Line Numbers */
+pre[data-show-line-numbers="true"] {
+  counter-reset: line;
+  position: relative;
+}
+
+pre[data-show-line-numbers="true"] code {
+  display: block;
+  padding-left: 3.5em;
+  position: relative;
+}
+
+pre[data-show-line-numbers="true"] code::before {
+  content: counter(line);
+  counter-increment: line;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2.5em;
+  height: 1.5em;
+  line-height: 1.5em;
+  text-align: right;
+  color: #6b7280;
+  background: #f3f4f6;
+  border-right: 1px solid #e5e7eb;
+  padding-right: 0.5em;
+  font-size: 0.875em;
+  user-select: none;
+}
+
+.dark pre[data-show-line-numbers="true"] code::before {
+  color: #9ca3af;
+  background: #374151;
+  border-right-color: #4b5563;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .timer-display {
+    gap: 1rem;
+  }
+  
+  .timer-unit {
+    min-width: 60px;
+  }
+  
+  .timer-value {
+    font-size: 1.5rem;
+    padding: 0.25rem 0.5rem;
+  }
+  
+  .timer-label {
+    font-size: 0.75rem;
+  }
+} 
