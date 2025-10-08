@@ -46,8 +46,8 @@ const CommentArticleCard = ({ articleSlug }) => {
 
   if (error || !article) {
     return (
-      <div className="my-3 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
-        <p className="text-sm text-red-600 dark:text-red-400">
+      <div className="my-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+        <p className="text-sm text-blue-600 dark:text-blue-400">
           Makale yüklenirken bir hata oluştu.
         </p>
       </div>
