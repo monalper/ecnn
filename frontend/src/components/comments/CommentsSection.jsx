@@ -67,8 +67,8 @@ const CommentsSection = ({ articleSlug }) => {
         </div>
 
         {error && (
-          <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl sm:rounded-2xl">
-            <p className="text-xs sm:text-sm text-red-600 dark:text-red-400 font-medium text-center">{error}</p>
+          <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl sm:rounded-2xl">
+            <p className="text-xs sm:text-sm text-blue-600 dark:text-blue-400 font-medium text-center">{error}</p>
           </div>
         )}
 

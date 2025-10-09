@@ -57,13 +57,13 @@ const Banner = () => {
   const currentBanner = banners[currentBannerIndex];
 
   return (
-    <div 
-      className="w-full fixed top-16 left-0 right-0 z-40"
-      style={{
-        backgroundColor: currentBanner.backgroundColor,
-        color: currentBanner.textColor,
-        minHeight: '40px'
-      }}
+    <div
+  className="w-full fixed top-12 md:top-[44px] left-0 right-0 z-40"
+  style={{
+    backgroundColor: currentBanner.backgroundColor,
+    color: currentBanner.textColor,
+    minHeight: '40px'
+  }}
     >
       <div className="flex items-center justify-between px-4 py-3" style={{ fontSize: '20px', fontWeight: 'bold', fontFamily: 'Helvetica, Arial, sans-serif' }}>
         {/* Sol ok - birden fazla banner varsa göster */}

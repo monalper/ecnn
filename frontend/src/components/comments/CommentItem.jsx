@@ -113,7 +113,7 @@ const CommentItem = ({ comment, onCommentAdded, isReply = false, currentUserEmai
       // @username pattern'ini kırmızı renkte göster
       if (part.startsWith('@')) {
         return (
-          <span key={index} className="text-red-500 font-semibold">
+          <span key={index} className="text-blue-400 font-semibold">
             {part}
           </span>
         );
@@ -293,7 +293,7 @@ const CommentItem = ({ comment, onCommentAdded, isReply = false, currentUserEmai
                   <button
                     onClick={handleDelete}
                     disabled={isDeleting}
-                    className="flex-1 px-4 py-2.5 sm:py-2 text-sm font-medium text-white bg-red-500 rounded-xl hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="flex-1 px-4 py-2.5 sm:py-2 text-sm font-medium text-white bg-blue-500 rounded-xl hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     {isDeleting ? 'Siliniyor...' : 'Sil'}
                   </button>
