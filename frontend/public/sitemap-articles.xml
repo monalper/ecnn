@@ -2,14 +2,36 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://openwall.com.tr/articles/bir-objenin-anatomisi-abramovicin-sifir-ritmi</loc>
-    <lastmod>2025-08-16T22:53:48.296Z</lastmod>
+    <loc>https://openwall.com.tr/articles/e-mc-nedir</loc>
+    <lastmod>2025-10-07T09:44:21.937Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image>
-      <image:loc>https://openwall.s3.eu-north-1.amazonaws.com/covers/7325d40b-f323-46ef-967c-e5a50e3b23d5/3f4ad1a6-776c-41f3-964f-2c79c9c84dd6.webp</image:loc>
-      <image:title>Bir Objenin Anatomisi</image:title>
-      <image:caption>Çünkü artık Marina bir &quot;şey&quot; değil, yeniden bir insan olmuştu. Gözleri dolmuştu. Vücudu yaralı, yarı çıplak, üstü başı yırtılmış ve kana bulanmıştı. Ve insanlar kaçtı.</image:caption>
+      <image:loc>https://openwall.s3.eu-north-1.amazonaws.com/covers/7325d40b-f323-46ef-967c-e5a50e3b23d5/f6c6a800-6cef-4a01-ae73-e9a497d46325.jpg</image:loc>
+      <image:title>E = mc² nedir?</image:title>
+      <image:caption>Einstein’ın ortaya koyduğu bu ünlü formül, bize ne anlatıyor?</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://openwall.com.tr/articles/einsteinin-zamani-anlayisi</loc>
+    <lastmod>2025-10-07T12:01:06.641Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image>
+      <image:loc>https://openwall.s3.eu-north-1.amazonaws.com/covers/7325d40b-f323-46ef-967c-e5a50e3b23d5/fc885388-3632-470a-b876-588e93f3f926.jpg</image:loc>
+      <image:title>Einstein&#39;ın Zamanı Anlayışı</image:title>
+      <image:caption>Sabit bir şekilde aktığını sandığımız “zaman”, aslında illüzyon olan bir kavram mıdır?</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://openwall.com.tr/articles/can-the-universe-really-be-this-empty</loc>
+    <lastmod>2025-09-25T18:05:22.234Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image>
+      <image:loc>https://openwall.s3.eu-north-1.amazonaws.com/covers/7325d40b-f323-46ef-967c-e5a50e3b23d5/8152cd75-9051-4ae6-b8cf-543f45163019.jpg</image:loc>
+      <image:title>Evren Bu Kadar Boş Olabilabilir mi?</image:title>
+      <image:caption>Kozmik boşluk aslında enerji, madde ve gizemle dolu; algımızın ötesinde bir evrenin hikâyesi.</image:caption>
     </image:image>
   </url>
   <url>

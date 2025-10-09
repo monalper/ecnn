@@ -25,18 +25,6 @@
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://openwall.com.tr/dict/bilmek</loc>
-    <lastmod>1753276308140</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://openwall.com.tr/dict/bilmemek</loc>
-    <lastmod>1754369939877</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
     <loc>https://openwall.com.tr/dict/devirli</loc>
     <lastmod>1753248946141</lastmod>
     <changefreq>yearly</changefreq>
@@ -57,12 +45,6 @@
   <url>
     <loc>https://openwall.com.tr/dict/doğu</loc>
     <lastmod>1754328820681</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://openwall.com.tr/dict/erbezi</loc>
-    <lastmod>1757208410084</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
@@ -307,20 +289,8 @@
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://openwall.com.tr/dict/siktir etmek</loc>
-    <lastmod>1754369809279</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
     <loc>https://openwall.com.tr/dict/Snippet</loc>
     <lastmod>1753279299510</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://openwall.com.tr/dict/stresle başa çıkamamak</loc>
-    <lastmod>1753276026548</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>

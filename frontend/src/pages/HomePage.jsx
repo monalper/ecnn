@@ -168,7 +168,7 @@ const HomePage = () => {
       <HeroApple article={heroArticles?.[0]} fallbackVideo={heroVideo} />
 
       {/* Son Eklenen Makaleler Section */}
-      <div className="px-0 sm:px-12 lg:px-20 xl:px-32 py-8 sm:py-12">
+      <div id="main-content" className="px-0 sm:px-12 lg:px-20 xl:px-32 py-8 sm:py-12">
         <div className="mb-6 sm:mb-8 flex flex-row items-center gap-4 px-3 sm:px-0">
           <h2 className="text-[20px] font-bold text-slate-800 dark:text-white mb-0">
             Son Eklenen Makaleler
