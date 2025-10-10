@@ -18,7 +18,6 @@ const MetaTags = ({
   tags = [],
 }) => {
   const siteName = 'The Openwall';
-<<<<<<< HEAD
   const fullTitle = title ? `${title} | ${siteName}` : siteName; 
   const defaultDescription = 'The Openwall: Birçok konuda yazılmış denemeleri keşfedin.';
   const defaultImage = 'https://openwall.com.tr/og-images/default/og-default.jpg';
@@ -36,13 +35,6 @@ const MetaTags = ({
   const normalizedAuthorHandle = authorHandle 
     ? (authorHandle.startsWith('@') ? authorHandle : `@${authorHandle}`)
     : siteTwitterHandle;
-=======
-  const fullTitle = isHomepage ? title : (title ? `${title} | ${siteName}` : siteName);
-  const defaultDescription = 'The Openwall: Birçok konuda yazılmış denemeleri keşfedin.';
-  const defaultImage = 'https://openwall.com.tr/og-images/default/og-default.jpg'; // Güncellenmiş OG image yolu
-  const currentUrl = url || window.location.href;
-  const twitterHandle = '@openwall';
->>>>>>> 0591475273e82caaef1de2aa2f05a5beff01b793
 
   return (
     <Helmet>
