@@ -19,7 +19,7 @@
     { "source": "/robots.txt", "destination": "https://ecnn-backend.vercel.app/robots.txt" },
     { "source": "/sitemap.xml", "destination": "https://ecnn-backend.vercel.app/sitemap.xml" },
 
-    { "source": "/o/(.*)", "destination": "https://ecnn-backend.vercel.app/share/$1" },
+    { "source": "/share/(.*)", "destination": "https://ecnn-backend.vercel.app/share/$1" },
 
     { "source": "/(.*)", "destination": "/index.html" }
   ],
