@@ -4,65 +4,32 @@
     {
       "src": "package.json",
       "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
+      "config": { "distDir": "dist" }
+    }
+  ],
+  "redirects": [
+    {
+      "source": "https://openwall.com.tr/(.*)",
+      "destination": "https://www.openwall.com.tr/$1",
+      "permanent": true
     }
   ],
   "routes": [
     {
       "src": "/sitemap.xml",
       "dest": "https://ecnn-backend.vercel.app/sitemap.xml",
-      "headers": {
-        "Content-Type": "application/xml; charset=utf-8"
-      }
+      "headers": { "Content-Type": "application/xml; charset=utf-8" }
     },
     {
       "src": "/robots.txt",
       "dest": "https://ecnn-backend.vercel.app/robots.txt",
-      "headers": {
-        "Content-Type": "text/plain; charset=utf-8"
-      }
+      "headers": { "Content-Type": "text/plain; charset=utf-8" }
     },
-    {
-      "src": "/favicon.ico",
-      "dest": "/favicon.ico"
-    },
-    {
-      "src": "/site.webmanifest",
-      "dest": "/site.webmanifest"
-    },
-    {
-      "src": "/reklam.png",
-      "dest": "/reklam.png"
-    },
-    {
-      "src": "/assets/(.*)",
-      "dest": "/assets/$1"
-    },
-    {
-      "src": "/moon/(.*)",
-      "dest": "/moon/$1"
-    },
-    {
-      "src": "/APP.png",
-      "dest": "/APP.png"
-    },
-    {
-      "src": "/UPP.png",
-      "dest": "/UPP.png"
-    },
-    {
-      "src": "/og-images/default/og-default.jpg",
-      "dest": "/og-images/default/og-default.jpg"
-    },
-    {
-      "src": "/(.*\\.(png|jpg|jpeg|gif|webp|svg|ico|css|js|json|xml|txt|woff|woff2|ttf|eot))",
-      "dest": "/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
+
+    { "src": "^/o/(.*)$", "dest": "/api/o/$1" },
+
+    { "src": "/(.*\\.(png|jpg|jpeg|gif|webp|svg|ico|css|js|json|xml|txt|woff|woff2|ttf|eot))", "dest": "/$1" },
+
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
-} 
+}
