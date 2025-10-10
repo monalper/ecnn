@@ -1119,3 +1119,4 @@ html.dark .hero-grid-overlay-mobile {
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 .horizontal-scroll { scroll-snap-type: x mandatory; }
 .horizontal-scroll > * { scroll-snap-align: start; }
+

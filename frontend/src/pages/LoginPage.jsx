@@ -81,7 +81,7 @@ const LoginPage = () => {
             id="email"
             name="email"
             required
-            className={`w-full px-4 py-3 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-red-500 ${
+            className={`w-full px-4 py-3 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
               theme === 'dark' 
                 ? 'bg-gray-700 text-white placeholder-gray-400' 
                 : 'bg-gray-100 text-gray-900 placeholder-gray-500'
@@ -98,7 +98,7 @@ const LoginPage = () => {
             id="password"
             name="password"
             required
-            className={`w-full px-4 py-3 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-red-500 ${
+            className={`w-full px-4 py-3 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
               theme === 'dark' 
                 ? 'bg-gray-700 text-white placeholder-gray-400' 
                 : 'bg-gray-100 text-gray-900 placeholder-gray-500'
@@ -110,7 +110,7 @@ const LoginPage = () => {
         </div>
 
         {error && (
-          <div className="text-red-400 text-sm text-center bg-red-900/20 p-3 rounded-lg">
+          <div className="text-blue-400 text-sm text-center bg-blue-900/20 p-3 rounded-lg">
             {error}
           </div>
         )}
@@ -118,7 +118,7 @@ const LoginPage = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? 'Giriş yapılıyor...' : 'Giriş Yap'}
         </button>
