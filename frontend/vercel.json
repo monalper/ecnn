@@ -9,27 +9,28 @@
   ],
   "redirects": [
     {
-      "source": "https://openwall.com.tr/(.*)",
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "openwall.com.tr" }],
       "destination": "https://www.openwall.com.tr/$1",
       "permanent": true
     }
   ],
-  "routes": [
+  "rewrites": [
+    { "source": "/robots.txt", "destination": "https://ecnn-backend.vercel.app/robots.txt" },
+    { "source": "/sitemap.xml", "destination": "https://ecnn-backend.vercel.app/sitemap.xml" },
+
+    { "source": "/o/(.*)", "destination": "/api/o/$1" },
+
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "headers": [
     {
-      "src": "/sitemap.xml",
-      "dest": "https://ecnn-backend.vercel.app/sitemap.xml",
-      "headers": { "Content-Type": "application/xml; charset=utf-8" }
+      "source": "/robots.txt",
+      "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }]
     },
     {
-      "src": "/robots.txt",
-      "dest": "https://ecnn-backend.vercel.app/robots.txt",
-      "headers": { "Content-Type": "text/plain; charset=utf-8" }
-    },
-
-    { "src": "^/o/(.*)$", "dest": "/api/o/$1" },
-
-    { "src": "/(.*\\.(png|jpg|jpeg|gif|webp|svg|ico|css|js|json|xml|txt|woff|woff2|ttf|eot))", "dest": "/$1" },
-
-    { "src": "/(.*)", "dest": "/index.html" }
+      "source": "/sitemap.xml",
+      "headers": [{ "key": "Content-Type", "value": "application/xml; charset=utf-8" }]
+    }
   ]
 }
