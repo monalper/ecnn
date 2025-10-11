@@ -93,7 +93,7 @@ const getVideoItemById = async (req, res) => {
 // Create new video item
 const createVideoItem = async (req, res) => {
   try {
-    const { title, description, videoKey, videoUrl, thumbnailKey, thumbnailUrl, duration, subtitles } = req.body;
+    const { title, description, videoKey, videoUrl, thumbnailKey, thumbnailUrl, duration, subtitles, isOpenwallFilm } = req.body;
     const userId = req.user.userId;
 
     if (!title || !videoKey || !videoUrl) {
@@ -120,6 +120,7 @@ const createVideoItem = async (req, res) => {
       duration: duration || 0,
       subtitles: subtitles || [],
       likeCount: 0,
+      isOpenwallFilm: typeof isOpenwallFilm === 'boolean' ? isOpenwallFilm : false,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       createdBy: userId
@@ -144,7 +145,7 @@ const createVideoItem = async (req, res) => {
 const updateVideoItem = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, videoKey, videoUrl, thumbnailKey, thumbnailUrl, duration, subtitles } = req.body;
+    const { title, description, videoKey, videoUrl, thumbnailKey, thumbnailUrl, duration, subtitles, isOpenwallFilm } = req.body;
 
     // Başlık uzunluğu kontrolü
     if (title !== undefined && title.length > 100) {
@@ -162,6 +163,7 @@ const updateVideoItem = async (req, res) => {
     if (thumbnailUrl !== undefined) updates.thumbnailUrl = thumbnailUrl;
     if (duration !== undefined) updates.duration = duration;
     if (subtitles !== undefined) updates.subtitles = subtitles;
+    if (typeof isOpenwallFilm === 'boolean') updates.isOpenwallFilm = isOpenwallFilm;
 
     const updatedItem = await VideoModel.update(id, updates);
     res.json(updatedItem);
@@ -602,9 +604,55 @@ const searchVideos = async (req, res) => {
   }
 };
 
+// Create new video item from direct video link
+const createVideoItemByLink = async (req, res) => {
+  try {
+    const { title, description, videoUrl, thumbnailKey, thumbnailUrl, duration, subtitles, isOpenwallFilm } = req.body;
+    const userId = req.user.userId;
+
+    if (!title || !videoUrl) {
+      return res.status(400).json({ 
+        message: 'Başlık ve video linki (videoUrl) gereklidir.' 
+      });
+    }
+    // Başlık uzunluğu kontrolü
+    if (title.length > 100) {
+      return res.status(400).json({ 
+        message: 'Başlık 100 karakterden uzun olamaz.' 
+      });
+    }
+    const videoItem = {
+      id: uuidv4(),
+      title,
+      description: description || '',
+      videoUrl,
+      thumbnailKey: thumbnailKey || '',
+      thumbnailUrl: thumbnailUrl || '',
+      duration: duration || 0,
+      subtitles: subtitles || [],
+      likeCount: 0,
+      isOpenwallFilm: typeof isOpenwallFilm === 'boolean' ? isOpenwallFilm : false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      createdBy: userId
+    };
+    const createdItem = await VideoModel.create(videoItem);
+    res.status(201).json(createdItem);
+  } catch (error) {
+    console.error('Video item creation (by link) error:', error);
+    if (error.name === 'ResourceNotFoundException') {
+      return res.status(500).json({ 
+        message: 'Video tablosu bulunamadı. Lütfen DynamoDB tablosunu oluşturun.' 
+      });
+    }
+    res.status(500).json({ message: 'Video (link ile) eklenirken hata oluştu.' });
+  }
+};
+
 module.exports = {
   getAllVideoItems,
   getVideoItemById,
+  createVideoItemByLink,
   createVideoItem,
   updateVideoItem,
   deleteVideoItem,

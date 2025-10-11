@@ -36,6 +36,7 @@
     "framer-motion": "^12.23.22",
     "fuse.js": "^7.1.0",
     "gsap": "^3.13.0",
+    "hls.js": "^1.6.13",
     "imagemin": "^9.0.1",
     "imagemin-mozjpeg": "^10.0.0",
     "imagemin-pngquant": "^10.0.0",

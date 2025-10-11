@@ -26,7 +26,8 @@ const AdminVideosPage = () => {
     thumbnailUrl: '',
     thumbnailKey: '',
     duration: '',
-    subtitles: []
+    subtitles: [],
+    isOpenwallFilm: false
   });
 
   // Subtitle management state
@@ -398,15 +399,30 @@ const AdminVideosPage = () => {
         thumbnailKey,
         thumbnailUrl,
         duration: duration,
-        subtitles: formData.subtitles
+        subtitles: formData.subtitles,
+        isOpenwallFilm: !!formData.isOpenwallFilm
       };
 
       if (editingItem) {
         // Update existing item
         await api.put(`/videos/${editingItem.id}`, videoData);
       } else {
-        // Create new item
-        await api.post('/videos', videoData);
+        if (formData.videoFile) {
+          // Dosya ile ekleme (mevcut sistem)
+          await api.post('/videos', videoData);
+        } else if (formData.videoUrl) {
+          // Link ile ekleme
+          await api.post('/videos/link', {
+            title: formData.title.trim(),
+            description: formData.description.trim(),
+            videoUrl: formData.videoUrl,
+            thumbnailKey,
+            thumbnailUrl,
+            duration: duration,
+            subtitles: formData.subtitles,
+            isOpenwallFilm: !!formData.isOpenwallFilm
+          });
+        }
       }
 
       // Reset form and close modal
@@ -437,7 +453,8 @@ const AdminVideosPage = () => {
       thumbnailUrl: item.thumbnailUrl,
       thumbnailKey: item.thumbnailKey,
       duration: item.duration ? item.duration.toString() : '',
-      subtitles: item.subtitles || []
+      subtitles: item.subtitles || [],
+      isOpenwallFilm: !!item.isOpenwallFilm
     });
     setShowAddModal(true);
   };
@@ -467,7 +484,8 @@ const AdminVideosPage = () => {
       thumbnailUrl: '',
       thumbnailKey: '',
       duration: '',
-      subtitles: []
+      subtitles: [],
+      isOpenwallFilm: false
     });
     setSubtitleFile(null);
     setSubtitleLanguage('tr');
@@ -565,6 +583,12 @@ const AdminVideosPage = () => {
                     {formatDuration(item.duration)}
                   </div>
                 )}
+                {/* Film Koleksiyonu etiketi */}
+                {item.isOpenwallFilm && (
+                  <div className="absolute top-2 left-2 bg-orange-600 text-white text-xs px-3 py-1 rounded-full shadow font-semibold">
+                    Film Koleksiyonu
+                  </div>
+                )}
               </div>
               
               {/* Content */}
@@ -577,7 +601,26 @@ const AdminVideosPage = () => {
                     {item.description}
                   </p>
                 )}
-                
+                {/* Openwall Film Checkbox */}
+                <div className="flex items-center mb-2">
+                  <input
+                    type="checkbox"
+                    checked={!!item.isOpenwallFilm}
+                    onChange={async (e) => {
+                      try {
+                        await api.put(`/videos/${item.id}`, { isOpenwallFilm: e.target.checked });
+                        setVideoItems((prev) => prev.map((v) => v.id === item.id ? { ...v, isOpenwallFilm: e.target.checked } : v));
+                      } catch (err) {
+                        alert('Film koleksiyonu güncellenemedi!');
+                      }
+                    }}
+                    className="mr-2"
+                    id={`openwall-film-checkbox-${item.id}`}
+                  />
+                  <label htmlFor={`openwall-film-checkbox-${item.id}`} className="text-xs text-gray-700 dark:text-gray-300 select-none cursor-pointer">
+                    Openwall Film olarak işaretle
+                  </label>
+                </div>
                 {/* Actions */}
                 <div className="flex gap-2">
                   <button
@@ -638,7 +681,6 @@ const AdminVideosPage = () => {
                 </button>
               </div>
             </div>
-
             {/* Modal Body */}
             <div className="flex">
               {/* Left Side - Video Preview */}
@@ -647,7 +689,19 @@ const AdminVideosPage = () => {
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                     Video Önizleme
                   </h3>
-                  
+                  {/* Video Linki Alanı */}
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Video Linki (alternatif)</label>
+                    <input
+                      type="text"
+                      value={formData.videoUrl}
+                      onChange={e => setFormData(prev => ({ ...prev, videoUrl: e.target.value, videoFile: null }))}
+                      placeholder="https://...mp4"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-orange focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors"
+                      disabled={!!formData.videoFile}
+                    />
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Video dosyası yüklemek istemiyorsanız buraya bir video linki yapıştırabilirsiniz.</p>
+                  </div>
                   {/* Video Upload Area */}
                   {!formData.videoUrl && !formData.videoFile && (
                     <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center hover:border-brand-orange transition-colors">
@@ -662,10 +716,11 @@ const AdminVideosPage = () => {
                         onChange={handleVideoFileChange}
                         className="hidden"
                         id="video-upload"
+                        disabled={!!formData.videoUrl}
                       />
                       <label
                         htmlFor="video-upload"
-                        className="inline-flex items-center px-4 py-2 bg-brand-orange text-white rounded-lg hover:bg-orange-600 transition-colors cursor-pointer"
+                        className={`inline-flex items-center px-4 py-2 bg-brand-orange text-white rounded-lg hover:bg-orange-600 transition-colors cursor-pointer ${formData.videoUrl ? 'opacity-50 pointer-events-none' : ''}`}
                       >
                         <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -703,6 +758,19 @@ const AdminVideosPage = () => {
               {/* Right Side - Form */}
               <div className="w-1/2 p-6">
                 <form onSubmit={handleSubmit} className="space-y-6">
+  {/* Openwall Film Checkbox */}
+  <div className="flex items-center mb-4">
+    <input
+      type="checkbox"
+      checked={!!formData.isOpenwallFilm}
+      onChange={e => setFormData(prev => ({ ...prev, isOpenwallFilm: e.target.checked }))}
+      id="modal-openwall-film-checkbox"
+      className="mr-2"
+    />
+    <label htmlFor="modal-openwall-film-checkbox" className="text-sm text-gray-700 dark:text-gray-300 select-none cursor-pointer">
+      Openwall Film olarak işaretle
+    </label>
+  </div>
                   {/* Basic Information */}
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
@@ -754,16 +822,17 @@ const AdminVideosPage = () => {
                     {/* Video Upload */}
                     <div className="mb-4">
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Video Dosyası *
+                        Video Dosyası
                       </label>
                       <input
                         type="file"
                         accept="video/*"
                         onChange={handleVideoFileChange}
                         className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-orange focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-orange file:text-white hover:file:bg-orange-600"
+                        disabled={!!formData.videoUrl}
                       />
                       <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                        MP4, WebM, OGV • Sınırsız boyut
+                        MP4, WebM, OGV • Sınırsız boyut. Eğer yukarıda video linki girerseniz dosya yükleyemezsiniz.
                       </p>
                     </div>
 

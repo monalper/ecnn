@@ -53,10 +53,10 @@ const AdvertisementCard = ({ className = '' }) => {
   );
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={`cursor-pointer hover:opacity-80 transition-opacity rounded-none md:rounded-lg ${className}`}>
       {/* 16:9 Aspect Ratio Container - exactly like VideoCard */}
       <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-        <div className="absolute inset-0 bg-black rounded-lg overflow-hidden">
+        <div className="absolute inset-0 bg-black rounded-none md:rounded-lg overflow-hidden">
           {/* Always show the image - it should be visible */}
           <img
             key={currentImagePath}
@@ -78,7 +78,6 @@ const AdvertisementCard = ({ className = '' }) => {
               minHeight: '100%'
             }}
           />
-          
           {/* Loading state overlay */}
           {!imageLoaded && !imageError && (
             <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
@@ -88,7 +87,6 @@ const AdvertisementCard = ({ className = '' }) => {
               </div>
             </div>
           )}
-
           {/* Error fallback - show gradient background with icon */}
           {imageError && (
             <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 z-20">
@@ -101,13 +99,12 @@ const AdvertisementCard = ({ className = '' }) => {
           )}
         </div>
       </div>
-
-      {/* Advertisement info - exactly like video info */}
-      <div className="mt-4">
-        <h3 className="font-bold text-gray-900 dark:text-white text-base line-clamp-2 leading-tight">
+      {/* Advertisement info - exactly like VideoCard mobil başlık ve alt açıklama */}
+      <div className="px-4 md:px-0 mt-4">
+        <h3 className="text-[20px] font-bold text-gray-900 dark:text-white line-clamp-2 leading-tight">
           Reklam
         </h3>
-        <p className="text-gray-500 dark:text-gray-400 text-sm mt-2 opacity-50">
+        <p className="text-[17px] text-gray-400 dark:text-gray-500 mt-2 font-medium">
           Openwall tarafından
         </p>
       </div>
@@ -115,4 +112,4 @@ const AdvertisementCard = ({ className = '' }) => {
   );
 };
 
-export default AdvertisementCard; 
+export default AdvertisementCard;

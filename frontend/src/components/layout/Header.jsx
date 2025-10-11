@@ -236,7 +236,16 @@ const Header = ({ scrollPercent, customTitle }) => {
         {/* Mobil Action Group (Hamburger Menu, Search, User/Login) - Orta Sağ ve Sağ */}
         <div className={`flex items-center gap-3 md:hidden order-2 ml-auto`}> 
 
-            {/* Mobile Menu Button - Aksiyonların solunda (order-2 içinde ilk eleman) */}
+            {/* Mobil Tema Seçici - Hamburger'ın solunda */}
+            <button
+                onClick={toggleTheme}
+                className="flex items-center justify-center w-8 h-8 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                aria-label="Tema değiştir"
+            >
+                {theme === 'dark' ? (<LuSun className="w-4 h-4" />) : (<LuMoon className="w-4 h-4" />)}
+            </button>
+
+            {/* Mobile Menu Button - Hamburger */}
             <button
                 onClick={toggleMobileMenu}
                 className={`p-1.5 transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white`} 
@@ -298,7 +307,8 @@ const Header = ({ scrollPercent, customTitle }) => {
                     )}
                 </div>
             ) : (
-                // Kullanıcı Giriş Yapmamışsa - Giriş Yap Butonu (Masaüstü stilini aldı)
+                // Kullanıcı Giriş Yapmamışsa - Giriş Yap Butonu ve Tema Seçici
+                <>
                 <Link
                     to="/login"
                     onClick={() => setIsMobileMenuOpen(false)}
@@ -315,6 +325,7 @@ const Header = ({ scrollPercent, customTitle }) => {
                 >
                     Giriş
                 </Link>
+                </>
             )}
         </div>
         

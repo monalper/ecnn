@@ -11,6 +11,8 @@ router.post('/:id/like', verifyToken, videoController.toggleVideoLike);
 
 // Admin routes (authentication and admin role required)
 router.post('/', verifyToken, isAdmin, videoController.createVideoItem);
+// Yeni: Admin video linkten ekleme
+router.post('/link', verifyToken, isAdmin, videoController.createVideoItemByLink);
 router.put('/:id', verifyToken, isAdmin, videoController.updateVideoItem);
 router.delete('/:id', verifyToken, isAdmin, videoController.deleteVideoItem);
 

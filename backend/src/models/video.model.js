@@ -18,6 +18,7 @@ class VideoModel {
         duration: videoItem.duration,
         subtitles: videoItem.subtitles || [],
         likeCount: videoItem.likeCount || 0,
+        isOpenwallFilm: typeof videoItem.isOpenwallFilm === 'boolean' ? videoItem.isOpenwallFilm : false,
         createdAt: videoItem.createdAt,
         updatedAt: videoItem.updatedAt,
         createdBy: videoItem.createdBy
@@ -56,6 +57,7 @@ class VideoModel {
     const updatedItem = {
       ...existingItem,
       ...updates,
+      isOpenwallFilm: typeof updates.isOpenwallFilm === 'boolean' ? updates.isOpenwallFilm : (existingItem.isOpenwallFilm || false),
       updatedAt: new Date().toISOString()
     };
 

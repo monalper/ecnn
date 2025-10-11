@@ -109,8 +109,14 @@ const VideoCard = ({
     if (!showUploadTime || !video.createdAt) return null;
     
     const timeText = formatUploadTime(video.createdAt);
+    if (video.isOpenwallFilm) {
+      return (
+        <p className="text-[17px] text-gray-400 dark:text-gray-500 mt-2 font-medium">
+          {timeText} · <span className="text-orange-600 dark:text-orange-400">Film Koleksiyonu</span>
+        </p>
+      );
+    }
     const hasSubtitles = (video.subtitles && video.subtitles.length > 0) || video.subtitleUrl;
-    
     if (!hasSubtitles) {
       return (
         <p className="text-[17px] text-gray-400 dark:text-gray-500 mt-2 font-medium">
@@ -118,7 +124,6 @@ const VideoCard = ({
         </p>
       );
     }
-    
     return (
       <p className="text-[17px] text-gray-400 dark:text-gray-500 mt-2 font-medium">
         {timeText} · <span className="text-blue-600 dark:text-blue-400">Altyazılı</span>
@@ -250,14 +255,15 @@ const VideoCard = ({
               loading="lazy"
             />
           )}
+          
+          {/* Duration badge */}
+          {showDuration && video.duration && (
+            <div className="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white text-xs px-2 py-1 rounded">
+              {formatDuration(video.duration)}
+            </div>
+          )}
+
         </div>
-        
-        {/* Duration badge */}
-        {showDuration && video.duration && (
-          <div className="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white text-xs px-2 py-1 rounded">
-            {formatDuration(video.duration)}
-          </div>
-        )}
       </div>
 
       {/* Video info */}
