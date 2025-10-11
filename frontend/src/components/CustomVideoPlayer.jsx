@@ -666,10 +666,11 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
   };
 
   const formatTime = (time) => {
-    if (!time || isNaN(time)) return '0:00';
-    const minutes = Math.floor(time / 60);
+    if (!time || isNaN(time)) return '00:00:00';
+    const hours = Math.floor(time / 3600);
+    const minutes = Math.floor((time % 3600) / 60);
     const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
   const handleMouseMove = (event) => {
@@ -1155,7 +1156,7 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
       {/* Controls overlay */}
       <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/40 via-black/20 to-transparent transition-all duration-500 z-10 ${showControls ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         {/* Progress bar */}
-        <div className="px-6 pt-4 pb-2">
+        <div className="px-6 py-0">
           <div 
             className="relative w-full h-1 bg-white/10 rounded-full cursor-pointer group"
             onClick={handleSeek}
@@ -1167,7 +1168,7 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
               className="absolute top-0 left-0 h-full rounded-full transition-all duration-100 ease-out"
               style={{ 
                 width: `${(currentTime / duration) * 100}%`,
-                background: 'linear-gradient(to right, #26a7de, #26a7de)'
+                background: 'linear-gradient(to right, #f5f5f7,rgb(210, 242, 255))'
               }}
             />
             
@@ -1253,13 +1254,13 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
                 onMouseEnter={() => setShowVolumeSlider(true)}
                 onMouseLeave={() => setShowVolumeSlider(false)}
               >
-                <div className="relative w-full h-2 bg-white/10 rounded-full">
+                <div className="relative w-full h-1 bg-white/10 rounded-full">
                   {/* Volume fill */}
                   <div 
                     className="absolute top-0 left-0 h-full rounded-full transition-all duration-200"
                     style={{ 
                       width: `${(isMuted ? 0 : volume) * 100}%`,
-                      backgroundColor: '#ffffff'
+                      background: 'linear-gradient(to right, #f5f5f7, #f5f5f7)'
                     }}
                   />
                   
