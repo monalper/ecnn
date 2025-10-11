@@ -1147,9 +1147,7 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
             onClick={togglePlay}
             className="transition-all duration-300"
           >
-            <svg className="w-16 h-16 text-white transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M8 5v14l11-7z"/>
-            </svg>
+            <img src="/playerlogo.svg" alt="Play" className="w-24 h-16 object-contain transition-all duration-300" />
           </button>
         </div>
       )}
@@ -1159,7 +1157,7 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
         {/* Progress bar */}
         <div className="px-6 pt-4 pb-2">
           <div 
-            className="relative w-full h-2 bg-white/10 rounded-full cursor-pointer group"
+            className="relative w-full h-1 bg-white/10 rounded-full cursor-pointer group"
             onClick={handleSeek}
             onMouseMove={handleProgressHover}
             onMouseLeave={handleProgressLeave}
@@ -1169,7 +1167,7 @@ const CustomVideoPlayer = ({ src, poster, title, onTimeUpdate, onEnded, subtitle
               className="absolute top-0 left-0 h-full rounded-full transition-all duration-100 ease-out"
               style={{ 
                 width: `${(currentTime / duration) * 100}%`,
-                backgroundColor: '#ffffff'
+                background: 'linear-gradient(to right, #26a7de, #26a7de)'
               }}
             />
             
