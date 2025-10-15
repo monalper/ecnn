@@ -97,7 +97,7 @@ const Footer = () => {
                 GitHub
               </a>
               <a 
-                href="https://x.com" 
+                href="https://x.com/openwallcomtr" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className={`block ${isDark ? 'text-[#a1a1a6] hover:text-white' : 'text-[#424245] hover:text-[#06c]'} text-[12px] leading-relaxed transition-colors duration-200`}
