@@ -13,7 +13,6 @@ import { Link } from 'react-router-dom';
 import heroVideo from '../assets/hero.mp4';
 import HeroApple from '../components/hero/HeroApple';
 
-
 const HomePage = () => {
   const [latestArticles, setLatestArticles] = useState([]);
   const [featuredArticles, setFeaturedArticles] = useState([]);
@@ -28,21 +27,16 @@ const HomePage = () => {
       setLoading(true);
       setError(null);
       try {
-        // Paralel API çağrıları ile hızlandırma
         const [allArticlesResponse, featuredResponse, videosResponse] = await Promise.all([
-          getCached('/articles', {}, 2 * 60 * 1000), // 2 dakika cache
-          getCached('/articles/highlighted', {}, 5 * 60 * 1000), // 5 dakika cache
-          getCached('/videos', {}, 10 * 60 * 1000) // 10 dakika cache
+          getCached('/articles', {}, 2 * 60 * 1000),
+          getCached('/articles/highlighted', {}, 5 * 60 * 1000),
+          getCached('/videos', {}, 10 * 60 * 1000)
         ]);
 
         const allArticles = allArticlesResponse.data;
-        
         if (allArticles.length > 0) {
-          // Hero carousel için ilk 5 makaleyi al (veya varsa)
           const heroCount = Math.min(5, allArticles.length);
           setHeroArticles(allArticles.slice(0, heroCount));
-          
-          // Son eklenen 6 makaleyi al
           setLatestArticles(allArticles.slice(0, 6));
         }
 
@@ -50,7 +44,6 @@ const HomePage = () => {
 
         const allVideos = videosResponse.data;
         if (allVideos.length > 0) {
-          // Videoları oluşturulma tarihine göre sırala
           const sortedVideos = allVideos.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
           setLatestVideos(sortedVideos.slice(0, 6));
         }
@@ -68,44 +61,34 @@ const HomePage = () => {
     fetchArticles();
   }, []);
 
-  // Auto-rotate hero carousel every 7 seconds
   useEffect(() => {
     if (heroArticles.length <= 1) return;
 
     const interval = setInterval(() => {
       setCurrentHeroIndex((prevIndex) => (prevIndex + 1) % heroArticles.length);
-    }, 7000); // 7 seconds
+    }, 7000);
 
     return () => clearInterval(interval);
   }, [heroArticles.length]);
 
-  // Split "openwall" text into individual letters for animation
   const heroText = "openwall";
   const letters = heroText.split('');
 
-  // Calculate reading time based on content length
   const calculateReadingTime = (content) => {
     if (!content) return 0;
-    const wordsPerMinute = 200; // Average reading speed
+    const wordsPerMinute = 200;
     const wordCount = content.split(/\s+/).length;
     return Math.ceil(wordCount / wordsPerMinute);
   };
 
-  // Format date for display
   const formatDate = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
-    return date.toLocaleDateString('tr-TR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
+    return date.toLocaleDateString('tr-TR', { year: 'numeric', month: 'long', day: 'numeric' });
   };
 
-  // Get time ago text
   const getTimeAgo = (dateString) => {
     if (!dateString) return '';
-    
     const now = new Date();
     const publishedDate = new Date(dateString);
     const diffInMs = now - publishedDate;
@@ -114,17 +97,11 @@ const HomePage = () => {
     const diffInMonths = Math.floor(diffInDays / 30);
     const diffInYears = Math.floor(diffInDays / 365);
 
-    if (diffInYears > 0) {
-      return `${diffInYears} yıl önce`;
-    } else if (diffInMonths > 0) {
-      return `${diffInMonths} ay önce`;
-    } else if (diffInWeeks > 0) {
-      return `${diffInWeeks} hafta önce`;
-    } else if (diffInDays > 0) {
-      return `${diffInDays} gün önce`;
-    } else {
-      return 'Bugün';
-    }
+    if (diffInYears > 0) return `${diffInYears} yıl önce`;
+    else if (diffInMonths > 0) return `${diffInMonths} ay önce`;
+    else if (diffInWeeks > 0) return `${diffInWeeks} hafta önce`;
+    else if (diffInDays > 0) return `${diffInDays} gün önce`;
+    else return 'Bugün';
   };
 
   if (loading) {
@@ -143,11 +120,10 @@ const HomePage = () => {
       </div>
     );
   }
-  
-  // Son yazılan makale için dinamik description oluştur
+
   const getDynamicDescription = () => {
     if (latestArticles.length > 0) {
-      const latestArticle = latestArticles[0]; // En son makale (zaten sıralı geliyor)
+      const latestArticle = latestArticles[0];
       return `Yazılmış son makale olan **${latestArticle.title}**'ye göz atın.`;
     }
     return "Openwall, teknoloji, felsefe, sanat, spor, siyaset, ekonomi, sağlık, eğitim, çevre, sosyoloji, psikoloji, din, müzik, sinema, seyahat ve yemek gibi çeşitli alanlarda kaliteli içerikler sunan kapsamlı bir platformdur.";
@@ -164,18 +140,18 @@ const HomePage = () => {
       />
       <SchemaMarkup type="WebSite" />
       <SchemaMarkup type="Organization" />
-      
+
       <HeroApple article={heroArticles?.[0]} fallbackVideo={heroVideo} />
 
       {/* Son Eklenen Makaleler Section */}
       <div id="main-content" className="px-0 sm:px-12 lg:px-20 xl:px-32 py-8 sm:py-12">
         <div className="mb-6 sm:mb-8 flex flex-row items-center gap-4 px-3 sm:px-0">
-          <h2 className="text-[20px] font-bold text-slate-800 dark:text-white mb-0">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-800 dark:text-white mb-0">
             Son Eklenen Makaleler
           </h2>
           <Link 
             to="/articles" 
-            className="text-[20px] text-slate-500 dark:text-slate-500 font-bold hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
+            className="text-sm sm:text-base md:text-lg text-slate-500 dark:text-slate-500 font-bold hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
           >
             Tüm makaleleri gör
           </Link>
@@ -203,12 +179,12 @@ const HomePage = () => {
       {/* Son Eklenen Videolar Section */}
       <div className="px-0 sm:px-12 lg:px-20 xl:px-32 py-8 sm:py-12">
         <div className="mb-6 sm:mb-8 flex flex-row items-center gap-4 px-3 sm:px-0">
-          <h2 className="text-[20px] font-bold text-slate-800 dark:text-white mb-0">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-800 dark:text-white mb-0">
             Son Eklenen Videolar
           </h2>
           <Link 
             to="/videos" 
-            className="text-[20px] text-slate-500 dark:text-slate-500 font-bold hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
+            className="text-sm sm:text-base md:text-lg text-slate-500 dark:text-slate-500 font-bold hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
           >
             Tüm videoları gör
           </Link>
@@ -243,12 +219,12 @@ const HomePage = () => {
       {/* Astronomi Section */}
       <div className="px-0 sm:px-12 lg:px-20 xl:px-32 py-8 sm:py-12">
         <div className="mb-6 sm:mb-8 flex flex-row items-center gap-4 px-3 sm:px-0">
-          <h2 className="text-[20px] font-bold text-slate-800 dark:text-white mb-0">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-800 dark:text-white mb-0">
             Astronomi
           </h2>
           <Link 
             to="/apod" 
-            className="text-[20px] text-slate-500 dark:text-slate-500 font-bold hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
+            className="text-sm sm:text-base md:text-lg text-slate-500 dark:text-slate-500 font-bold hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
           >
             Tüm astronomi verilerini gör
           </Link>
