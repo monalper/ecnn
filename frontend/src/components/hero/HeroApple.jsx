@@ -1,12 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function HeroMinimalApple({ dark = true }) {
   const { scrollY } = useScroll();
-
   const scale = useTransform(scrollY, [0, 200], [1, 0.9]);
   const borderRadius = useTransform(scrollY, [0, 200], ["0%", "20px"]);
   const top = useTransform(scrollY, [0, 200], ["0vh", "0.5vh"]);
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  // 📱 Cihaz boyutuna göre SVG seçimi
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const heroSvg = isMobile ? "/herobaslikmobil.svg" : "/herobaslik.svg";
 
   return (
     <motion.section
@@ -39,9 +52,9 @@ export default function HeroMinimalApple({ dark = true }) {
         }}
       />
 
-      {/* 🖼️ Ortalanmış SVG başlık */}
+      {/* 🖼️ Ortalanmış SVG başlık (mobil/masaüstü farkı dahil) */}
       <img
-        src="/herobaslik.svg"
+        src={heroSvg}
         alt="Hero Başlık"
         className="hero-title-svg"
       />
@@ -66,7 +79,7 @@ export default function HeroMinimalApple({ dark = true }) {
           font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
           transition: background-color 0.5s ease, color 0.5s ease;
           overflow: hidden;
-          padding: 0 20px;
+          padding: 0;
           position: relative;
         }
 
@@ -106,7 +119,10 @@ export default function HeroMinimalApple({ dark = true }) {
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          width: clamp(180px, 40vw, 500px);
+          width: 100%;
+          height: auto;
+          max-width: none;
+          object-fit: cover;
           mix-blend-mode: difference;
           z-index: 2;
           pointer-events: none;
