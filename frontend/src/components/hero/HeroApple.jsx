@@ -1,4 +1,3 @@
-// src/components/hero/HeroMinimalApple.jsx
 import React from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
@@ -20,6 +19,7 @@ export default function HeroMinimalApple({ dark = true }) {
       }}
       className={`hero-apple-minimal ${dark ? "dark" : "light"}`}
     >
+      {/* 🎬 Arka plan videosu */}
       <video
         autoPlay
         loop
@@ -38,6 +38,14 @@ export default function HeroMinimalApple({ dark = true }) {
           pointerEvents: "none",
         }}
       />
+
+      {/* 🖼️ Ortalanmış SVG başlık */}
+      <img
+        src="/herobaslik.svg"
+        alt="Hero Başlık"
+        className="hero-title-svg"
+      />
+
       <div className="hero-inner"></div>
 
       <style>{`
@@ -50,7 +58,7 @@ export default function HeroMinimalApple({ dark = true }) {
 
         .hero-apple-minimal {
           width: 100%;
-          height: 50vh; /* Mobilde ekranın yarısı */
+          height: 50vh;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -62,13 +70,13 @@ export default function HeroMinimalApple({ dark = true }) {
           position: relative;
         }
 
-        @media (min-width: 640px) { /* sm ve üstü */
+        @media (min-width: 640px) {
           .hero-apple-minimal {
             height: 80vh;
           }
         }
 
-        @media (min-width: 1024px) { /* lg ve üstü */
+        @media (min-width: 1024px) {
           .hero-apple-minimal {
             height: 100vh;
           }
@@ -90,6 +98,19 @@ export default function HeroMinimalApple({ dark = true }) {
           flex-direction: column;
           align-items: center;
           gap: 1.2rem;
+        }
+
+        /* 🌀 Hero başlık SVG stilleri */
+        .hero-title-svg {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: clamp(180px, 40vw, 500px);
+          mix-blend-mode: difference;
+          z-index: 2;
+          pointer-events: none;
+          opacity: 0.9;
         }
       `}</style>
     </motion.section>
