@@ -111,7 +111,7 @@ const VideoCard = ({
     const timeText = formatUploadTime(video.createdAt);
     if (video.isOpenwallFilm) {
       return (
-        <p className="text-[17px] text-gray-400 dark:text-gray-500 mt-2 font-medium">
+        <p className="text-[19px] text-gray-400 dark:text-gray-500 mt-2 font-bold">
           {timeText} · <span className="text-orange-600 dark:text-orange-400">Film Koleksiyonu</span>
         </p>
       );
@@ -119,13 +119,13 @@ const VideoCard = ({
     const hasSubtitles = (video.subtitles && video.subtitles.length > 0) || video.subtitleUrl;
     if (!hasSubtitles) {
       return (
-        <p className="text-[17px] text-gray-400 dark:text-gray-500 mt-2 font-medium">
+        <p className="text-[19px] text-gray-400 dark:text-gray-500 mt-2 font-bold">
           {timeText}
         </p>
       );
     }
     return (
-      <p className="text-[17px] text-gray-400 dark:text-gray-500 mt-2 font-medium">
+      <p className="text-[19px] text-gray-400 dark:text-gray-500 mt-2 font-bold">
         {timeText} · <span className="text-blue-600 dark:text-blue-400">Altyazılı</span>
       </p>
     );
