@@ -217,7 +217,7 @@ const ApodPage = () => {
           <div className="space-x-4">
             <button
               onClick={() => window.location.reload()}
-              className="px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors"
+              className="px-4 py-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors"
             >
               Tekrar Dene
             </button>
@@ -373,7 +373,7 @@ const ApodPage = () => {
               },
               "publisher": {
                 "@type": "Organization",
-                "name": "The Openwall",
+                "name": "OpenWall",
                 "url": "https://openwall.com.tr"
               },
               "datePublished": apodData.date,
@@ -605,7 +605,7 @@ const ApodPage = () => {
                     >
                       {isTranslating ? (
                         <>
-                          <div className="loader" style={{ width: '1rem', height: '1rem', margin: '0 0.5rem 0 0', border: '0.0625rem #fff solid' }}></div>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                           Çevriliyor...
                         </>
                       ) : showTranslated ? (
@@ -664,7 +664,7 @@ const ApodPage = () => {
                       href={apodData.hdurl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 transition-colors"
+                      className="inline-flex items-center px-4 py-2 bg-red-600 text-white font-bold rounded-full hover:bg-red-700 transition-colors"
                     >
                       Yüksek Çözünürlüklü Görsel
                     </a>
