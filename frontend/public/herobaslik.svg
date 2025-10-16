@@ -5,7 +5,7 @@
     </clipPath>
   </defs>
   <g id="herobaslik" clip-path="url(#clip-herobaslik)">
-    <text id="under_ground" data-name="under ground" transform="translate(109 688)" fill="#fff" font-size="254" font-family="SpaceGrotesk-Bold, Space Grotesk" font-weight="700" letter-spacing="-0.05em"><tspan x="0" y="0">Grassland.</tspan></text>
-    <text id="under_ground-2" data-name="under ground" transform="translate(1538 688)" fill="#fff" font-size="254" font-family="SpaceGrotesk-Bold, Space Grotesk" font-weight="700" letter-spacing="-0.05em"><tspan x="0" y="0">Grassland.</tspan></text>
+    <text id="under_ground" data-name="under ground" transform="translate(131 769)" fill="#fff" font-size="399" font-family="AntonSC-Regular, Anton SC" letter-spacing="-0.03em"><tspan x="0" y="0">/SPACE</tspan></text>
+    <text id="under_ground-2" data-name="under ground" transform="translate(1426 769)" fill="#fff" font-size="399" font-family="AntonSC-Regular, Anton SC" letter-spacing="-0.03em"><tspan x="0" y="0">/SPACE</tspan></text>
   </g>
 </svg>
