@@ -179,7 +179,7 @@ const MoonPhaseCard = ({ className = '' }) => {
             })}
           </span>
           <span>·</span>
-          <span>Openwall Space tarafından</span>
+          <span>OW tarafından</span>
         </div>
       </div>
     </div>
