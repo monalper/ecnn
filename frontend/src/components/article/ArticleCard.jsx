@@ -76,6 +76,14 @@ const ArticleCard = ({ article }) => {
     }
   };
 
+  // Calculate reading time (average 200 words per minute)
+  const getReadingTime = (text) => {
+    if (!text) return '';
+    const words = text.trim().split(/\s+/).length;
+    const minutes = Math.max(1, Math.round(words / 200));
+    return `${minutes} dk okuma`;
+  };
+
   return (
     <div className="block relative group">
       <Link
@@ -122,19 +130,21 @@ const ArticleCard = ({ article }) => {
         {/* Content */}
         <div className="px-4 md:px-0 space-y-2">
           {/* Title - Apple-style typography */}
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white leading-snug tracking-tight">
+          <h3 className="text-[20px] font-bold text-gray-900 dark:text-white leading-snug tracking-tight">
             {article.title}
           </h3>
           
           {/* Description - Lighter weight */}
-          <p className="text-[20px] text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed font-bold">
+          <p className="text-[19px] text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed font-bold">
             {displayDescription}
           </p>
           
           {/* Metadata - Minimal */}
           {article.createdAt && (
-            <div className="text-[17px] text-gray-400 dark:text-gray-500 font-medium pt-1">
-              {getTimeAgo(article.createdAt)}
+            <div className="text-[19px] text-gray-400 dark:text-gray-500 font-bold pt-1 flex items-center gap-2">
+              <span>{getTimeAgo(article.createdAt)}</span>
+              <span>·</span>
+              <span>{getReadingTime(article.content || article.description)}</span>
             </div>
           )}
         </div>
