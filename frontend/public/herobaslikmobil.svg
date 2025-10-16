@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1180" height="1200" viewBox="0 0 1180 1200">
+  <defs>
+    <clipPath id="clip-herobaslikmobil">
+      <rect width="1180" height="1200"/>
+    </clipPath>
+  </defs>
+  <g id="herobaslikmobil" clip-path="url(#clip-herobaslikmobil)">
+    <text id="under_ground" data-name="under ground" transform="translate(-323 665)" fill="#fff" font-size="188" font-family="SpaceGrotesk-Bold, Space Grotesk" font-weight="700" letter-spacing="-0.05em"><tspan x="0" y="0">Grassland.</tspan></text>
+    <text id="under_ground-2" data-name="under ground" transform="translate(637 665)" fill="#fff" font-size="188" font-family="SpaceGrotesk-Bold, Space Grotesk" font-weight="700" letter-spacing="-0.05em"><tspan x="0" y="0">Grassland.</tspan></text>
+  </g>
+</svg>
