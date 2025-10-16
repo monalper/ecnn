@@ -100,7 +100,7 @@ const AsteroidCard = ({ className = '' }) => {
         <div className="relative w-full" style={{ paddingBottom: '75%' }}>
           <div className="absolute inset-0 rounded-none md:rounded-lg overflow-hidden">
             <img
-              src="https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2024/04/asteroid_apophis/26021615-4-eng-GB/Asteroid_Apophis_pillars.jpg"
+              src="https://images.aeonmedia.co/images/78cf8853-e080-41a1-b53b-a8470516bb3c/essay-crescent_comet_67p.jpg?width=1920&quality=75&format=auto"
               alt="Asteroid"
               className="w-full h-full object-cover"
               loading="lazy"
