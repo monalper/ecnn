@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <clipPath id="clip-heroikincil">
+      <rect width="1920" height="1080"/>
+    </clipPath>
+  </defs>
+  <g id="heroikincil" clip-path="url(#clip-heroikincil)">
+    <text id="Climate." transform="translate(323 974)" fill="#fff" font-size="363" font-family="SpaceGrotesk-SemiBold, Space Grotesk" font-weight="600" letter-spacing="-0.05em"><tspan x="0" y="0">Climate.</tspan></text>
+  </g>
+</svg>
