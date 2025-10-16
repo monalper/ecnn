@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import { Link } from 'react-router-dom';
 import LoadingSpinner from '../LoadingSpinner';
 
@@ -7,7 +7,6 @@ const AsteroidCard = ({ className = '' }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // NASA API key - in production, this should be in environment variables
   const NASA_API_KEY = import.meta.env.VITE_NASA_API_KEY || 'DEMO_KEY';
 
   useEffect(() => {
@@ -16,42 +15,29 @@ const AsteroidCard = ({ className = '' }) => {
       setError(null);
       
       try {
-        // Get today's date
         const today = new Date().toISOString().split('T')[0];
-        
-        // Fetch today's near earth objects
         const response = await fetch(
           `https://api.nasa.gov/neo/rest/v1/feed?start_date=${today}&end_date=${today}&api_key=${NASA_API_KEY}`
         );
         
         if (!response.ok) {
-          if (response.status === 429) {
-            throw new Error('API rate limit aşıldı');
-          }
-          if (response.status === 404) {
-            throw new Error('Zamanda seyehat edemezsin.');
-          }
+          if (response.status === 429) throw new Error('API rate limit aşıldı');
+          if (response.status === 404) throw new Error('Zamanda seyehat edemezsin.');
           throw new Error(`NASA API hatası: ${response.status}`);
         }
         
         const data = await response.json();
+        if (data.error) throw new Error(data.error.message || 'Bilinmeyen hata');
         
-        if (data.error) {
-          throw new Error(data.error.message || 'Bilinmeyen hata');
-        }
-        
-        // Process asteroid data
         const todayAsteroids = data.near_earth_objects[today] || [];
         const processedData = {
           count: todayAsteroids.length,
-          asteroids: todayAsteroids.slice(0, 3), // Show first 3 asteroids
+          asteroids: todayAsteroids.slice(0, 3),
           totalCount: data.element_count || 0
         };
-        
         setAsteroidData(processedData);
       } catch (err) {
         console.error('Asteroid data fetch error:', err);
-        // Fallback data if API fails
         setAsteroidData({
           count: 0,
           asteroids: [],
@@ -66,34 +52,10 @@ const AsteroidCard = ({ className = '' }) => {
     fetchAsteroidData();
   }, [NASA_API_KEY]);
 
-  // Format asteroid size
-  const formatAsteroidSize = (diameter) => {
-    if (!diameter) return 'Bilinmiyor';
-    const avgDiameter = (diameter.estimated_diameter_min + diameter.estimated_diameter_max) / 2;
-    if (avgDiameter < 1) {
-      return `${(avgDiameter * 1000).toFixed(0)} m`;
-    }
-    return `${avgDiameter.toFixed(1)} km`;
-  };
-
-  // Get danger level based on size and approach distance
-  const getDangerLevel = (asteroid) => {
-    const diameter = asteroid.estimated_diameter?.kilometers?.estimated_diameter_max || 0;
-    const approachDistance = asteroid.close_approach_data?.[0]?.miss_distance?.kilometers || 0;
-    
-    if (diameter > 1 && approachDistance < 1000000) {
-      return { level: 'Yüksek', color: 'text-red-500', bgColor: 'bg-red-100 dark:bg-red-900' };
-    } else if (diameter > 0.5 && approachDistance < 5000000) {
-      return { level: 'Orta', color: 'text-yellow-500', bgColor: 'bg-yellow-100 dark:bg-yellow-900' };
-    } else {
-      return { level: 'Düşük', color: 'text-green-500', bgColor: 'bg-green-100 dark:bg-green-900' };
-    }
-  };
-
   if (loading) {
     return (
       <div className={`relative ${className}`}>
-        <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+        <div className="relative w-full" style={{ paddingBottom: '75%' }}>
           <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 rounded-none md:rounded-lg flex items-center justify-center">
             <LoadingSpinner size="small" text="Yükleniyor..." />
           </div>
@@ -109,7 +71,7 @@ const AsteroidCard = ({ className = '' }) => {
   if (error || !asteroidData) {
     return (
       <div className={`relative ${className}`}>
-        <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+        <div className="relative w-full" style={{ paddingBottom: '75%' }}>
           <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 rounded-none md:rounded-lg flex items-center justify-center">
             <div className="text-center p-4">
               <div className="text-4xl mb-2">☄️</div>
@@ -121,7 +83,7 @@ const AsteroidCard = ({ className = '' }) => {
           <h3 className="font-bold text-gray-900 dark:text-white text-[20px]">
             Asteroid İzleme
           </h3>
-          <p className="text-gray-400 dark:text-gray-500 text-[17px] mt-1 font-medium">
+          <p className="text-gray-400 dark:text-gray-500 text-[17px] mt-1 font-bold">
             Veri yüklenemedi
           </p>
         </div>
@@ -129,13 +91,13 @@ const AsteroidCard = ({ className = '' }) => {
     );
   }
 
-  const { count, asteroids, totalCount, isFallback } = asteroidData;
+  const { count, isFallback } = asteroidData;
 
   return (
     <Link to="/asteroid" className={`block ${className}`}>
       <div className="relative cursor-pointer">
-        {/* 16:9 Aspect Ratio Container */}
-        <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+        {/* 4:3 Aspect Ratio Container */}
+        <div className="relative w-full" style={{ paddingBottom: '75%' }}>
           <div className="absolute inset-0 rounded-none md:rounded-lg overflow-hidden">
             <img
               src="https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2024/04/asteroid_apophis/26021615-4-eng-GB/Asteroid_Apophis_pillars.jpg"
@@ -143,10 +105,9 @@ const AsteroidCard = ({ className = '' }) => {
               className="w-full h-full object-cover"
               loading="lazy"
               onError={(e) => {
-                e.target.src = 'https://placehold.co/800x450/1a1a2e/ffffff?text=Asteroid';
+                e.target.src = 'https://placehold.co/800x600/1a1a2e/ffffff?text=Asteroid';
               }}
             />
-            
           </div>
         </div>
 
@@ -155,16 +116,19 @@ const AsteroidCard = ({ className = '' }) => {
           <h3 className="font-bold text-gray-900 dark:text-white text-[20px] line-clamp-2 leading-tight">
             {isFallback ? 'Asteroid Verileri' : `${count} Asteroid Tespit Edildi`}
           </h3>
-          <p className="text-gray-400 dark:text-gray-500 text-[17px] mt-1 font-medium">
-            {new Date().toLocaleDateString('tr-TR', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            })}
-          </p>
-          <p className="text-gray-400 dark:text-gray-500 text-[17px] mt-1 font-medium">
-            NASA tarafından
-          </p>
+
+          {/* Tarih ve NASA yan yana */}
+          <div className="flex items-center gap-2 text-gray-400 dark:text-gray-500 text-[19px] mt-1 font-bold">
+            <span>
+              {new Date().toLocaleDateString('tr-TR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}
+            </span>
+            <span>·</span>
+            <span>NASA tarafından</span>
+          </div>
         </div>
       </div>
     </Link>
