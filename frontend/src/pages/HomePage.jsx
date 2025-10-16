@@ -12,6 +12,7 @@ import api, { getCached } from '../services/api';
 import { Link } from 'react-router-dom';
 import heroVideo from '../assets/hero.mp4';
 import HeroApple from '../components/hero/HeroApple';
+import HomePageHero from '../components/hero/homepagehero';
 
 const HomePage = () => {
   const [latestArticles, setLatestArticles] = useState([]);
@@ -21,6 +22,7 @@ const HomePage = () => {
   const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -37,7 +39,8 @@ const HomePage = () => {
         if (allArticles.length > 0) {
           const heroCount = Math.min(5, allArticles.length);
           setHeroArticles(allArticles.slice(0, heroCount));
-          setLatestArticles(allArticles.slice(0, 6));
+          // Masaüstü için 6, mobil için 12
+          setLatestArticles(allArticles);
         }
 
         setFeaturedArticles(featuredResponse.data);
@@ -59,6 +62,12 @@ const HomePage = () => {
       }
     };
     fetchArticles();
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => setIsDesktop(window.innerWidth >= 1024);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   useEffect(() => {
@@ -141,10 +150,16 @@ const HomePage = () => {
       <SchemaMarkup type="WebSite" />
       <SchemaMarkup type="Organization" />
 
-      <HeroApple article={heroArticles?.[0]} fallbackVideo={heroVideo} />
+      {/* HeroApple sadece masaüstünde */}
+      {isDesktop && heroArticles?.[0] && (
+        <HeroApple article={heroArticles[0]} fallbackVideo={heroVideo} />
+      )}
 
       {/* Son Eklenen Makaleler Section */}
-      <div id="main-content" className="px-0 sm:px-12 lg:px-20 xl:px-32 py-8 sm:py-12">
+      <div
+        id="main-content"
+        className={`px-0 sm:px-12 lg:px-20 xl:px-32 py-8 sm:py-12 ${!isDesktop ? 'pt-6 sm:pt-8' : ''}`}
+      >
         <div className="mb-6 sm:mb-8 flex flex-row items-center gap-4 px-3 sm:px-0">
           <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-800 dark:text-white mb-0">
             Son Eklenen Makaleler
@@ -169,48 +184,8 @@ const HomePage = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 sm:gap-4 md:gap-6 lg:gap-8">
-            {latestArticles.slice(0, 6).map(article => (
+            {latestArticles.slice(0, isDesktop ? 6 : 12).map(article => (
               <ArticleCard key={article.slug} article={article} />
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Son Eklenen Videolar Section */}
-      <div className="px-0 sm:px-12 lg:px-20 xl:px-32 py-8 sm:py-12">
-        <div className="mb-6 sm:mb-8 flex flex-row items-center gap-4 px-3 sm:px-0">
-          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-800 dark:text-white mb-0">
-            Son Eklenen Videolar
-          </h2>
-          <Link 
-            to="/videos" 
-            className="text-sm sm:text-base md:text-lg text-slate-500 dark:text-slate-500 font-bold hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
-          >
-            Tüm videoları gör
-          </Link>
-        </div>
-
-        {latestVideos.length === 0 ? (
-          <div className="text-center py-12 sm:py-16">
-            <div className="text-4xl sm:text-6xl mb-4">🎥</div>
-            <h3 className="text-xl sm:text-2xl font-semibold text-slate-800 dark:text-white mb-2">
-              Henüz Video Yok
-            </h3>
-            <p className="text-sm sm:text-base text-slate-600 dark:text-[#f5f5f5] px-4">
-              Yakında burada harika videolar olacak!
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
-            {latestVideos.slice(0, 6).map((video, index) => (
-              <VideoCard 
-                key={video.id}
-                video={video} 
-                layout="horizontal"
-                mobileLayout={true}
-                showDuration={true}
-                showUploadTime={true}
-              />
             ))}
           </div>
         )}
@@ -236,6 +211,9 @@ const HomePage = () => {
           <AsteroidCard />
         </div>
       </div>
+
+      {/* ✅ Yeni Hero Section */}
+      <HomePageHero />
     </div>
   );
 };
