@@ -1,9 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="2631.471" height="1375" viewBox="0 0 2631.471 1375">
-  <g id="herobaslik" transform="translate(-642 -369)" style="isolation: isolate">
-    <text id="under_ground" data-name="under
-ground" transform="translate(642 1088)" fill="#fff" font-size="731" font-family="SpaceGrotesk-Bold, Space Grotesk" font-weight="700" letter-spacing="-0.05em"><tspan x="0" y="0">under</tspan><tspan x="0" y="443">ground</tspan></text>
-    <g id="OtV05401" transform="translate(3069.281 1403.512)">
-      <path id="Path_1" data-name="Path 1" d="M272.4-736.573c-.664.349-.7,2.222-.7,29.992,0,16.305-.116,29.633-.233,29.633s-9.591-9.358-21.055-20.782-20.965-20.782-21.134-20.86S223.5-713.208,216.8-706.5l-12.2,12.2,21.21,21.134c11.618,11.647,21.055,21.172,20.939,21.172s-13.333.038-29.438,0-29.476.157-29.75.311c-.352.273-.469,4.015-.39,17.471l.116,17.116,31,.233c28.7.233,32.673.353,33.727,1.13a6.876,6.876,0,0,0,1.561.544,13.61,13.61,0,0,1,4.405,2.067,1.778,1.778,0,0,0,.9.507c1.165,0,7.448,6.511,9.28,9.629l1.677,2.845h38.835l1.677-2.845a32.559,32.559,0,0,1,4.639-5.73c3.509-3.43,3.9-3.7,4.991-4.057.469-.157.859-.428.859-.623s.545-.428,1.165-.582,1.165-.39,1.165-.582.664-.428,1.482-.583a5.553,5.553,0,0,0,1.832-.582c.975-.74,5.028-.9,33.922-1.13l30.8-.234.116-17.115c.079-13.452-.038-17.194-.39-17.471-.274-.157-13.647-.311-29.75-.311s-29.322.038-29.438,0,9.318-9.513,20.939-21.172l21.21-21.134-12.145-12.221c-6.7-6.7-12.32-12.124-12.521-12.086s-9.67,9.475-21.134,20.86-20.939,20.781-21.055,20.781-.233-13.336-.233-29.634c0-28.853,0-29.633-.74-30.021C304.993-737.157,273.332-737.117,272.4-736.573Z" transform="translate(-187.14 737.001)" fill="#fff"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="2631.485" height="3309" viewBox="0 0 2631.485 3309">
+  <defs>
+    <clipPath id="clip-path">
+      <rect y="202" width="2631.485" height="1115" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="herobaslik" transform="translate(-1426.758 -196)">
+    <g id="Scroll_Group_1" data-name="Scroll Group 1" transform="translate(1426.758 1089.94)" clip-path="url(#clip-path)" style="isolation: isolate">
+      <g id="herobaslik-2" data-name="herobaslik">
+        <text id="under_ground" data-name="under ground" transform="translate(0 719)" fill="#fff" font-size="731" font-family="SpaceGrotesk-Bold, Space Grotesk" font-weight="700" letter-spacing="-0.05em"><tspan x="0" y="0">under</tspan><tspan x="0" y="443">ground</tspan></text>
+        <g id="OtV05401" transform="translate(2427.288 1034.511)">
+          <path id="Path_1" data-name="Path 1" d="M272.4-736.573c-.664.349-.7,2.222-.7,29.992,0,16.3-.116,29.633-.233,29.633s-9.591-9.358-21.055-20.782-20.965-20.782-21.134-20.86S223.5-713.208,216.8-706.5l-12.2,12.2,21.21,21.134c11.618,11.647,21.055,21.172,20.939,21.172s-13.333.038-29.438,0-29.476.157-29.75.311c-.352.273-.469,4.015-.39,17.471l.116,17.116,31,.233c28.7.233,32.673.353,33.727,1.13a6.879,6.879,0,0,0,1.561.544,13.608,13.608,0,0,1,4.405,2.067,1.778,1.778,0,0,0,.9.507c1.165,0,7.448,6.511,9.28,9.629l1.677,2.845h38.835l1.677-2.845a32.561,32.561,0,0,1,4.639-5.73c3.509-3.43,3.9-3.7,4.991-4.057.469-.157.859-.428.859-.623s.545-.428,1.165-.582,1.165-.39,1.165-.582.664-.428,1.482-.583a5.554,5.554,0,0,0,1.832-.582c.975-.74,5.028-.9,33.922-1.13l30.8-.234.116-17.115c.079-13.452-.038-17.194-.39-17.471-.274-.157-13.647-.311-29.75-.311s-29.322.038-29.438,0,9.318-9.513,20.939-21.172l21.21-21.134-12.145-12.221c-6.7-6.7-12.32-12.124-12.521-12.086s-9.67,9.475-21.134,20.86-20.939,20.781-21.055,20.781-.233-13.336-.233-29.634c0-28.853,0-29.633-.74-30.021C304.993-737.157,273.332-737.117,272.4-736.573Z" transform="translate(-187.147 737.002)" fill="#fff"/>
+        </g>
+      </g>
     </g>
+    <text id="Video_Kaynağı:_Nuri_Bilge_Ceylan_Kuru_Otlar_Üstüne_2023_" data-name="Video Kaynağı: Nuri Bilge Ceylan, Kuru Otlar Üstüne (2023)" transform="translate(2205 3495)" fill="#fff" font-size="40" font-family="Inter28pt-Regular, 'Inter \32 8pt \32 8pt'"><tspan x="0" y="0">Video Kaynağı: </tspan><tspan y="0" font-family="Inter28pt-SemiBoldItalic, 'Inter \32 8pt \32 8pt'" font-weight="600" font-style="italic">Nuri Bilge Ceylan</tspan><tspan y="0" font-family="Inter28pt-Bold, 'Inter \32 8pt \32 8pt'" font-weight="700">, Kuru Otlar Üstüne </tspan><tspan y="0" font-family="Inter28pt-SemiBoldItalic, 'Inter \32 8pt \32 8pt'" font-weight="600" font-style="italic">(2023)</tspan></text>
+    <text id="H:2" transform="translate(2712 233)" fill="#fff" font-size="40" font-family="NeueHaasDisplay-Bold, Neue Haas Grotesk Display Pro" font-weight="700"><tspan x="0" y="0">H:2</tspan></text>
   </g>
 </svg>
