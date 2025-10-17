@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { savedArticlesAPI } from '../services/api';
 import ArticleCard from '../components/article/ArticleCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 import MetaTags from '../components/seo/MetaTags';
-import { FaBookmark } from 'react-icons/fa';
 
 const SavedArticlesPage = () => {
   const { user, loading: authLoading } = useAuth();
@@ -13,6 +12,9 @@ const SavedArticlesPage = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  // Arama ve sıralama state'leri
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState('newest');
 
   useEffect(() => {
     // Kullanıcı giriş yapmamışsa login sayfasına yönlendir
@@ -39,13 +41,41 @@ const SavedArticlesPage = () => {
     fetchSavedArticles();
   }, [user, authLoading, navigate]);
 
+  // Filtrelenmiş ve sıralanmış makaleler
+  const filteredArticles = useMemo(() => {
+    let filtered = [...articles];
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      filtered = filtered.filter(article => {
+        const titleMatch = article.title?.toLowerCase().includes(query);
+        const descriptionMatch = article.description?.toLowerCase().includes(query);
+        const contentMatch = article.content?.toLowerCase().includes(query);
+        return titleMatch || descriptionMatch || contentMatch;
+      });
+    }
+    switch (sortBy) {
+      case 'newest':
+        filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        break;
+      case 'oldest':
+        filtered.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        break;
+      case 'title':
+        filtered.sort((a, b) => a.title.localeCompare(b.title, 'tr'));
+        break;
+      default:
+        break;
+    }
+    return filtered;
+  }, [articles, searchQuery, sortBy]);
+
   if (authLoading || loading) {
     return <LoadingSpinner />;
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-white dark:bg-black pt-20 pb-16">
+      <div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center py-12">
             <p className="text-red-600 dark:text-red-400">{error}</p>
@@ -62,32 +92,59 @@ const SavedArticlesPage = () => {
         description="Daha sonra okumak için kaydettiğiniz makaleler"
         path="/saved-articles"
       />
-      
-      <div className="min-h-screen bg-white dark:bg-black pt-20 pb-16">
+      <div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="mb-12 pt-8">
-            <div className="flex items-center gap-3 mb-4">
-              <FaBookmark className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
-                Kaydedilenler
-              </h1>
-            </div>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-2">
+              Kaydedilenler
+            </h1>
             <p className="text-lg text-gray-600 dark:text-gray-400">
               Daha sonra okumak için kaydettiğiniz makaleler
             </p>
           </div>
 
+          {/* Filtreler */}
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
+            <div className="flex items-center gap-2 flex-wrap">
+              {/* Arama Inputu */}
+              <input
+                type="text"
+                placeholder="Ara..."
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                className="w-56 px-4 py-2 bg-slate-50 dark:bg-slate-800 rounded-full text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none transition-colors"
+              />
+              {/* Sıralama Seçici */}
+              <select
+                value={sortBy}
+                onChange={e => setSortBy(e.target.value)}
+                className="ml-2 px-4 py-2 bg-slate-50 dark:bg-slate-800 rounded-full text-sm text-slate-900 dark:text-white focus:outline-none"
+              >
+                <option value="newest">En Yeni</option>
+                <option value="oldest">En Eski</option>
+                <option value="title">Alfabetik</option>
+              </select>
+            </div>
+            {/* Sonuç Sayısı */}
+            <div className="text-sm text-slate-400 dark:text-slate-500 flex-shrink-0">
+              {filteredArticles.length === articles.length ? (
+                <span>{articles.length} makale</span>
+              ) : (
+                <span>{filteredArticles.length} / {articles.length} makale</span>
+              )}
+            </div>
+          </div>
+
           {/* Articles Grid */}
-          {articles.length > 0 ? (
+          {filteredArticles.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
-              {articles.map((article) => (
+              {filteredArticles.map((article) => (
                 <ArticleCard key={article.slug} article={article} />
               ))}
             </div>
           ) : (
             <div className="text-center py-20">
-              <FaBookmark className="w-16 h-16 text-gray-300 dark:text-gray-700 mx-auto mb-4" />
               <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
                 Henüz kaydedilmiş makale yok
               </h2>
