@@ -19,7 +19,7 @@ import Color from '@tiptap/extension-color';
 import TextStyle from '@tiptap/extension-text-style';
 import Underline from '@tiptap/extension-underline';
 import { lowlight } from 'lowlight';
-import { FaBold, FaItalic, FaHeading, FaListUl, FaListOl, FaImage, FaUndo, FaRedo, FaLink, FaUnlink, FaAlignLeft, FaAlignCenter, FaAlignRight, FaCode, FaHighlighter, FaTasks, FaQuoteLeft, FaTable, FaFont, FaPalette, FaUnderline, FaStrikethrough, FaMinus, FaChevronDown, FaYoutube, FaTextHeight, FaArrowsAltH, FaCalculator, FaClock, FaFlask, FaSuperscript, FaCopy, FaAlignJustify } from 'react-icons/fa';
+import { FaBold, FaItalic, FaHeading, FaListUl, FaListOl, FaImage, FaUndo, FaRedo, FaLink, FaUnlink, FaAlignLeft, FaAlignCenter, FaAlignRight, FaCode, FaHighlighter, FaTasks, FaQuoteLeft, FaTable, FaFont, FaPalette, FaUnderline, FaStrikethrough, FaMinus, FaChevronDown, FaYoutube, FaTextHeight, FaArrowsAltH, FaCalculator, FaClock, FaFlask, FaSuperscript, FaCopy, FaAlignJustify, FaFilm } from 'react-icons/fa';
 
 // Custom Extensions
 import { FontFamily } from '../../extensions/FontFamilyExtension';
@@ -60,6 +60,35 @@ if (typeof window !== 'undefined' && !document.getElementById('custom-table-styl
 
 // Custom Tiptap Iframe extension (YouTube embed)
 import { Node, mergeAttributes } from '@tiptap/core';
+
+// Custom Tiptap Video extension (HTML5 video)
+const Video = Node.create({
+  name: 'video',
+  group: 'block',
+  atom: true,
+  selectable: true,
+  draggable: true,
+  addAttributes() {
+    return {
+      src: { default: null },
+      controls: { default: true },
+      width: { default: '100%' },
+      height: { default: null },
+      poster: { default: null },
+    };
+  },
+  parseHTML() {
+    return [
+      { tag: 'video[src]' },
+    ];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return [
+      'video',
+      mergeAttributes(HTMLAttributes, { controls: true, style: 'max-width:100%; border-radius:12px; margin:16px 0;' }),
+    ];
+  },
+});
 
 // Twitter Embed Extension
 const TwitterEmbed = Node.create({
@@ -223,6 +252,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
       Underline,
       Iframe,
       TwitterEmbed,
+      Video,
       // Yeni extension'lar
       FontFamily,
       FontSize,
@@ -394,6 +424,44 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
         title: altText || ''
       }).run();
     }
+  };
+
+  const addVideo = async () => {
+    const url = await handleVideoUpload();
+    if (url && editor) {
+      editor.chain().focus().insertContent({ type: 'video', attrs: { src: url, controls: true } }).run();
+    }
+  };
+
+  const handleVideoUpload = async () => {
+    return new Promise((resolve) => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'video/*';
+      input.onchange = async () => {
+        const file = input.files[0];
+        if (file) {
+          try {
+            // Backend: /api/videos/upload endpointi ile presigned url al
+            const presignedResponse = await api.post('/videos/upload', {
+              fileName: file.name,
+              contentType: file.type,
+            });
+            const { uploadUrl, accessUrl } = presignedResponse.data;
+            await fetch(uploadUrl, {
+              method: 'PUT',
+              body: file,
+              headers: { 'Content-Type': file.type },
+            });
+            resolve(accessUrl);
+          } catch (err) {
+            alert('Video yüklenirken hata oluştu: ' + (err?.response?.data?.message || err.message));
+            resolve(null);
+          }
+        }
+      };
+      input.click();
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -734,6 +802,14 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               title="Resim Ekle"
             >
               <FaImage />
+            </button>
+            <button
+              type="button"
+              onClick={addVideo}
+              className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
+              title="Video Ekle"
+            >
+              <FaFilm />
             </button>
             {/* Video Ekle Butonu */}
             <button
