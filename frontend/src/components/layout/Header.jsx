@@ -294,7 +294,7 @@ const Header = ({ scrollPercent, customTitle }) => {
 
                             {/* Menu Items */}
                             <div className="py-1">
-                                <Link to="/admin/dashboard" className="flex items-center gap-2.5 px-4 py-2 text-[13px] text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors" onClick={() => setIsUserDropdownOpen(false)}> <FaUserShield className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500" /> <span>Admin Panel</span> </Link>
+                                
                                 <Link to="/saved-articles" className="flex items-center gap-2.5 px-4 py-2 text-[13px] text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors" onClick={() => setIsUserDropdownOpen(false)}> <FaBookmark className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500" /> <span>Kaydedilenler</span> {savedArticles.length > 0 && (<span className="ml-auto text-[11px] text-gray-400 dark:text-gray-500">{savedArticles.length}</span>)} </Link>
                                 <button onClick={() => { toggleTheme(); setIsUserDropdownOpen(false); }} className="w-full text-left flex items-center gap-2.5 px-4 py-2 text-[13px] text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"> {theme === 'dark' ? (<LuSun className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500" />) : (<LuMoon className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500" />)} <span>{theme === 'dark' ? 'Aydınlık Tema' : 'Karanlık Tema'}</span> </button>
                             </div>
@@ -386,7 +386,6 @@ const Header = ({ scrollPercent, customTitle }) => {
 
                                 {/* Menu Items */}
                                 <div className="py-1">
-                                    <Link to="/admin/dashboard" className="flex items-center gap-2.5 px-4 py-2 text-[13px] text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors" onClick={() => setIsUserDropdownOpen(false)}> <FaUserShield className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500" /> <span>Admin Panel</span> </Link>
                                     <Link to="/saved-articles" className="flex items-center gap-2.5 px-4 py-2 text-[13px] text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors" onClick={() => setIsUserDropdownOpen(false)}> <FaBookmark className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500" /> <span>Kaydedilenler</span> {savedArticles.length > 0 && (<span className="ml-auto text-[11px] text-gray-400 dark:text-gray-500">{savedArticles.length}</span>)} </Link>
                                     <button onClick={() => { toggleTheme(); setIsUserDropdownOpen(false); }} className="w-full text-left flex items-center gap-2.5 px-4 py-2 text-[13px] text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"> {theme === 'dark' ? (<LuSun className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500" />) : (<LuMoon className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500" />)} <span>{theme === 'dark' ? 'Aydınlık Tema' : 'Karanlık Tema'}</span> </button>
                                 </div>
@@ -441,13 +440,7 @@ const Header = ({ scrollPercent, customTitle }) => {
             {/* Kullanıcıya özel menü (SADECE KAYDEDİLENLER ve ADMIN) */}
             {user && (
                 <div className="pt-4 mt-2 border-t border-gray-200/50 dark:border-white/10 space-y-1">
-                    {user.isAdmin && (
-                        <Link to="/admin/dashboard" onClick={() => setIsMobileMenuOpen(false)}
-                            className="text-[17px] font-medium flex items-center gap-3 py-3 px-3 rounded-xl text-blue-600 dark:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                            <FaUserShield className="w-4 h-4" />
-                            <span>Admin Panel</span>
-                        </Link>
-                    )}
+                    
                     <Link to="/saved-articles" onClick={() => setIsMobileMenuOpen(false)}
                         className="text-[17px] font-medium flex items-center gap-3 py-3 px-3 rounded-xl text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                         <FaBookmark className="w-4 h-4" />
