@@ -1,51 +1,50 @@
+// frontend/src/pages/AsteroidPage.jsx
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { useNavigate } from 'react-router-dom';
 import Header from '../components/layout/Header';
 import MetaTags from '../components/seo/MetaTags';
 import SchemaMarkup from '../components/seo/SchemaMarkup';
 import LoadingSpinner from '../components/LoadingSpinner';
-import DatePicker from '../components/DatePicker';
 import AsteroidDetailModal from '../components/NASA/AsteroidDetailModal';
 
 const AsteroidPage = () => {
-  const navigate = useNavigate();
   const [asteroidData, setAsteroidData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().toISOString().split('T')[0]
+  );
   const [scrollPercent, setScrollPercent] = useState(0);
+  const [bottomBarVisible, setBottomBarVisible] = useState(false);
   const [selectedAsteroid, setSelectedAsteroid] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // NASA API key - in production, this should be in environment variables
   const NASA_API_KEY = import.meta.env.VITE_NASA_API_KEY || 'DEMO_KEY';
 
-  // Scroll progress tracking
   useEffect(() => {
     const handleScroll = () => {
       const articleContent = document.querySelector('.prose');
       if (articleContent) {
         const rect = articleContent.getBoundingClientRect();
         const windowHeight = window.innerHeight;
-        
-        if (rect.top <= windowHeight) {
-          const contentHeight = articleContent.scrollHeight;
-          const contentTop = articleContent.offsetTop;
-          const scrollTop = window.scrollY;
-          
-          const contentScrollTop = Math.max(0, scrollTop - contentTop);
-          const contentVisibleHeight = Math.min(contentHeight, windowHeight);
-          
-          let percent = 0;
-          if (contentScrollTop > 0) {
-            percent = Math.min(100, (contentScrollTop / (contentHeight - contentVisibleHeight)) * 100);
-          }
-          
-          setScrollPercent(Math.max(0, Math.min(100, percent)));
-        } else {
-          setScrollPercent(0);
+        const scrollTop = window.scrollY;
+        const contentTop = rect.top;
+        const contentBottom = rect.bottom;
+        const shouldShowBottomBar =
+          scrollTop > 100 && contentTop < windowHeight && contentBottom > 0;
+        setBottomBarVisible(shouldShowBottomBar);
+        const contentHeight = articleContent.scrollHeight;
+        const contentTopOffset = articleContent.offsetTop;
+        const contentScrollTop = Math.max(0, scrollTop - contentTopOffset);
+        const contentVisibleHeight = Math.min(contentHeight, windowHeight);
+        let percent = 0;
+        if (contentScrollTop > 0) {
+          percent = Math.min(
+            100,
+            (contentScrollTop / (contentHeight - contentVisibleHeight)) * 100
+          );
         }
+        setScrollPercent(Math.max(0, Math.min(100, percent)));
       }
     };
     window.addEventListener('scroll', handleScroll);
@@ -53,33 +52,16 @@ const AsteroidPage = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Fetch asteroid data
   useEffect(() => {
     const fetchAsteroidData = async () => {
       setLoading(true);
       setError(null);
-      
       try {
         const response = await fetch(
           `https://api.nasa.gov/neo/rest/v1/feed?start_date=${selectedDate}&end_date=${selectedDate}&api_key=${NASA_API_KEY}`
         );
-        
-        if (!response.ok) {
-          if (response.status === 429) {
-            throw new Error('NASA API rate limit aşıldı. Lütfen daha sonra tekrar deneyin veya kendi API anahtarınızı kullanın.');
-          }
-          if (response.status === 404) {
-            throw new Error('Zamanda seyehat edemezsin.');
-          }
-          throw new Error(`NASA API hatası: ${response.status}`);
-        }
-        
+        if (!response.ok) throw new Error(`NASA API hatası: ${response.status}`);
         const data = await response.json();
-        
-        if (data.error) {
-          throw new Error(data.error.message || 'Bilinmeyen hata');
-        }
-        
         setAsteroidData(data);
       } catch (err) {
         console.error('Asteroid data fetch error:', err);
@@ -88,479 +70,354 @@ const AsteroidPage = () => {
         setLoading(false);
       }
     };
-
     fetchAsteroidData();
   }, [selectedDate, NASA_API_KEY]);
 
-  // Format asteroid size
   const formatAsteroidSize = (diameter) => {
     if (!diameter) return 'Bilinmiyor';
-    const avgDiameter = (diameter.estimated_diameter_min + diameter.estimated_diameter_max) / 2;
-    if (avgDiameter < 1) {
-      return `${(avgDiameter * 1000).toFixed(0)} m`;
-    }
-    return `${avgDiameter.toFixed(1)} km`;
+    const avg =
+      (diameter.estimated_diameter_min + diameter.estimated_diameter_max) / 2;
+    return avg < 1 ? `${(avg * 1000).toFixed(0)} m` : `${avg.toFixed(1)} km`;
   };
 
-  // Get danger level based on size and approach distance
-  const getDangerLevel = (asteroid) => {
-    const diameter = asteroid.estimated_diameter?.kilometers?.estimated_diameter_max || 0;
-    const approachDistance = asteroid.close_approach_data?.[0]?.miss_distance?.kilometers || 0;
-    
-    if (diameter > 1 && approachDistance < 1000000) {
-      return { level: 'Yüksek', color: 'text-red-500', bgColor: 'bg-red-100 dark:bg-red-900' };
-    } else if (diameter > 0.5 && approachDistance < 5000000) {
-      return { level: 'Orta', color: 'text-yellow-500', bgColor: 'bg-yellow-100 dark:bg-yellow-900' };
-    } else {
-      return { level: 'Düşük', color: 'text-green-500', bgColor: 'bg-green-100 dark:bg-green-900' };
-    }
-  };
-
-  // Format approach distance
-  const formatDistance = (distance) => {
-    if (!distance) return 'Bilinmiyor';
-    const dist = parseFloat(distance);
-    if (dist > 1000000) {
-      return `${(dist / 1000000).toFixed(1)} milyon km`;
-    } else if (dist > 1000) {
-      return `${(dist / 1000).toFixed(1)} bin km`;
-    }
+  const formatDistance = (d) => {
+    if (!d) return 'Bilinmiyor';
+    const dist = parseFloat(d);
+    if (dist > 1000000) return `${(dist / 1000000).toFixed(1)} milyon km`;
+    if (dist > 1000) return `${(dist / 1000).toFixed(1)} bin km`;
     return `${dist.toFixed(0)} km`;
   };
 
-  // Format velocity
-  const formatVelocity = (velocity) => {
-    if (!velocity) return 'Bilinmiyor';
-    const vel = parseFloat(velocity);
-    return `${vel.toFixed(0)} km/s`;
+  const formatVelocity = (v) => {
+    if (!v) return 'Bilinmiyor';
+    return `${parseFloat(v).toFixed(0)} km/s`;
   };
 
-  // Navigation functions
+  const getDangerLevel = (a) => {
+    const d = a.estimated_diameter?.kilometers?.estimated_diameter_max || 0;
+    const dist = a.close_approach_data?.[0]?.miss_distance?.kilometers || 0;
+    if (d > 1 && dist < 1000000) return { level: 'Yüksek' };
+    if (d > 0.5 && dist < 5000000) return { level: 'Orta' };
+    return { level: 'Düşük' };
+  };
+
   const goToPreviousDay = () => {
-    const currentDate = new Date(selectedDate);
-    const previousDate = new Date(currentDate);
-    previousDate.setDate(previousDate.getDate() - 1);
-    const dateString = previousDate.toISOString().split('T')[0];
-    setSelectedDate(dateString);
+    const date = new Date(selectedDate);
+    date.setDate(date.getDate() - 1);
+    setSelectedDate(date.toISOString().split('T')[0]);
   };
-
   const goToNextDay = () => {
-    const currentDate = new Date(selectedDate);
-    const nextDate = new Date(currentDate);
-    nextDate.setDate(nextDate.getDate() + 1);
-    const dateString = nextDate.toISOString().split('T')[0];
-    setSelectedDate(dateString);
+    const date = new Date(selectedDate);
+    date.setDate(date.getDate() + 1);
+    setSelectedDate(date.toISOString().split('T')[0]);
   };
+  const goToToday = () =>
+    setSelectedDate(new Date().toISOString().split('T')[0]);
 
-  const goToToday = () => {
-    const today = new Date().toISOString().split('T')[0];
-    setSelectedDate(today);
-  };
-
-  // Handle date picker change
-  const handleDateChange = (newDate) => {
-    const year = newDate.getFullYear();
-    const month = String(newDate.getMonth() + 1).padStart(2, '0');
-    const day = String(newDate.getDate()).padStart(2, '0');
-    const dateString = `${year}-${month}-${day}`;
-    setSelectedDate(dateString);
-  };
-
-  // Handle asteroid detail modal
-  const handleAsteroidClick = (asteroid) => {
-    setSelectedAsteroid(asteroid);
+  const handleAsteroidClick = (a) => {
+    setSelectedAsteroid(a);
     setIsModalOpen(true);
   };
-
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedAsteroid(null);
   };
 
-  if (loading) {
+  if (loading)
     return (
       <div className="text-center py-20">
         <LoadingSpinner size="medium" text="Asteroid Verileri Yükleniyor..." />
       </div>
     );
-  }
-
-  if (error) {
+  if (error)
     return (
-      <div className="text-center py-20">
-        <div className="max-w-2xl mx-auto px-4">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Hata</h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">{error}</p>
-          
-          {error.includes('rate limit') && (
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-6 text-left">
-              <h3 className="font-semibold text-yellow-800 dark:text-yellow-200 mb-2">API Anahtarı Nasıl Alınır?</h3>
-              <p className="text-sm text-yellow-700 dark:text-yellow-300 mb-3">
-                NASA API'si ücretsizdir ve kendi anahtarınızı alabilirsiniz:
-              </p>
-              <ol className="text-sm text-yellow-700 dark:text-yellow-300 list-decimal list-inside space-y-1">
-                <li><a href="https://api.nasa.gov/" target="_blank" rel="noopener noreferrer" className="underline hover:no-underline">https://api.nasa.gov/</a> adresine gidin</li>
-                <li>Formu doldurarak ücretsiz API anahtarı alın</li>
-                <li>Anahtarı proje ortam değişkenlerine ekleyin: <code className="bg-yellow-100 dark:bg-yellow-800 px-1 rounded">VITE_NASA_API_KEY</code></li>
-              </ol>
-            </div>
-          )}
-          
-          <button
-            onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors"
-          >
-            Tekrar Dene
-          </button>
-        </div>
+      <div className="text-center py-20 text-red-600">
+        Hata: {error}
       </div>
     );
-  }
 
-  if (!asteroidData) {
-    return (
-      <div className="text-center py-20">
-        <div className="max-w-md mx-auto">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Veri Bulunamadı</h1>
-          <p className="text-gray-600 dark:text-gray-400">Bu tarih için asteroid verisi bulunamadı.</p>
-        </div>
-      </div>
-    );
-  }
+  const todayAsteroids = asteroidData?.near_earth_objects[selectedDate] || [];
+  const totalCount = asteroidData?.element_count || 0;
 
-  const todayAsteroids = asteroidData.near_earth_objects[selectedDate] || [];
-  const totalCount = asteroidData.element_count || 0;
+  const coverImage =
+    'https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2024/04/asteroid_apophis/26021615-4-eng-GB/Asteroid_Apophis_pillars.jpg';
 
-  // Page metadata
-  const pageTitle = `Asteroid İzleme - ${selectedDate} Tarihli Dünya'ya Yakın Asteroidler`;
-  const pageDescription = `${selectedDate} tarihinde tespit edilen ${totalCount} asteroid hakkında detaylı bilgiler. NASA'nın Near Earth Object Web Service verileri.`;
-  const pageUrl = typeof window !== 'undefined' 
-    ? `${window.location.origin}/asteroid`
-    : '';
+  const pageTitle = `Asteroid İzleme — ${new Date(
+    selectedDate
+  ).toLocaleDateString('tr-TR')}`;
+  const pageDescription = `${selectedDate} tarihinde tespit edilen ${totalCount} asteroid.`;
+  const pageUrl =
+    typeof window !== 'undefined'
+      ? `${window.location.origin}/asteroid`
+      : '';
 
   return (
     <>
       <MetaTags
         title={pageTitle}
         description={pageDescription}
-        keywords="asteroid, NASA, uzay, göktaşı, dünya yakını, NEO, asteroid izleme, uzay bilimi, astronomi"
+        image={coverImage}
         url={pageUrl}
-        type="article"
-        author="NASA"
-        publishedTime={selectedDate}
-        section="Astronomy"
-        tags={["Asteroid", "NASA", "Space", "Astronomy", "Science", "Bilim", "Uzay"]}
       />
-      
       <SchemaMarkup
-        type="AsteroidPage"
+        type="Article"
         data={{
           title: pageTitle,
           description: pageDescription,
-          url: pageUrl,
-          author: "NASA",
-          publishedTime: selectedDate,
-          section: "Astronomy",
-          keywords: "asteroid, NASA, uzay, göktaşı, dünya yakını, NEO, asteroid izleme, uzay bilimi, astronomi",
-          asteroidCount: totalCount,
-          date: selectedDate
+          image: coverImage,
         }}
-        breadcrumbs={[
-          { name: 'Ana Sayfa', url: 'https://openwall.com.tr' },
-          { name: 'Asteroid İzleme', url: 'https://openwall.com.tr/asteroid' }
-        ]}
       />
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebPage',
+            name: 'Asteroid İzleme',
+            description: pageDescription,
+            url: pageUrl,
+          })}
+        </script>
+      </Helmet>
 
-      <Header scrollPercent={scrollPercent} customTitle="asteroid" />
+      <Header scrollPercent={scrollPercent} />
 
-      {/* Hero Section - Large Header with Asteroid Background */}
-      <div className="relative w-full h-[90vw] md:aspect-[4/3] md:h-[90vh] lg:h-[100vh] md:min-h-[650px] lg:min-h-[750px] bg-gradient-to-br from-purple-900 via-indigo-900 to-purple-900">
-        {/* Asteroid background image */}
-        <div className="absolute inset-0 overflow-hidden">
-          <img
-            src="https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2024/04/asteroid_apophis/26021615-4-eng-GB/Asteroid_Apophis_pillars.jpg"
-            alt="Asteroid Background"
-            className="w-full h-full object-cover"
-            loading="lazy"
-            onError={(e) => {
-              e.target.src = 'https://placehold.co/1920x1080/1a1a2e/ffffff?text=Asteroid+Background';
-            }}
-          />
-        </div>
-        
-        {/* Overlay with title */}
-        <div className="absolute inset-0 bg-black/20"></div>
-        
-        {/* Gradient overlay for better text readability */}
-        <div className="hidden md:block absolute bottom-0 left-0 right-0 h-96 bg-gradient-to-t from-black via-black/90 via-black/80 via-black/70 via-black/60 via-black/50 via-black/40 via-black/30 via-black/20 via-black/10 via-black/5 to-transparent"></div>
-        
-        <div className="absolute bottom-0 left-0 right-0 p-4 md:p-8 lg:p-12">
-          <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-            <h1 className="hidden md:block text-[72px] font-garamond text-white font-medium leading-none max-w-4xl mb-4">
+      {/* Başlık + Kapak */}
+      <div className="px-4 sm:px-6 lg:px-8 pt-20 md:pt-24 pb-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-6">
+            <div className="text-[20px] text-orange-500 font-medium mb-2">
+              {new Date(selectedDate).toLocaleDateString('tr-TR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+              })}
+            </div>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">
               Asteroid İzleme
             </h1>
-            <p className="hidden md:block text-base md:text-lg lg:text-xl text-white/90 font-inter leading-relaxed max-w-3xl">
-              {new Date(selectedDate).toLocaleDateString('tr-TR', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              })} - Dünya'ya Yakın Asteroidler
+            <p className="text-lg text-gray-700 dark:text-gray-300">
+              NASA NEO verilerine göre {totalCount} asteroidin özet ve detayları.
             </p>
           </div>
-        </div>
 
-        {/* Navigation arrows */}
-        <div className="absolute top-1/2 left-4 right-4 flex justify-between transform -translate-y-1/2">
-          <button
-            onClick={goToPreviousDay}
-            className="bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-200 backdrop-blur-sm"
-            title="Önceki gün"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          <button
-            onClick={goToNextDay}
-            className="bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-200 backdrop-blur-sm"
-            title="Sonraki gün"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Today button */}
-        <div className="absolute top-4 right-4">
-          <button
-            onClick={goToToday}
-            className="bg-black/50 hover:bg-black/70 text-white px-4 py-2 rounded-full transition-all duration-200 backdrop-blur-sm text-sm"
-            title="Bugün"
-          >
-            Bugün
-          </button>
+          <div className="w-full h-[50vw] md:h-[400px] lg:h-[500px] rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 relative">
+            <img
+              src={coverImage}
+              alt="Asteroid"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 px-4 flex justify-between">
+              <button
+                onClick={goToPreviousDay}
+                className="bg-black/50 hover:bg-black/70 text-white p-3 rounded-full backdrop-blur-sm"
+                title="Önceki"
+              >
+                ←
+              </button>
+              <button
+                onClick={goToNextDay}
+                className="bg-black/50 hover:bg-black/70 text-white p-3 rounded-full backdrop-blur-sm"
+                title="Sonraki"
+              >
+                →
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* İçerik */}
       <div className="px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto py-6 md:py-8 lg:py-12">
-          <div className="block lg:grid lg:grid-cols-4 lg:gap-12">
-            
-            {/* Mobile: Top, Desktop: Left - Metadata Sidebar */}
-            <div className="order-1 lg:order-1 mb-8 lg:mb-0">
-              <div className="lg:sticky lg:top-28 lg:self-start">
-                {/* Mobile: Title and meta card */}
-                <div className="block lg:hidden mb-6">
-                  <h1 className="text-[42px] md:text-4xl lg:text-5xl xl:text-6xl font-garamond text-gray-900 dark:text-white font-medium leading-none max-w-4xl mb-4">
-                    Asteroid İzleme
-                  </h1>
-                  
-                  {/* Mobile Date Picker */}
-                  <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Tarih Seç
-            </label>
-                    <DatePicker
-                      selectedDate={new Date(selectedDate + 'T00:00:00')}
-                      onDateChange={handleDateChange}
-                      minDate="1995-01-01"
-                      maxDate={new Date().toISOString().split('T')[0]}
-                    />
-                  </div>
-                  
-                  <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
-                    <div>NASA Near Earth Object Web Service</div>
-                    <div>{new Date(selectedDate).toLocaleDateString('tr-TR', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}</div>
-                    <div>{totalCount} Asteroid Tespit Edildi</div>
-                  </div>
-                </div>
-
-                {/* Desktop: Full metadata sidebar */}
-                <div className="hidden lg:block">
-                  {/* Article Title - Only visible when hero title is not visible */}
-                  {scrollPercent > 1 && (
-                    <div className="pb-3 mb-4 lg:mb-0">
-                      <h1 className="text-xl font-inter font-bold text-gray-900 dark:text-white leading-tight">
-                        Asteroid İzleme
-                      </h1>
-                    </div>
-                  )}
-                  
-                  {/* NASA Information */}
-                  <div className="pb-3 mb-4 lg:mb-0">
-                    <p className="text-sm md:text-base text-gray-700 leading-relaxed">
-                      NASA Near Earth Object Web Service
-                    </p>
-                  </div>
-
-                  {/* Date */}
-                  <div className="pb-3 mb-4 lg:mb-0">
-                    <p className="text-sm md:text-base text-gray-700">
-                      {new Date(selectedDate).toLocaleDateString('tr-TR', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
-                    </p>
-                  </div>
-
-                  {/* Asteroid Count */}
-                  <div className="pb-3 mb-4 lg:mb-0">
-                    <p className="text-sm md:text-base text-gray-700">
-                      {totalCount} Asteroid Tespit Edildi
-                    </p>
-                  </div>
-
-                  {/* Categories */}
-                  <div className="pb-3 mb-4 lg:mb-0">
-                    <div className="text-sm md:text-base text-black dark:text-white opacity-40">
-                      #Asteroid #NASA #Space #Astronomy
-                    </div>
-                  </div>
-
-                  {/* Date Picker */}
-                  <div className="pb-4 mb-4 lg:mb-0">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Tarih Seç
-                    </label>
-                    <DatePicker
-                      selectedDate={new Date(selectedDate + 'T00:00:00')}
-                      onDateChange={handleDateChange}
-                      minDate="1995-01-01"
-                      maxDate={new Date().toISOString().split('T')[0]}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Mobile: Bottom, Desktop: Right - Main Content */}
-            <div className="order-2 lg:col-span-3">
-              {/* Content with Initial Cap */}
-              <div className="prose prose-sm md:prose-base lg:prose-lg max-w-none lg:-mt-8">
-                <div className="relative mb-6 md:mb-8">
-                  <div className="float-left mr-2 md:mr-3 mb-0">
-                    <span 
-                      className="article-initial-cap text-4xl md:text-5xl lg:text-8xl xl:text-9xl leading-none"
-                      style={{ 
-                        lineHeight: '0.8',
-                        verticalAlign: 'top',
-                        display: 'block'
-                      }}
-                    >
-                      A
-                    </span>
-                  </div>
-                  <div className="text-lg md:text-xl lg:text-[22px] leading-tight text-gray-800 dark:text-gray-200">
-                    <p>
-                      {selectedDate} tarihinde NASA'nın Near Earth Object Web Service verilerine göre toplam {totalCount} asteroid Dünya'ya yakın geçiş yapmıştır. Bu asteroidlerin detaylı bilgileri aşağıda listelenmektedir. Her asteroid için çap, yaklaşma mesafesi, hız ve potansiyel tehlike durumu gibi önemli bilgiler sunulmaktadır.
-                    </p>
-                  </div>
-                </div>
+        <div className="max-w-4xl mx-auto pt-4 pb-12">
+          <div className="text-sm text-gray-600 dark:text-gray-400 mb-6">
+            NASA Near Earth Object Web Service •{' '}
+            {new Date(selectedDate).toLocaleDateString('tr-TR')} • {totalCount}{' '}
+            asteroid
           </div>
 
-          {/* Asteroid List */}
-              <div className="mt-8 md:mt-12">
-                <h2 className="text-xl md:text-2xl font-inter font-bold text-gray-900 dark:text-white mb-4 md:mb-6">
+          <p className="text-lg text-gray-800 dark:text-gray-200 mb-8">
+            {selectedDate} tarihinde tespit edilen nesnelerin çap, hız, yaklaşma
+            tarihi ve potansiyel tehlike seviyeleri aşağıda listelenmiştir.
+          </p>
+
+          <section>
+            <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-6">
               {selectedDate} Tarihli Asteroidler
             </h2>
-            
+
             {todayAsteroids.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="text-6xl mb-4">🌌</div>
-                <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">
-                  Bu Tarihte Asteroid Bulunamadı
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Seçilen tarihte Dünya'ya yakın geçen asteroid tespit edilmedi.
-                </p>
+              <div className="text-center py-12 text-gray-600 dark:text-gray-400">
+                🌌 Bu tarihte asteroid bulunamadı.
               </div>
             ) : (
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {todayAsteroids.map((asteroid, index) => {
+              <div className="grid gap-6 md:grid-cols-2">
+                {todayAsteroids.map((asteroid, i) => {
                   const danger = getDangerLevel(asteroid);
-                  const approachData = asteroid.close_approach_data?.[0];
-                  
+                  const approach = asteroid.close_approach_data?.[0];
                   return (
-                    <div key={asteroid.id || index} className="bg-gray-700 dark:bg-gray-700 rounded-lg p-6 hover:bg-gray-600 dark:hover:bg-gray-600 transition-colors duration-200 relative">
-                      {/* Asteroid Designation - Top Left */}
-                      <div className="mb-2">
-                        <h3 className="text-xl font-bold text-white leading-tight">
-                          {asteroid.name || `Asteroid ${index + 1}`}
-                        </h3>
-                        <p className="text-sm text-white/80">
-                          ID: {asteroid.id || 'N/A'}
-                        </p>
-                      </div>
-                      
-                      {/* Risk Level */}
-                      <div className="mb-6">
-                        <span className={`text-sm font-semibold ${
-                          danger.level === 'Yüksek' ? 'text-red-400' : 
-                          danger.level === 'Orta' ? 'text-yellow-400' : 
-                          'text-green-400'
-                        }`}>
-                          Risk: {danger.level}
-                        </span>
-                      </div>
-                      
-                      {/* Data Labels and Values */}
-                      <div className="space-y-4">
-                        <div className="flex justify-between items-center">
-                          <span className="text-white text-sm">Çap</span>
-                          <span className="text-white font-semibold">
-                            {formatAsteroidSize(asteroid.estimated_diameter?.kilometers)}
+                    <div
+                      key={asteroid.id || i}
+                      className="rounded-xl bg-white dark:bg-gray-800 p-5 flex flex-col justify-between"
+                    >
+                      <div>
+                        <div className="flex justify-between items-start mb-3">
+                          <div>
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white leading-tight">
+                              {asteroid.name || `Asteroid ${i + 1}`}
+                            </h3>
+                            <p className="text-xs text-gray-500 mt-0.5">
+                              ID: {asteroid.id || 'N/A'}
+                            </p>
+                          </div>
+                          <span
+                            className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
+                              danger.level === 'Yüksek'
+                                ? 'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-300'
+                                : danger.level === 'Orta'
+                                ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-300'
+                                : 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-300'
+                            }`}
+                          >
+                            {danger.level}
                           </span>
                         </div>
-                        
-                        {approachData && (
-                          <>
-                            <div className="flex justify-between items-center">
-                              <span className="text-white text-sm">Hız</span>
-                              <span className="text-white font-semibold">
-                                {formatVelocity(approachData.relative_velocity?.kilometers_per_second)}
-                              </span>
-                            </div>
-                            
-                            <div className="flex justify-between items-center">
-                              <span className="text-white text-sm">Yaklaşma</span>
-                              <span className="text-white font-semibold">
-                                {new Date(approachData.close_approach_date).toLocaleDateString('tr-TR')}
-                              </span>
-                            </div>
-                          </>
-                        )}
-                      </div>
-                      
-                      {/* Arrow Icon - Bottom Right */}
-                      <div className="absolute bottom-4 right-4">
-                        <div 
-                          onClick={() => handleAsteroidClick(asteroid)}
-                          className="w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors duration-200 cursor-pointer"
-                        >
-                          <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
+
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <span className="text-gray-600 dark:text-gray-300">
+                              Çap
+                            </span>
+                            <span className="font-semibold text-gray-900 dark:text-white">
+                              {formatAsteroidSize(
+                                asteroid.estimated_diameter?.kilometers
+                              )}
+                            </span>
+                          </div>
+
+                          {approach && (
+                            <>
+                              <div className="flex justify-between">
+                                <span className="text-gray-600 dark:text-gray-300">
+                                  Hız
+                                </span>
+                                <span className="font-semibold text-gray-900 dark:text-white">
+                                  {formatVelocity(
+                                    approach.relative_velocity
+                                      ?.kilometers_per_second
+                                  )}
+                                </span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-gray-600 dark:text-gray-300">
+                                  Yaklaşma
+                                </span>
+                                <span className="font-semibold text-gray-900 dark:text-white">
+                                  {new Date(
+                                    approach.close_approach_date
+                                  ).toLocaleDateString('tr-TR')}
+                                </span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-gray-600 dark:text-gray-300">
+                                  Mesafe
+                                </span>
+                                <span className="font-semibold text-gray-900 dark:text-white">
+                                  {formatDistance(
+                                    approach.miss_distance?.kilometers
+                                  )}
+                                </span>
+                              </div>
+                            </>
+                          )}
                         </div>
+                      </div>
+
+                      <div className="mt-5 flex justify-end">
+                        <button
+                          onClick={() => handleAsteroidClick(asteroid)}
+                          className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-gray-900 dark:text-gray-100 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors"
+                        >
+                          Detay
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        </button>
                       </div>
                     </div>
                   );
                 })}
               </div>
             )}
-              </div>
-            </div>
-          </div>
+          </section>
         </div>
       </div>
 
-      {/* Asteroid Detail Modal */}
+      {/* Sticky bottom bar */}
+      <div
+        className="fixed bottom-0 left-0 right-0 z-50 bg-white/80 dark:bg-black backdrop-blur-xl border-t border-gray-200/50 dark:border-gray-700/50 transition-transform duration-300"
+        style={{
+          transform: bottomBarVisible ? 'translateY(0)' : 'translateY(100%)',
+        }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="hidden md:flex items-center justify-between py-3 gap-4">
+            <div className="flex items-center gap-3 text-sm">
+              <h1 className="font-medium text-gray-900 dark:text-white">
+                Asteroid İzleme
+              </h1>
+              <span className="text-gray-400">•</span>
+              <div className="text-gray-600 dark:text-gray-400">
+                {new Date(selectedDate).toLocaleDateString('tr-TR')}
+              </div>
+              <span className="text-gray-400">•</span>
+              <div className="text-gray-600 dark:text-gray-400">
+                {totalCount} asteroid
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <button
+                onClick={goToPreviousDay}
+                className="px-3 py-1.5 rounded-full border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 text-sm"
+              >
+                ←
+              </button>
+              <button
+                onClick={goToToday}
+                className="px-3 py-1.5 rounded-full border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 text-sm"
+              >
+                Bugün
+              </button>
+              <button
+                onClick={goToNextDay}
+                className="px-3 py-1.5 rounded-full border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 text-sm"
+              >
+                →
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="w-full h-1 bg-gray-200/50 dark:bg-gray-700/50">
+          <div
+            className="h-full transition-all duration-300"
+            style={{
+              width: `${scrollPercent}%`,
+              backgroundColor: '#4B5563',
+            }}
+          />
+        </div>
+      </div>
+
       <AsteroidDetailModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
