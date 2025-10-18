@@ -166,8 +166,9 @@ const MoonPhaseCard = ({ className = '' }) => {
       </div>
 
       <div className="px-4 md:px-0 mt-3">
+        {/* BAŞLIK SADELEŞTİRİLDİ */}
         <h3 className="font-bold text-gray-900 dark:text-white text-[20px] line-clamp-2 leading-tight">
-          {phaseName} · {illumination}% Aydınlanma
+          {phaseName}
         </h3>
 
         <div className="flex items-center gap-2 text-gray-400 dark:text-gray-500 text-[19px] mt-1 font-bold">
