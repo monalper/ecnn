@@ -203,13 +203,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
   const editor = useEditor({
     extensions: [
       StarterKit,
-      Image.configure({
-  inline: true,
-  allowBase64: false,
-  HTMLAttributes: {
-    class: 'inline-image',
-  },
-}),
+      Image.configure({ inline: false, allowBase64: false }),
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
