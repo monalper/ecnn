@@ -344,3 +344,11 @@ pre[data-show-line-numbers="true"] code::before {
     font-size: 0.75rem;
   }
 } 
+
+.inline-image {
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+  max-width: 48%;
+  border-radius: 8px;
+}
