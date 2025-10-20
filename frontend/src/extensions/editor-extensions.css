@@ -345,13 +345,6 @@ pre[data-show-line-numbers="true"] code::before {
   }
 } 
 
-.inline-image {
-  display: inline-block;
-  margin-right: 8px;
-  vertical-align: middle;
-  max-width: 48%;
-  border-radius: 8px;
-}
 
 /* Makale detay sayfasındaki blockquote için */
 .prose blockquote,
