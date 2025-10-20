@@ -11,6 +11,8 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 import { FaBookmark, FaRegBookmark, FaWhatsapp } from 'react-icons/fa';
 import { LuSun, LuMoon } from 'react-icons/lu';
+import '../extensions/editor-extensions.css';
+
 
 // Google AdSense script will be injected via Helmet below
 import api, { savedArticlesAPI } from '../services/api';
