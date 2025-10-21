@@ -346,40 +346,47 @@ pre[data-show-line-numbers="true"] code::before {
 } 
 
 
-/* Makale detay sayfasındaki blockquote için */
+/* Minimalist alıntı stili - kutusuz ve tırnaksız */
 .prose blockquote,
 .text-lg blockquote {
-  border: 1px solid #000;
-  border-radius: 4px;
-  padding: 20px 24px;
-  margin: 20px 0;
-  background-color: #fff;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 1.5rem 0;
   font-style: italic;
-  color: #000;
-  position: relative;
+  color: #111827;
+  font-family: "Georgia", "Times New Roman", serif;
   font-size: 1.1rem;
   line-height: 1.6;
-  font-family: "Georgia", "Times New Roman", serif;
+  quotes: none;
 }
 
-/* Yazar ismini hizala ve italik yap */
+/* Tırnakları tamamen devre dışı bırak */
+.prose blockquote::before,
+.prose blockquote::after,
+.text-lg blockquote::before,
+.text-lg blockquote::after {
+  content: none !important;
+}
+
+/* Yazar ismi (footer) hizalaması */
 .prose blockquote footer,
 .text-lg blockquote footer {
+  display: block;
   text-align: right;
   font-style: normal;
-  margin-top: 8px;
+  margin-top: 0.5rem;
+  color: #6b7280;
+  font-size: 1rem;
 }
 
-/* İkonu tamamen kaldır */
-.prose blockquote::before,
-.text-lg blockquote::before {
-  content: none;
-}
-
-/* Dark tema */
+/* Dark tema uyumu */
 .dark .prose blockquote,
 .dark .text-lg blockquote {
-  background-color: #1f2937;
   color: #e5e7eb;
-  border-color: #e5e7eb;
+}
+
+.dark .prose blockquote footer,
+.dark .text-lg blockquote footer {
+  color: #9ca3af;
 }
