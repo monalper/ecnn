@@ -346,22 +346,23 @@ pre[data-show-line-numbers="true"] code::before {
 } 
 
 
-/* Minimalist alıntı stili - kutusuz ve tırnaksız */
+/* Minimalist alıntı stili - ortalanmış, kutusuz ve tırnaksız */
 .prose blockquote,
 .text-lg blockquote {
   border: none;
   background: none;
   padding: 0;
-  margin: 1.5rem 0;
+  margin: 2rem 0;
   font-style: italic;
   color: #111827;
   font-family: "Georgia", "Times New Roman", serif;
-  font-size: 1.1rem;
+  font-size: 30px;
   line-height: 1.6;
+  text-align: center;
   quotes: none;
 }
 
-/* Tırnakları tamamen devre dışı bırak */
+/* Tırnakları tamamen kaldır */
 .prose blockquote::before,
 .prose blockquote::after,
 .text-lg blockquote::before,
@@ -369,18 +370,18 @@ pre[data-show-line-numbers="true"] code::before {
   content: none !important;
 }
 
-/* Yazar ismi (footer) hizalaması */
+/* Yazar ismini hizala ve biçimlendir */
 .prose blockquote footer,
 .text-lg blockquote footer {
   display: block;
   text-align: right;
   font-style: normal;
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
   color: #6b7280;
   font-size: 1rem;
 }
 
-/* Dark tema uyumu */
+/* Dark tema */
 .dark .prose blockquote,
 .dark .text-lg blockquote {
   color: #e5e7eb;
@@ -390,3 +391,12 @@ pre[data-show-line-numbers="true"] code::before {
 .dark .text-lg blockquote footer {
   color: #9ca3af;
 }
+
+/* Mobil uyum (21px font size) */
+@media (max-width: 768px) {
+  .prose blockquote,
+  .text-lg blockquote {
+    font-size: 21px;
+  }
+}
+
