@@ -52,8 +52,20 @@
 
 /* Text selection color */
 ::selection {
-  background-color: #fef08a; /* Tailwind's yellow-200 */
-  color: #000000;
+  background-color: #89a8ff77; 
+  color: #0004ff;
+}
+
+/* Dark theme text selection color */
+html.dark ::selection {
+  background-color: #3a5dfbab; /* Tailwind blue-500 @ ~45% */
+  color:  #e2e6ff; /* Better contrast on dark */
+}
+
+/* Firefox-specific selection (legacy prefix) */
+html.dark ::-moz-selection {
+  background-color: rgba(59, 130, 246, 0.45);
+  color: #ffffff;
 }
 
 body {
@@ -525,6 +537,18 @@ html.dark .glass-morphism {
 }
 
 /* Article detail page specific styles */
+/* Highlighted text in article content */
+.prose mark {
+  background-color: rgba(0, 0, 0, 0.25); /* soft blue */
+  color: #ffffff; /* distinct text color (blue-900) */
+  border-radius: 0px;
+  padding: 0 2px;
+}
+
+html.dark .prose mark {
+  background-color: rgb(38, 0, 255);
+  color: #ffffff; /* light blue for dark mode */
+}
 /* Drop Cap / Initial Letter - Site-wide */
 .drop-cap {
   font-size: 4rem;
@@ -1119,4 +1143,3 @@ html.dark .hero-grid-overlay-mobile {
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 .horizontal-scroll { scroll-snap-type: x mandatory; }
 .horizontal-scroll > * { scroll-snap-align: start; }
-
