@@ -52,19 +52,19 @@
 
 /* Text selection color */
 ::selection {
-  background-color: #89a8ff77; 
+  background-color: #C4D3FC; 
   color: #0004ff;
 }
 
 /* Dark theme text selection color */
 html.dark ::selection {
-  background-color: #3a5dfbab; /* Tailwind blue-500 @ ~45% */
-  color:  #e2e6ff; /* Better contrast on dark */
+  background-color: #5441ff; /* Tailwind blue-500 @ ~45% */
+  color:  #ffffff; /* Better contrast on dark */
 }
 
 /* Firefox-specific selection (legacy prefix) */
 html.dark ::-moz-selection {
-  background-color: rgba(59, 130, 246, 0.45);
+  background-color: #5441ff;
   color: #ffffff;
 }
 
@@ -539,14 +539,14 @@ html.dark .glass-morphism {
 /* Article detail page specific styles */
 /* Highlighted text in article content */
 .prose mark {
-  background-color: rgba(0, 0, 0, 0.25); /* soft blue */
+  background-color: #ff5a5a; /* soft blue */
   color: #ffffff; /* distinct text color (blue-900) */
   border-radius: 0px;
   padding: 0 2px;
 }
 
 html.dark .prose mark {
-  background-color: rgb(38, 0, 255);
+  background-color: #ff5a5a;
   color: #ffffff; /* light blue for dark mode */
 }
 /* Drop Cap / Initial Letter - Site-wide */
