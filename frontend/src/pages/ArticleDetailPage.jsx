@@ -39,11 +39,12 @@ function injectImageSources(html, imageSources = {}) {
     const source = img.getAttribute('data-source') || imageSources[src];
     if (source) {
       const small = doc.createElement('div');
-      small.textContent = `Image Source: ${source}`;
+      small.textContent = `${source}`;
       small.style.fontSize = '12px';
+      small.style.fontWeight = 'bold';
       small.style.color = '#7b7b7b';
       small.style.textAlign = 'center';
-      small.style.marginTop = '4px';
+      small.style.marginTop = '2px';
       img.insertAdjacentElement('afterend', small);
     }
   });
