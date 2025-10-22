@@ -37,8 +37,8 @@ import { DropCap } from '../../extensions/DropCapExtension';
 // Styles
 import '../../extensions/editor-extensions.css';
 
-// Basit bir WYSIWYG editör veya Markdown editörü yerine şimdilik textarea kullanıyoruz.
-// Önerilen kütüphaneler: react-quill, Tiptap, Editor.js, react-markdown-editor-lite
+// Basit bir WYSIWYG editÃ¶r veya Markdown editÃ¶rÃ¼ yerine ÅŸimdilik textarea kullanÄ±yoruz.
+// Ã–nerilen kÃ¼tÃ¼phaneler: react-quill, Tiptap, Editor.js, react-markdown-editor-lite
 
 // Add this style block at the top level, outside the component
 if (typeof window !== 'undefined' && !document.getElementById('custom-table-style')) {
@@ -60,6 +60,27 @@ if (typeof window !== 'undefined' && !document.getElementById('custom-table-styl
 
 // Custom Tiptap Iframe extension (YouTube embed)
 import { Node, mergeAttributes } from '@tiptap/core';
+
+// Custom Image extension to support data-source attribute (image credit)
+const CustomImage = Image.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      source: {
+        default: '',
+        parseHTML: element => element.getAttribute('data-source') || '',
+        renderHTML: attributes => {
+          if (!attributes.source) return {};
+          return { 'data-source': attributes.source };
+        },
+      },
+    };
+  },
+  renderHTML({ HTMLAttributes }) {
+    // keep default <img /> rendering while preserving data-source
+    return ['img', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes)];
+  },
+});
 
 // Custom Tiptap Video extension (HTML5 video)
 const Video = Node.create({
@@ -108,7 +129,7 @@ const TwitterEmbed = Node.create({
   renderHTML({ HTMLAttributes }) {
     // Check for dark mode
     const isDark = typeof document !== 'undefined' && document.body.classList.contains('dark');
-    // x.com linklerini twitter.com'a çevir
+    // x.com linklerini twitter.com'a Ã§evir
     let embedUrl = HTMLAttributes.url;
     if (embedUrl && embedUrl.includes('x.com/')) {
       embedUrl = embedUrl.replace('x.com/', 'twitter.com/');
@@ -144,7 +165,7 @@ const TwitterEmbed = Node.create({
       const container = document.createElement('div');
       // Check for dark mode
       const isDark = typeof document !== 'undefined' && document.body.classList.contains('dark');
-      // x.com linklerini twitter.com'a çevir
+      // x.com linklerini twitter.com'a Ã§evir
       let embedUrl = HTMLAttributes.url;
       if (embedUrl && embedUrl.includes('x.com/')) {
         embedUrl = embedUrl.replace('x.com/', 'twitter.com/');
@@ -200,10 +221,34 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
   const [isUploading, setIsUploading] = useState(false);
   const [imagePreview, setImagePreview] = useState('');
 
+  // Upload a content image to backend storage (used by picker and paste)
+  const uploadContentImageFile = async (file) => {
+    try {
+      const presignedResponse = await api.post('/upload/content-image', {
+        fileName: file.name,
+        contentType: file.type,
+      });
+      const { uploadUrl, accessUrl } = presignedResponse.data;
+      await fetch(uploadUrl, {
+        method: 'PUT',
+        body: file,
+        headers: { 'Content-Type': file.type },
+      });
+      return accessUrl;
+    } catch (err) {
+      console.error('Resim yÃ¼klenirken hata:', err);
+      const uploadErrorMessage = err.response?.data?.message || err.message || 'Resim yÃ¼klenemedi.';
+      alert('Resim yÃ¼klenirken hata: ' + uploadErrorMessage);
+      throw new Error(uploadErrorMessage);
+    }
+  };
+
   const editor = useEditor({
     extensions: [
-      StarterKit,
-      Image.configure({ inline: false, allowBase64: false }),
+      StarterKit.configure({
+        codeBlock: false,
+      }),
+      CustomImage.configure({ inline: false, allowBase64: false }),
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
@@ -214,12 +259,16 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
         types: ['heading', 'paragraph'],
       }),
       Placeholder.configure({
-        placeholder: 'Makale içeriğinizi buraya yazın... Uzun makaleler yazabilir, başlıklar ekleyebilir, resimler ve tablolar kullanabilirsiniz.',
+        placeholder: 'Makale iÃ§eriÄŸinizi buraya yazÄ±n... Uzun makaleler yazabilir, baÅŸlÄ±klar ekleyebilir, resimler ve tablolar kullanabilirsiniz.',
       }),
       CodeBlockLowlight.configure({
         lowlight,
       }),
-      Highlight,
+      Highlight.configure({
+        HTMLAttributes: {
+          style: 'background-color: rgb(68, 0, 255); border-radius: 0px; padding: 0 2px;',
+        },
+      }),
       TaskList,
       TaskItem.configure({
         nested: true,
@@ -268,7 +317,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
         saveFunction: (content) => {
           // Otomatik kaydetme fonksiyonu
           console.log('Auto saving content...', content);
-          // Burada API'ye kaydetme işlemi yapılabilir
+          // Burada API'ye kaydetme iÅŸlemi yapÄ±labilir
         },
         enabled: true,
       }),
@@ -278,6 +327,39 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
     editorProps: {
       attributes: {
         class: 'min-h-[600px] p-6 rounded-lg bg-white dark:bg-gray-800 focus:outline-none prose prose-gray dark:prose-invert max-w-none text-gray-900 dark:text-gray-100 w-full overflow-wrap-anywhere',
+      },
+      handlePaste: (view, event, slice) => {
+        try {
+          const dt = event.clipboardData || window.clipboardData;
+          if (!dt) return false;
+          const files = Array.from(dt.files || []);
+          const imageFiles = files.filter(f => f.type && f.type.startsWith('image/'));
+          if (imageFiles.length === 0) return false;
+
+          event.preventDefault();
+          (async () => {
+            for (const file of imageFiles) {
+              try {
+                const url = await uploadContentImageFile(file);
+                const altText = window.prompt('Resim iÃ§in alt metin girin (eriÅŸilebilirlik iÃ§in):', '') || '';
+                const sourceText = window.prompt('GÃ¶rsel KaynaÄŸÄ± (Ã¶r. site/kiÅŸi adÄ± veya URL):', '') || '';
+                editor.chain().focus().setImage({
+                  src: url,
+                  alt: altText,
+                  title: altText,
+                  source: sourceText,
+                }).run();
+              } catch (e) {
+                console.error('Pasted image upload failed:', e);
+              }
+            }
+          })();
+
+          return true;
+        } catch (e) {
+          console.error('handlePaste error:', e);
+          return false;
+        }
       },
     },
   });
@@ -337,18 +419,19 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
     const file = e.target.files[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        setFormError('Dosya boyutu 5MB\'dan büyük olamaz.');
+        setFormError('Dosya boyutu 5MB\'dan bÃ¼yÃ¼k olamaz.');
         e.target.value = null;
         return;
       }
       if (!file.type.startsWith('image/')) {
-        setFormError('Lütfen geçerli bir resim dosyası seçin.');
+        setFormError('LÃ¼tfen geÃ§erli bir resim dosyasÄ± seÃ§in.');
         e.target.value = null;
         return;
       }
       setCoverImageFile(file);
       setFormError('');
       const reader = new FileReader();
+
       reader.onloadend = () => {
         setImagePreview(reader.result);
       };
@@ -366,7 +449,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
     setIsUploading(true);
     setFormError('');
     try {
-      // FormData kullanarak dosyayı doğrudan backend'e gönder
+      // FormData kullanarak dosyayÄ± doÄŸrudan backend'e gÃ¶nder
       const formData = new FormData();
       formData.append('coverImage', coverImageFile);
       
@@ -378,16 +461,39 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
       
       const { accessUrl } = response.data;
       setCurrentCoverImageUrl(accessUrl);
+
       setIsUploading(false);
       return accessUrl;
     } catch (err) {
-      console.error('Kapak resmi yüklenirken hata:', err);
-      const uploadErrorMessage = err.response?.data?.message || err.message || 'Kapak resmi yüklenemedi.';
-      setFormError(`Resim Yükleme Hatası: ${uploadErrorMessage}`);
+      console.error('Kapak resmi yÃ¼klenirken hata:', err);
+      const uploadErrorMessage = err.response?.data?.message || err.message || 'Kapak resmi yÃ¼klenemedi.';
+      setFormError(`Resim YÃ¼kleme HatasÄ±: ${uploadErrorMessage}`);
       setIsUploading(false);
       throw new Error(uploadErrorMessage);
     }
   }, [coverImageFile, currentCoverImageUrl, setFormError]);
+
+  const addImageWithSource = async () => {
+    const url = await handleImageUpload();
+    if (url && editor) {
+      const altText = window.prompt('Resim için alt metin girin (erişilebilirlik için):', '') || '';
+      const sourceText = window.prompt('Görsel Kaynağı (ör. site/kişi adı veya URL):', '') || '';
+      editor.chain().focus().setImage({
+        src: url,
+        alt: altText,
+        title: altText,
+        source: sourceText,
+      }).run();
+    }
+  };
+
+  const editImageSource = () => {
+    if (!editor) return;
+    const current = editor.getAttributes('image')?.source || '';
+    const next = window.prompt('Görsel Kaynağı (ör. site/kişi adı veya URL):', current);
+    if (next === null) return; // cancelled
+    editor.chain().focus().updateAttributes('image', { source: next }).run();
+  };
 
   const handleImageUpload = async () => {
     return new Promise((resolve) => {
@@ -397,17 +503,14 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
       input.onchange = async () => {
         const file = input.files[0];
         if (file) {
-          const presignedResponse = await api.post('/upload/content-image', {
-            fileName: file.name,
-            contentType: file.type,
-          });
-          const { uploadUrl, accessUrl } = presignedResponse.data;
-          await fetch(uploadUrl, {
-            method: 'PUT',
-            body: file,
-            headers: { 'Content-Type': file.type },
-          });
-          resolve(accessUrl);
+          try {
+            const accessUrl = await uploadContentImageFile(file);
+            resolve(accessUrl);
+          } catch (e) {
+            resolve(null);
+          }
+        } else {
+          resolve(null);
         }
       };
       input.click();
@@ -417,11 +520,13 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
   const addImage = async () => {
     const url = await handleImageUpload();
     if (url && editor) {
-      const altText = window.prompt('Resim için alt metin girin (erişilebilirlik için):');
+      const altText = window.prompt('Resim için alt metin girin (erişilebilirlik için):', '') || '';
+      const sourceText = window.prompt('Görsel Kaynağı (ör. site/kişi adı veya URL):', '') || '';
       editor.chain().focus().setImage({ 
         src: url, 
-        alt: altText || '',
-        title: altText || ''
+        alt: altText,
+        title: altText,
+        source: sourceText,
       }).run();
     }
   };
@@ -455,7 +560,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
             });
             resolve(accessUrl);
           } catch (err) {
-            alert('Video yüklenirken hata oluştu: ' + (err?.response?.data?.message || err.message));
+            alert('Video yÃ¼klenirken hata oluÅŸtu: ' + (err?.response?.data?.message || err.message));
             resolve(null);
           }
         }
@@ -467,7 +572,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!title.trim() || !editor || editor.isEmpty) {
-      setFormError('Başlık ve İçerik alanları boş bırakılamaz.');
+      setFormError('BaÅŸlÄ±k ve Ä°Ã§erik alanlarÄ± boÅŸ bÄ±rakÄ±lamaz.');
       return;
     }
     setIsSubmitting(true);
@@ -487,9 +592,9 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
       };
       await onSubmit(payload);
     } catch (err) {
-      console.error('Makale formu gönderilirken hata:', err);
+      console.error('Makale formu gÃ¶nderilirken hata:', err);
       if (!formError && !isUploading) {
-        setFormError(err.message || 'Makale kaydedilemedi. Lütfen tüm alanları kontrol edin.');
+        setFormError(err.message || 'Makale kaydedilemedi. LÃ¼tfen tÃ¼m alanlarÄ± kontrol edin.');
       }
     } finally {
       setIsSubmitting(false);
@@ -516,7 +621,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
             rows="2"
             maxLength="100"
             className={`${inputClass} flex-1 resize-none`}
-            placeholder="Etkileyici bir başlık girin"
+            placeholder="Etkileyici bir baÅŸlÄ±k girin"
           />
           <div className="text-right text-xs text-gray-500 dark:text-gray-400 mt-1">
             {title.length}/100
@@ -530,7 +635,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
             rows="3"
             maxLength="100"
             className={`${inputClass} flex-1`}
-            placeholder="Makalenizin kısa bir özeti (isteğe bağlı)"
+            placeholder="Makalenizin kÄ±sa bir Ã¶zeti (isteÄŸe baÄŸlÄ±)"
           />
           <div className="text-right text-xs text-gray-500 dark:text-gray-400 mt-1">
             {description.length}/100
@@ -556,13 +661,13 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
             <option value="siyaset">Siyaset</option>
             <option value="ekonomi">Ekonomi</option>
             <option value="spor">Spor</option>
-            <option value="sağlık">Sağlık</option>
-            <option value="eğitim">Eğitim</option>
-            <option value="çevre">Çevre</option>
+            <option value="saÄŸlÄ±k">SaÄŸlÄ±k</option>
+            <option value="eÄŸitim">EÄŸitim</option>
+            <option value="Ã§evre">Ã‡evre</option>
             <option value="sosyoloji">Sosyoloji</option>
             <option value="psikoloji">Psikoloji</option>
             <option value="din">Din</option>
-            <option value="müzik">Müzik</option>
+            <option value="mÃ¼zik">MÃ¼zik</option>
             <option value="sinema">Sinema</option>
             <option value="seyahat">Seyahat</option>
             <option value="yemek">Yemek</option>
@@ -570,7 +675,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
         </div>
       </div>
       <div>
-        <label className={labelClass}>İçerik</label>
+        <label className={labelClass}>Ä°Ã§erik</label>
         <div className="flex gap-4 max-w-full">
           {/* Sticky Sidebar Toolbar */}
           <div className="sticky top-4 h-fit w-60 bg-gray-50 dark:bg-gray-700 rounded-lg p-2 flex flex-col gap-2 flex-shrink-0">
@@ -579,7 +684,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               type="button"
               onClick={() => editor.chain().focus().toggleBold().run()}
               className={`p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 ${editor?.isActive('bold') ? 'bg-gray-200 dark:bg-gray-600 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'}`}
-              title="Kalın"
+              title="KalÄ±n"
             >
               <FaBold />
             </button>
@@ -587,7 +692,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               type="button"
               onClick={() => editor.chain().focus().toggleItalic().run()}
               className={`p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 ${editor?.isActive('italic') ? 'bg-gray-200 dark:bg-gray-600 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'}`}
-              title="İtalik"
+              title="Ä°talik"
             >
               <FaItalic />
             </button>
@@ -595,7 +700,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               type="button"
               onClick={() => editor.chain().focus().toggleDropCap().run()}
               className={`p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 ${editor?.isActive('dropCap') ? 'bg-gray-200 dark:bg-gray-600 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'}`}
-              title="Drop Cap (Büyük Başlangıç Harfi)"
+              title="Drop Cap (BÃ¼yÃ¼k BaÅŸlangÄ±Ã§ Harfi)"
             >
               <span className="font-serif text-xl font-bold">A</span>
             </button>
@@ -603,7 +708,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               type="button"
               onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
               className={`p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 ${editor?.isActive('heading', { level: 1 }) ? 'bg-gray-200 dark:bg-gray-600 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'}`}
-              title="Başlık 1"
+              title="BaÅŸlÄ±k 1"
             >
               <FaHeading />
             </button>
@@ -611,7 +716,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               type="button"
               onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
               className={`p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 ${editor?.isActive('heading', { level: 2 }) ? 'bg-gray-200 dark:bg-gray-600 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'}`}
-              title="Başlık 2"
+              title="BaÅŸlÄ±k 2"
             >
               <FaHeading />
             </button>
@@ -619,7 +724,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               type="button"
               onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
               className={`p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 ${editor?.isActive('heading', { level: 3 }) ? 'bg-gray-200 dark:bg-gray-600 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'}`}
-              title="Başlık 3"
+              title="BaÅŸlÄ±k 3"
             >
               <FaHeading />
             </button>
@@ -627,7 +732,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               type="button"
               onClick={() => editor.chain().focus().toggleUnderline().run()}
               className={`p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 ${editor?.isActive('underline') ? 'bg-gray-200 dark:bg-gray-600 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'}`}
-              title="Altı Çizili"
+              title="AltÄ± Ã‡izili"
             >
               <FaUnderline />
             </button>
@@ -635,7 +740,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               type="button"
               onClick={() => editor.chain().focus().toggleStrike().run()}
               className={`p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 ${editor?.isActive('strike') ? 'bg-gray-200 dark:bg-gray-600 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'}`}
-              title="Üstü Çizili"
+              title="ÃœstÃ¼ Ã‡izili"
             >
               <FaStrikethrough />
             </button>
@@ -643,7 +748,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               type="button"
               onClick={() => editor.chain().focus().toggleBulletList().run()}
               className={`p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 ${editor?.isActive('bulletList') ? 'bg-gray-200 dark:bg-gray-600 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'}`}
-              title="Madde İşaretli Liste"
+              title="Madde Ä°ÅŸaretli Liste"
             >
               <FaListUl />
             </button>
@@ -651,7 +756,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               type="button"
               onClick={() => editor.chain().focus().toggleOrderedList().run()}
               className={`p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 ${editor?.isActive('orderedList') ? 'bg-gray-200 dark:bg-gray-600 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'}`}
-              title="Numaralı Liste"
+              title="NumaralÄ± Liste"
             >
               <FaListOl />
             </button>
@@ -659,7 +764,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               type="button"
               onClick={() => editor.chain().focus().toggleTaskList().run()}
               className={`p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 ${editor?.isActive('taskList') ? 'bg-gray-200 dark:bg-gray-600 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'}`}
-              title="Görev Listesi"
+              title="GÃ¶rev Listesi"
             >
               <FaTasks />
             </button>
@@ -667,14 +772,14 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               type="button"
               onClick={() => editor.chain().focus().toggleBlockquote().run()}
               className={`p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 ${editor?.isActive('blockquote') ? 'bg-gray-200 dark:bg-gray-600 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'}`}
-              title="Alıntı"
+              title="AlÄ±ntÄ±"
             >
               <FaQuoteLeft />
             </button>
             <button
               type="button"
               onClick={() => {
-                const color = window.prompt('Metin rengi (örn: #ff0000):');
+                const color = window.prompt('Metin rengi (Ã¶rn: #ff0000):');
                 if (color) {
                   editor.chain().focus().setColor(color).run();
                 }
@@ -687,7 +792,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
             <button
               type="button"
               onClick={() => {
-                const color = window.prompt('Arka plan rengi (örn: #ff0000):');
+                const color = window.prompt('Arka plan rengi (Ã¶rn: #ff0000):');
                 if (color) {
                   editor.chain().focus().setHighlight({ color }).run();
                 }
@@ -701,8 +806,8 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               <button
                 type="button"
                 onClick={() => {
-                  const rows = window.prompt('Satır sayısı:', '3');
-                  const cols = window.prompt('Sütun sayısı:', '3');
+                  const rows = window.prompt('SatÄ±r sayÄ±sÄ±:', '3');
+                  const cols = window.prompt('SÃ¼tun sayÄ±sÄ±:', '3');
                   if (rows && cols) {
                     editor.chain().focus().insertTable({ 
                       rows: parseInt(rows), 
@@ -725,54 +830,54 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
                       onClick={() => editor.chain().focus().addColumnBefore().run()}
                       disabled={!editor?.can().addColumnBefore()}
                       className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 disabled:opacity-50 text-sm"
-                      title="Sütun Ekle (Sol)"
+                      title="SÃ¼tun Ekle (Sol)"
                     >
-                      ← Sütun Ekle
+                      â† SÃ¼tun Ekle
                     </button>
                     <button
                       type="button"
                       onClick={() => editor.chain().focus().addColumnAfter().run()}
                       disabled={!editor?.can().addColumnAfter()}
                       className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 disabled:opacity-50 text-sm"
-                      title="Sütun Ekle (Sağ)"
+                      title="SÃ¼tun Ekle (SaÄŸ)"
                     >
-                      Sütun Ekle →
+                      SÃ¼tun Ekle â†’
                     </button>
                     <button
                       type="button"
                       onClick={() => editor.chain().focus().addRowBefore().run()}
                       disabled={!editor?.can().addRowBefore()}
                       className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 disabled:opacity-50 text-sm"
-                      title="Satır Ekle (Üst)"
+                      title="SatÄ±r Ekle (Ãœst)"
                     >
-                      ↑ Satır Ekle
+                      â†‘ SatÄ±r Ekle
                     </button>
                     <button
                       type="button"
                       onClick={() => editor.chain().focus().addRowAfter().run()}
                       disabled={!editor?.can().addRowAfter()}
                       className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 disabled:opacity-50 text-sm"
-                      title="Satır Ekle (Alt)"
+                      title="SatÄ±r Ekle (Alt)"
                     >
-                      Satır Ekle ↓
+                      SatÄ±r Ekle â†“
                     </button>
                     <button
                       type="button"
                       onClick={() => editor.chain().focus().deleteColumn().run()}
                       disabled={!editor?.can().deleteColumn()}
                       className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 disabled:opacity-50 text-sm"
-                      title="Sütun Sil"
+                      title="SÃ¼tun Sil"
                     >
-                      Sütun Sil
+                      SÃ¼tun Sil
                     </button>
                     <button
                       type="button"
                       onClick={() => editor.chain().focus().deleteRow().run()}
                       disabled={!editor?.can().deleteRow()}
                       className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 disabled:opacity-50 text-sm"
-                      title="Satır Sil"
+                      title="SatÄ±r Sil"
                     >
-                      Satır Sil
+                      SatÄ±r Sil
                     </button>
                     <button
                       type="button"
@@ -791,17 +896,25 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               type="button"
               onClick={() => editor.chain().focus().setHorizontalRule().run()}
               className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
-              title="Yatay Çizgi"
+              title="Yatay Ã‡izgi"
             >
               <FaMinus />
             </button>
             <button
               type="button"
-              onClick={addImage}
+              onClick={addImageWithSource}
               className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
               title="Resim Ekle"
             >
               <FaImage />
+            </button>
+            <button
+              type="button"
+              onClick={editImageSource}
+              className="px-2 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-sm"
+              title="Görsel Kaynağı Ekle/Düzenle"
+            >
+              Kaynak
             </button>
             <button
               type="button"
@@ -817,10 +930,10 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               onClick={() => {
                 const url = window.prompt('YouTube video linkini girin:');
                 if (!url) return;
-                // Sadece YouTube linkleri için çalışsın
+                // Sadece YouTube linkleri iÃ§in Ã§alÄ±ÅŸsÄ±n
                 const ytMatch = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/);
                 if (!ytMatch) {
-                  alert('Sadece geçerli bir YouTube video linki ekleyebilirsiniz!');
+                  alert('Sadece geÃ§erli bir YouTube video linki ekleyebilirsiniz!');
                   return;
                 }
                 const videoId = ytMatch[1];
@@ -848,10 +961,10 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               onClick={() => {
                 const url = window.prompt('Tweet linkini girin:');
                 if (!url) return;
-                // Sadece geçerli Twitter veya X status URL'si için çalışsın
+                // Sadece geÃ§erli Twitter veya X status URL'si iÃ§in Ã§alÄ±ÅŸsÄ±n
                 const twMatch = url.match(/^https?:\/\/(www\.)?(twitter\.com|x\.com)\/[A-Za-z0-9_]+\/status\/\d+/);
                 if (!twMatch) {
-                  alert('Sadece geçerli bir Tweet linki ekleyebilirsiniz!');
+                  alert('Sadece geÃ§erli bir Tweet linki ekleyebilirsiniz!');
                   return;
                 }
                 if (editor) {
@@ -880,7 +993,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
                 }
               }}
               className={`p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 ${editor?.isActive('link') ? 'bg-gray-200 dark:bg-gray-600 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'}`}
-              title="Bağlantı Ekle"
+              title="BaÄŸlantÄ± Ekle"
             >
               <FaLink />
             </button>
@@ -888,7 +1001,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               type="button"
               onClick={() => editor.chain().focus().unsetLink().run()}
               className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
-              title="Bağlantıyı Kaldır"
+              title="BaÄŸlantÄ±yÄ± KaldÄ±r"
             >
               <FaUnlink />
             </button>
@@ -912,7 +1025,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               type="button"
               onClick={() => editor.chain().focus().setTextAlign('right').run()}
               className={`p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 ${editor?.isActive({ textAlign: 'right' }) ? 'bg-gray-200 dark:bg-gray-600 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'}`}
-              title="Sağa Hizala"
+              title="SaÄŸa Hizala"
             >
               <FaAlignRight />
             </button>
@@ -920,7 +1033,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               type="button"
               onClick={() => editor.chain().focus().toggleCodeBlock().run()}
               className={`p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 ${editor?.isActive('codeBlock') ? 'bg-gray-200 dark:bg-gray-600 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'}`}
-              title="Kod Bloğu"
+              title="Kod BloÄŸu"
             >
               <FaCode />
             </button>
@@ -944,14 +1057,14 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               type="button"
               onClick={() => editor.chain().focus().redo().run()}
               className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
-              title="İleri Al"
+              title="Ä°leri Al"
             >
               <FaRedo />
             </button>
             
-            {/* Yeni Özellik Butonları */}
+            {/* Yeni Ã–zellik ButonlarÄ± */}
             
-            {/* Font Ailesi Seçimi */}
+            {/* Font Ailesi SeÃ§imi */}
             <div className="relative col-span-3">
               <select
                 onChange={(e) => {
@@ -1003,7 +1116,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               </select>
             </div>
 
-            {/* Satır Yüksekliği */}
+            {/* SatÄ±r YÃ¼ksekliÄŸi */}
             <div className="relative col-span-3">
               <select
                 onChange={(e) => {
@@ -1012,9 +1125,9 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
                   }
                 }}
                 className="w-full p-1 rounded bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs"
-                title="Satır Yüksekliği"
+                title="SatÄ±r YÃ¼ksekliÄŸi"
               >
-                <option value="">Satır</option>
+                <option value="">SatÄ±r</option>
                 <option value="1">1.0</option>
                 <option value="1.2">1.2</option>
                 <option value="1.4">1.4</option>
@@ -1026,7 +1139,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               </select>
             </div>
 
-            {/* Harf Aralığı */}
+            {/* Harf AralÄ±ÄŸÄ± */}
             <div className="relative col-span-3">
               <select
                 onChange={(e) => {
@@ -1035,9 +1148,9 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
                   }
                 }}
                 className="w-full p-1 rounded bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs"
-                title="Harf Aralığı"
+                title="Harf AralÄ±ÄŸÄ±"
               >
-                <option value="">Aralık</option>
+                <option value="">AralÄ±k</option>
                 <option value="normal">Normal</option>
                 <option value="0.5px">0.5px</option>
                 <option value="1px">1px</option>
@@ -1059,46 +1172,46 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
               <FaCode />
             </button>
 
-            {/* Matematik Formülü - Temporarily disabled
+            {/* Matematik FormÃ¼lÃ¼ - Temporarily disabled
             <button
               type="button"
               onClick={() => {
-                const formula = window.prompt('LaTeX matematik formülünü girin (örn: x^2 + y^2 = z^2):');
+                const formula = window.prompt('LaTeX matematik formÃ¼lÃ¼nÃ¼ girin (Ã¶rn: x^2 + y^2 = z^2):');
                 if (formula) {
                   editor.chain().focus().setMath({ content: formula, display: 'block' }).run();
                 }
               }}
               className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
-              title="Matematik Formülü"
+              title="Matematik FormÃ¼lÃ¼"
             >
               <FaSuperscript />
             </button>
             */}
 
-            {/* Kimyasal Formül - Temporarily disabled
+            {/* Kimyasal FormÃ¼l - Temporarily disabled
             <button
               type="button"
               onClick={() => {
-                const formula = window.prompt('Kimyasal formülü girin (örn: H2O):');
-                const name = window.prompt('Kimyasal maddenin adını girin (örn: Su):');
+                const formula = window.prompt('Kimyasal formÃ¼lÃ¼ girin (Ã¶rn: H2O):');
+                const name = window.prompt('Kimyasal maddenin adÄ±nÄ± girin (Ã¶rn: Su):');
                 if (formula) {
                   editor.chain().focus().setChemistry({ formula, name: name || '' }).run();
                 }
               }}
               className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
-              title="Kimyasal Formül"
+              title="Kimyasal FormÃ¼l"
             >
               <FaFlask />
             </button>
             */}
 
-            {/* Bilimsel Gösterim - Temporarily disabled
+            {/* Bilimsel GÃ¶sterim - Temporarily disabled
             <button
               type="button"
               onClick={() => {
-                const coefficient = window.prompt('Katsayıyı girin (örn: 1.5):');
-                const exponent = window.prompt('Üssü girin (örn: 6):');
-                const unit = window.prompt('Birimi girin (örn: m):');
+                const coefficient = window.prompt('KatsayÄ±yÄ± girin (Ã¶rn: 1.5):');
+                const exponent = window.prompt('ÃœssÃ¼ girin (Ã¶rn: 6):');
+                const unit = window.prompt('Birimi girin (Ã¶rn: m):');
                 if (coefficient && exponent) {
                   editor.chain().focus().setScientificNotation({ 
                     coefficient, 
@@ -1108,7 +1221,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
                 }
               }}
               className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
-              title="Bilimsel Gösterim"
+              title="Bilimsel GÃ¶sterim"
             >
               <FaSuperscript />
             </button>
@@ -1118,7 +1231,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
             <button
               type="button"
               onClick={() => {
-                const title = window.prompt('Timer başlığını girin (örn: Yılbaşı):');
+                const title = window.prompt('Timer baÅŸlÄ±ÄŸÄ±nÄ± girin (Ã¶rn: YÄ±lbaÅŸÄ±):');
                 const targetDate = window.prompt('Hedef tarihi girin (YYYY-MM-DD HH:MM):');
                 if (title && targetDate) {
                   editor.chain().focus().setCountdownTimer({ 
@@ -1138,7 +1251,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
             </button>
             */}
 
-            {/* Kod Bloğu Kopyalama */}
+            {/* Kod BloÄŸu Kopyalama */}
             <button
               type="button"
               onClick={() => {
@@ -1146,10 +1259,10 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
                 if (codeBlocks.length > 0) {
                   const lastCodeBlock = codeBlocks[codeBlocks.length - 1];
                   navigator.clipboard.writeText(lastCodeBlock.textContent || '');
-                  // Kopyalandı göstergesi
+                  // KopyalandÄ± gÃ¶stergesi
                   const button = event.target.closest('button');
                   const originalTitle = button.title;
-                  button.title = 'Kopyalandı!';
+                  button.title = 'KopyalandÄ±!';
                   button.classList.add('bg-green-200', 'text-green-800');
                   setTimeout(() => {
                     button.title = originalTitle;
@@ -1158,7 +1271,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
                 }
               }}
               className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
-              title="Kod Bloğunu Kopyala"
+              title="Kod BloÄŸunu Kopyala"
             >
               <FaCopy />
             </button>
@@ -1183,7 +1296,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
         </div>
       </div>
       <div>
-        <label htmlFor="coverImage" className={labelClass}>Kapak Görseli</label>
+        <label htmlFor="coverImage" className={labelClass}>Kapak GÃ¶rseli</label>
         <input
           type="file"
           id="coverImage"
@@ -1191,11 +1304,11 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
           onChange={handleFileChange}
           className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 dark:file:bg-blue-900/20 file:text-blue-700 dark:file:text-blue-400 hover:file:bg-blue-100 dark:hover:file:bg-blue-900/30 transition-colors cursor-pointer"
         />
-        {(isUploading) && <p className="text-sm text-blue-600 dark:text-blue-400 mt-2">Kapak resmi yükleniyor, lütfen bekleyin...</p>}
+        {(isUploading) && <p className="text-sm text-blue-600 dark:text-blue-400 mt-2">Kapak resmi yÃ¼kleniyor, lÃ¼tfen bekleyin...</p>}
         {imagePreview && !isUploading && (
           <div className="mt-3 p-2 rounded-lg inline-block">
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Görsel Önizleme:</p>
-            <img src={imagePreview} alt="Kapak Görseli Önizleme" className="max-h-48 rounded-md shadow-sm" />
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">GÃ¶rsel Ã–nizleme:</p>
+            <img src={imagePreview} alt="Kapak GÃ¶rseli Ã–nizleme" className="max-h-48 rounded-md shadow-sm" />
           </div>
         )}
          {isEditing && currentCoverImageUrl && !coverImageFile && (
@@ -1203,7 +1316,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
         )}
       </div>
       <div>
-        <label htmlFor="status" className={labelClass}>Yayın Durumu</label>
+        <label htmlFor="status" className={labelClass}>YayÄ±n Durumu</label>
         <select
           id="status"
           value={status}
@@ -1211,8 +1324,8 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
           className={`${inputClass} appearance-none`}
         >
           <option value="draft">Taslak Olarak Kaydet</option>
-          <option value="published">Şimdi Yayınla</option>
-          <option value="unlisted">Liste Dışı (Yayında ama kart olarak gösterilmiyor)</option>
+          <option value="published">Åimdi YayÄ±nla</option>
+          <option value="unlisted">Liste DÄ±ÅŸÄ± (YayÄ±nda ama kart olarak gÃ¶sterilmiyor)</option>
         </select>
       </div>
       <div className="flex justify-end pt-2">
@@ -1223,7 +1336,7 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
         >
           {(isSubmitting || isUploading) ? (
             <div className="loader" style={{ width: '1.25rem', height: '1.25rem', margin: '0 0.5rem 0 -0.25rem', border: '0.0625rem #fff solid' }}></div>
-          ) : (isEditing ? 'Makaleyi Güncelle' : 'Makaleyi Oluştur')}
+          ) : (isEditing ? 'Makaleyi GÃ¼ncelle' : 'Makaleyi OluÅŸtur')}
         </button>
       </div>
     </form>
@@ -1231,3 +1344,4 @@ const ArticleForm = ({ articleData, onSubmit, isEditing = false, formError, setF
 };
 
 export default ArticleForm;
+
