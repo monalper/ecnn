@@ -1,132 +1,144 @@
 import React, { useEffect, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
-export default function HeroMinimalApple({ dark = true }) {
-  const { scrollY } = useScroll();
-  const scale = useTransform(scrollY, [0, 200], [1, 0.9]);
-  const borderRadius = useTransform(scrollY, [0, 200], ["0%", "20px"]);
-  const top = useTransform(scrollY, [0, 200], ["0vh", "0.5vh"]);
+// New hero: Masonry collage (left) + large headline (right)
+// Uses images from public/mons/*
+export default function HeroMinimalApple() {
+  const fallbackImages = [
+    "/mons/114.jpg",
+    "/mons/Compartment_C_1938_hopper.webp",
+    "/mons/1.png",
+    "/mons/Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg",
+    "/mons/Edward-Hopper-City-Roofs-1932.-�-2022-Heirs-of-Josephine-N.-HopperLicensed-by-Artists-Rights-Society-ARS-New-York..webp",
+    "/mons/GOYO-13X18.jpg",
+    "/mons/edward-hopper-gece-kuslari-a.jpg",
+    "/mons/2.png",
+    "/mons/hopper-slides07.jpg",
+    "/mons/GOYO-50X70.jpg",
+    "/mons/W1siZiIsIjQ1NzQxNyJdLFsicCIsImNvbnZlcnQiLCItcXVhbGl0eSA5MCAtcmVzaXplIDIwMDB4MTQ0MFx1MDAzZSJdXQ.jpg",
+    "/mons/unnamed.jpg",
+  ];
 
-  const [isMobile, setIsMobile] = useState(false);
+  const [images, setImages] = useState(fallbackImages);
 
-  // 📱 Cihaz boyutuna göre SVG seçimi
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+    let ignore = false;
+    fetch("/mons/manifest.json")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!ignore && data?.images?.length) {
+          setImages(data.images);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      ignore = true;
     };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const heroSvg = isMobile ? "/herobaslikmobil.svg" : "/herobaslik.svg";
-
   return (
-    <motion.section
-      style={{
-        scale,
-        borderRadius,
-        top,
-        position: "sticky",
-        zIndex: 10,
-      }}
-      className={`hero-apple-minimal ${dark ? "dark" : "light"}`}
-    >
-      {/* 🎬 Arka plan videosu */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="hero-bg-video"
-        src="/hero.mp4"
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          zIndex: 0,
-          pointerEvents: "none",
-        }}
-      />
-
-      {/* 🖼️ Ortalanmış SVG başlık (mobil/masaüstü farkı dahil) */}
-      <img
-        src={heroSvg}
-        alt="Hero Başlık"
-        className="hero-title-svg"
-      />
-
-      <div className="hero-inner"></div>
+    <motion.section className="mons-hero" aria-label="Openwall makaleler hero">
+      <div className="mons-inner">
+        <div className="mons-left" aria-hidden="true">
+          <div className="mons-grid">
+            {images.map((src, idx) => (
+              <div className="cell" key={idx}>
+                <img src={src} alt="" loading={idx < 3 ? "eager" : "lazy"} draggable="false" />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="mons-right">
+          <Link to="/articles" className="mons-title" aria-label="Openwall'da yayınlanmış tüm yazıları keşfet">
+            Openwall'da yayınlanmış tüm yazıları keşfet.
+          </Link>
+          <Link to="/articles" className="mons-title mons-title-new" aria-label="Openwall'da yayınlanmış tüm yazıları keşfet">
+            Openwall'da yayınlanmış tüm <span className="mons-title-serif">yazıları</span> keşfet.
+          </Link>
+        </div>
+      </div>
 
       <style>{`
         :root {
-          --apple-black: #000000;
-          --apple-white: #ffffff;
-          --apple-gray: #f5f5f7;
-          --apple-gray-dark: #1d1d1f;
+          --bg: #f7f7fb;
+          --text: #0b0c10;
+          --muted: #6b7280;
         }
 
-        .hero-apple-minimal {
+        .mons-hero {
           width: 100%;
-          height: 50vh;
-          display: flex;
+          background: #f8f9fa; /* match light theme body */
+          /* push content below fixed header and add extra gap */
+          --header-h: 48px; /* mobile header height h-12 */
+          --hero-gap: clamp(8px, 2.5vw, 28px);
+          padding: calc(var(--header-h) + var(--hero-gap)) 0 clamp(16px, 3vw, 36px);
+          color: #0b0c10; /* light theme text */
+        }
+        html.dark .mons-hero { background: #0F0F0F; color: #ffffff; }
+        @media (min-width: 768px) { /* md */
+          .mons-hero { --header-h: 44px; --hero-gap: clamp(10px, 2vw, 32px); }
+        }
+        .mons-inner {
+          max-width: 1400px;
+          margin: 0 auto;
+          padding: 0 clamp(16px, 3vw, 40px);
+          display: grid;
+          grid-template-columns: 1.15fr 0.85fr;
+          /* increase whitespace between masonry and heading */
+          gap: clamp(24px, 5vw, 96px);
           align-items: center;
-          justify-content: center;
-          text-align: center;
-          font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
-          transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* Left collage as masonry columns that preserve aspect ratio */
+        .mons-grid {
+          column-count: 3;
+          column-gap: clamp(4px, 0.8vw, 10px);
+        }
+        .mons-grid .cell { 
+          break-inside: avoid; 
+          -webkit-column-break-inside: avoid;
+          margin-bottom: clamp(4px, 0.8vw, 10px);
+          border-radius: 0;
           overflow: hidden;
-          padding: 0;
-          position: relative;
         }
-
-        @media (min-width: 640px) {
-          .hero-apple-minimal {
-            height: 80vh;
-          }
-        }
-
-        @media (min-width: 1024px) {
-          .hero-apple-minimal {
-            height: 100vh;
-          }
-        }
-
-        .hero-apple-minimal.dark {
-          background-color: transparent;
-          color: var(--apple-white);
-        }
-
-        .hero-apple-minimal.light {
-          background-color: var(--apple-gray);
-          color: var(--apple-gray-dark);
-        }
-
-        .hero-inner {
-          max-width: 800px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 1.2rem;
-        }
-
-        /* 🌀 Hero başlık SVG stilleri */
-        .hero-title-svg {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
+        .mons-grid img {
           width: 100%;
           height: auto;
-          max-width: none;
-          object-fit: cover;
-          mix-blend-mode: difference;
-          z-index: 2;
-          pointer-events: none;
-          opacity: 0.9;
+          object-fit: contain; /* preserve full image without cropping */
+          display: block;
+          filter: saturate(102%);
+          background: #eee; /* subtle backdrop for transparent margins */
+          border-radius: 0;
+          user-select: none;
+          -webkit-user-drag: none;
+          -webkit-user-select: none;
+          -ms-user-select: none;
+        }
+        .mons-grid { user-select: none; -webkit-user-select: none; }
+
+        /* Right title */
+        .mons-right { align-self: center; }
+        .mons-title {
+          color: inherit;
+          text-decoration: none;
+          font-weight: 600;
+          font-family: "Helvetica Neue", Helvetica, Arial, Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Apple Color Emoji", "Segoe UI Emoji";
+          letter-spacing: -0.02em;
+          line-height: 1.06;
+          display: inline-block;
+          font-size: clamp(32px, 5.8vw, 64px);
+        }
+        .mons-title-serif { font-family: Georgia, "Times New Roman", Times, serif; font-style: italic; }
+        /* Hide the initial title node if multiple exist (we insert a refined duplicate) */
+        .mons-right a.mons-title:first-of-type { display: none; }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+          .mons-inner { grid-template-columns: 1fr; }
+          .mons-right { order: -1; }
+          .mons-title { font-size: clamp(28px, 8vw, 48px); }
+          .mons-grid { column-count: 2; column-gap: clamp(4px, 1.2vw, 10px); }
         }
       `}</style>
     </motion.section>
